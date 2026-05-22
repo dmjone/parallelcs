@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# ParallelCS — idempotent one-shot deploy.
+# ParallelCS, idempotent one-shot deploy.
 #
 # Blank prerequisites -> running Cloud Run service. Re-runnable: every step checks
 # for existing state and only creates what is missing. No manual steps.
 #
 # Requires: gcloud CLI, authenticated (`gcloud auth login`) with rights on the
-# project. No service account keys are created or used — auth is ADC only.
+# project. No service account keys are created or used, auth is ADC only.
 #
 #   ./autoconfig.sh
 #
@@ -100,7 +100,7 @@ log "Checking ${URL}/health ..."
 if curl -fsS --max-time 30 "${URL}/health" >/dev/null; then
   log "Health check OK (200)."
 else
-  log "WARNING: health check did not return 200 — inspect logs:"
+  log "WARNING: health check did not return 200, inspect logs:"
   log "  gcloud run services logs read ${SERVICE} --region ${REGION}"
 fi
 
@@ -111,7 +111,7 @@ else
   log "Creating domain mapping ${DOMAIN} (best effort)..."
   gcloud beta run domain-mappings create \
     --service="${SERVICE}" --domain="${DOMAIN}" --region="${REGION}" --quiet \
-    || log "Domain mapping not created — CNAME the *.run.app host instead (see deploy/README.md)."
+    || log "Domain mapping not created, CNAME the *.run.app host instead (see deploy/README.md)."
 fi
 
 log "Done. Service URL: ${URL}"

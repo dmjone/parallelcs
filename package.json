@@ -2,14 +2,15 @@
   "name": "parallelcs",
   "version": "1.0.0",
   "private": true,
-  "description": "ParallelCS — AI-native, product-centric CS curriculum track. Self-updating single Cloud Run service.",
+  "description": "ParallelCS: AI-native, product-centric CS curriculum track. Self-updating single Cloud Run service.",
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
     "start": "node src/server.mjs",
-    "dev": "node --watch src/server.mjs"
+    "dev": "node --watch src/server.mjs",
+    "test:resilience": "node test/update-resilience.mjs"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.16.0",

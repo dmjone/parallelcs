@@ -1,4 +1,4 @@
-# ParallelCS — Build Contract (authoritative)
+# ParallelCS, Build Contract (authoritative)
 
 Single self-updating Cloud Run service. Node 24, ESM. Everything runs **inside one service**.
 No second service, no scheduler, no API keys. Vertex AI auth = IAM (attached service account / ADC).
@@ -11,14 +11,14 @@ No second service, no scheduler, no API keys. Vertex AI auth = IAM (attached ser
 - **cloud-infra** owns: GCP resources (service accounts, IAM, GCS bucket), `deploy/*`,
   `autoconfig.sh`, `autoconfig.bat`, `CHANGELOG.md`. Runs the actual deploy.
 
-`src/lib/schema.mjs` and `package.json` are already written — locked, do not change shapes.
+`src/lib/schema.mjs` and `package.json` are already written, locked, do not change shapes.
 
 ## Data shapes
 
 See `src/lib/schema.mjs` (Zod). `Curriculum` = { version, generatedAt, tracks[], concepts[], projects[], changelog[] }.
 `Concept` has trackId + week (1-12) + prereqs[] + resources[]. `Project` maps to a Shoolini syllabus tag.
 
-## View module interface — `src/views/index.mjs` (design-lead provides, app-engineer consumes)
+## View module interface, `src/views/index.mjs` (design-lead provides, app-engineer consumes)
 
 Export these pure functions (return strings, no I/O):
 
@@ -64,15 +64,15 @@ dynamic strings (provide an `esc()` helper inside the views module).
   4. Changed -> write `content/curriculum.json`, bump `version`, prepend changelog.
      Unchanged -> result `unchanged`. Either way write `meta/state.json` with today's date.
 - Hard cap: at most ONE update per IST day, enforced by the date check + atomic lock.
-- All wrapped in try/catch — a failed update must NEVER break page serving.
+- All wrapped in try/catch, a failed update must NEVER break page serving.
 - First run: if `content/curriculum.json` missing in GCS, seed it from
   `src/content/seed-curriculum.json` (result `seeded`).
 
 ## GCS layout (bucket name from env `CONTENT_BUCKET`)
 
-- `content/curriculum.json` — the live curriculum
-- `meta/state.json` — StateSchema
-- `meta/lock-YYYY-MM-DD` — daily lock object
+- `content/curriculum.json`, the live curriculum
+- `meta/state.json`, StateSchema
+- `meta/lock-YYYY-MM-DD`, daily lock object
 
 ## Env (`src/lib/env.mjs`, Zod-validated, crash on misconfig)
 

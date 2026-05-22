@@ -1,11 +1,11 @@
-# ParallelCS — multi-stage build for Cloud Run.
+# ParallelCS, multi-stage build for Cloud Run.
 # Stage 1 installs production dependencies; stage 2 is a lean, non-root runtime.
 
 # --- deps -----------------------------------------------------------------
 FROM node:24-alpine AS deps
 WORKDIR /app
 # Pin pnpm via corepack. The version is fixed (not "latest") so the build is
-# deterministic and matches the committed lockfile's generator — newer pnpm
+# deterministic and matches the committed lockfile's generator, newer pnpm
 # majors change install behaviour (e.g. exit 1 on ignored build scripts).
 RUN corepack enable && corepack prepare pnpm@10.30.1 --activate
 COPY package.json pnpm-lock.yaml* ./

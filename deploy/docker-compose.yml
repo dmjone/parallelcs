@@ -1,4 +1,4 @@
-# ParallelCS — local / single-host run.
+# ParallelCS, local / single-host run.
 #
 # This is for local development and a future Tier-0 single-VM deploy. Production
 # runs on Cloud Run (scale-to-zero, $0 idle). On a real host, authenticate with

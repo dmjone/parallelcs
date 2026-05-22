@@ -8,8 +8,8 @@ that path's reference or future-scale IaC that is **not applied today**.
 
 A single Cloud Run service, `parallelcs`, in `asia-south1`:
 
-- Scales to zero (`--min-instances=0`) — **$0 when idle**.
-- Default CPU throttling on — CPU billed only during request handling.
+- Scales to zero (`--min-instances=0`), **$0 when idle**.
+- Default CPU throttling on, CPU billed only during request handling.
 - Runs as `parallelcs-run@dmjone.iam.gserviceaccount.com`, a least-privilege SA.
 - No API keys: Vertex AI + GCS authenticate via the attached SA (ADC).
 

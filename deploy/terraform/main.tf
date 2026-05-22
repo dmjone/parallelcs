@@ -1,4 +1,4 @@
-# ParallelCS — Terraform module skeleton.
+# ParallelCS, Terraform module skeleton.
 #
 # REFERENCE ONLY. The live environment was created with gcloud (see CHANGELOG and
 # autoconfig.sh). This module encodes the same resources so a future, fully
@@ -110,7 +110,7 @@ resource "google_cloud_run_v2_service" "parallelcs" {
       image = var.container_image
 
       resources {
-        cpu_idle = true # default CPU throttling — billed only during requests
+        cpu_idle = true # default CPU throttling, billed only during requests
         limits = {
           cpu    = "1"
           memory = "512Mi"

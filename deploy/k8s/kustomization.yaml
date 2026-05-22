@@ -1,4 +1,4 @@
-# ParallelCS — Kustomize entrypoint for a future Kubernetes tier.
+# ParallelCS, Kustomize entrypoint for a future Kubernetes tier.
 #
 # NOT used by the current deploy. ParallelCS runs on Cloud Run today (scale-to-zero,
 # $0 idle). These manifests exist so a move to GKE/Autopilot at a higher scale tier
