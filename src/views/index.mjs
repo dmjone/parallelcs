@@ -151,25 +151,6 @@ function weekBridge() {
 </div>`;
 }
 
-/**
- * A friendly 12-week journey strip. Goal-gradient framing: a short, finite
- * timeline with a visible finish line (you ship), so the commitment reads as
- * achievable rather than as a pile of topics.
- */
-function weekJourney() {
-  let nodes = '';
-  for (let w = 1; w <= TRACK_COUNT; w++) {
-    const last = w === TRACK_COUNT;
-    nodes += `<li class="jn${last ? ' jn-ship' : ''}"><span class="jn-dot" aria-hidden="true"></span><span class="jn-label">${
-      last ? 'Ship' : 'W' + w
-    }</span></li>`;
-  }
-  return `<div class="journey" role="img" aria-label="A 12-week journey: learn one idea at a time, week by week, and publish a product in week 12.">
-  <ol class="journey-track">${nodes}</ol>
-  <p class="journey-cap">One track. Roughly one idea a week. A product you publish by week 12.</p>
-</div>`;
-}
-
 /* ------------------------------------------------------------------ */
 /* page(), full document with all inlined CSS                        */
 /* ------------------------------------------------------------------ */
@@ -661,34 +642,6 @@ img{max-width:100%;height:auto}
 .wb-tag-kick::before{background:var(--amber)}
 .wb-tag-solo::before{background:color-mix(in srgb,var(--indigo) 40%,transparent)}
 
-/* ---- 12-week journey strip: a short, finite timeline with a finish line ---- */
-.journey{margin:1.8rem 0 0}
-.journey-track{
-  list-style:none;margin:0;padding:0;display:flex;align-items:flex-end;gap:.4rem;
-  overflow-x:auto;padding-bottom:.3rem;
-}
-.journey-track .jn{
-  flex:1 1 0;min-width:34px;display:flex;flex-direction:column;align-items:center;gap:.4rem;
-  position:relative;
-}
-.jn-dot{
-  width:14px;height:14px;border-radius:999px;background:var(--indigo-soft);
-  border:2px solid var(--indigo);
-}
-.jn-label{font-size:.66rem;font-weight:700;color:var(--ink-faint);letter-spacing:.02em}
-/* connecting line between nodes */
-.journey-track .jn::before{
-  content:"";position:absolute;top:7px;left:-50%;width:100%;height:2px;
-  background:var(--line-hard);z-index:-1;
-}
-.journey-track .jn:first-child::before{display:none}
-.jn-ship .jn-dot{
-  width:18px;height:18px;background:var(--amber);border-color:var(--amber-deep);
-  box-shadow:0 0 0 4px var(--amber-soft);
-}
-.jn-ship .jn-label{color:var(--amber-deep);font-weight:800}
-.journey-cap{margin:.9rem 0 0;color:var(--ink-soft);font-size:.96rem}
-
 /* ---- callout ---- */
 .callout{
   display:flex;gap:1rem;align-items:flex-start;
@@ -1166,6 +1119,8 @@ export function homeView(curriculum) {
     })
     .join('');
 
+  const totalResources = curriculum.concepts.reduce((n, c) => n + c.resources.length, 0);
+
   // The deal, three short beats. One idea each.
   const steps = [
     ['Pick a track.', '8 paths. Each one is 12 focused weeks.'],
@@ -1223,13 +1178,19 @@ export function homeView(curriculum) {
       </ul>
     </aside>
   </div>
-  <div class="stat-band rise d5" role="list" aria-label="What one track looks like">
-    <div class="stat" role="listitem"><span class="stat-num">12</span><span class="stat-label">weeks, start to finish</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">1</span><span class="stat-label">product you publish</span></div>
+  <div class="stat-band rise d5" role="list" aria-label="Curriculum at a glance">
     <div class="stat" role="listitem"><span class="stat-num">${esc(
       curriculum.tracks.length,
-    )}</span><span class="stat-label">paths, you pick one</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">100%</span><span class="stat-label">free, forever</span></div>
+    )}</span><span class="stat-label">12-week tracks</span></div>
+    <div class="stat" role="listitem"><span class="stat-num">${esc(
+      curriculum.concepts.length,
+    )}</span><span class="stat-label">concepts</span></div>
+    <div class="stat" role="listitem"><span class="stat-num">${esc(
+      curriculum.projects.length,
+    )}</span><span class="stat-label">real projects</span></div>
+    <div class="stat" role="listitem"><span class="stat-num">${esc(
+      totalResources,
+    )}<span class="plus">+</span></span><span class="stat-label">free resources</span></div>
   </div>
 </section>
 
@@ -1237,17 +1198,16 @@ export function homeView(curriculum) {
   <div class="section-head">
     ${kicker('The deal')}
     <h2 id="deal-h">Three steps. That's it.</h2>
-    <p class="lead">No fluff, no warm-up. Learn one idea at a time and finish with something real.</p>
+    <p class="lead">No fluff, no warm-up. The whole path is built around one outcome.</p>
   </div>
   <ol class="steps">${steps}</ol>
-  ${weekJourney()}
 </section>
 
 <section class="section" aria-labelledby="tracks-h">
   <div class="section-head">
     ${kicker('Choose your path', 'emerald')}
     <h2 id="tracks-h">8 tracks. Pick one.</h2>
-    <p class="lead">Start anywhere. A track is about 8 ideas across 12 weeks, roughly one a week, and it ends in a product you can show.</p>
+    <p class="lead">Start anywhere, each track stands alone and ends in a product you can show.</p>
   </div>
   <div class="grid grid-2">${trackCards}</div>
   <p class="section-foot"><a class="textlink" href="/start">Not sure where to start? See your roadmap <span class="arrow" aria-hidden="true">→</span></a></p>
@@ -1383,6 +1343,11 @@ export function startView(curriculum) {
 
 /** @param {import('../lib/schema.mjs').Curriculum} curriculum */
 export function tracksView(curriculum) {
+  const totalResources = curriculum.concepts.reduce(
+    (n, c) => n + c.resources.length,
+    0,
+  );
+
   const cards = curriculum.tracks
     .map((t, i) => {
       const conceptN = curriculum.concepts.filter((c) => c.trackId === t.id).length;
@@ -1414,9 +1379,15 @@ export function tracksView(curriculum) {
     <a class="btn btn-ghost" href="/graph">See the full knowledge graph</a>
   </div>
   <p class="hero-proof rise d4">
-    <span><span class="chk" aria-hidden="true">✓</span> 12 weeks each</span>
-    <span><span class="chk" aria-hidden="true">✓</span> about 8 ideas a track</span>
-    <span><span class="chk" aria-hidden="true">✓</span> every lesson free</span>
+    <span><span class="chk" aria-hidden="true">✓</span> ${esc(
+      curriculum.concepts.length,
+    )} concepts</span>
+    <span><span class="chk" aria-hidden="true">✓</span> ${esc(
+      curriculum.projects.length,
+    )} projects</span>
+    <span><span class="chk" aria-hidden="true">✓</span> ${esc(
+      totalResources,
+    )}+ curated free resources</span>
   </p>
 </section>
 

@@ -6,6 +6,15 @@ this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Front page reverted off the 12-week timeline framing**, back to a curriculum-at-a-glance
+  view (tracks, concepts, projects, curated free resources) on both the home hero stat band
+  and the `/tracks` hero proof. The 12-week journey strip (`weekJourney()`) and its CSS are
+  removed. The semester cohort is framed as a **30-day AI-builder challenge** again in the
+  pitch decks (`/pitch`, `/pitch-clo`). Reverts the home/pitch wording from the two prior
+  commits per client direction.
+
 ### Added
 
 - `GET /learn/:conceptId` study-notes pages. Each concept gets a precise, readable
