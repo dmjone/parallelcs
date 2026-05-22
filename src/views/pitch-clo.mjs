@@ -131,7 +131,7 @@ export function pitchCloPage(nonce, curriculum) {
       body: `<p>The request to the office of the Chief Learning Officer is deliberately small.</p>
 <ul class="point-list">
   <li>The <strong>formal aegis of Shoolini University</strong>, so the platform can serve Shoolini CSE students officially.</li>
-  <li>A <strong>pilot with one CSE cohort for one semester</strong>, thirty days, one shipped product per student.</li>
+  <li>A <strong>pilot with one CSE cohort for one semester</strong>, a 4-week kickstart, one shipped product per student.</li>
   <li>Coverage of the <strong>only out-of-pocket cost: the modest cloud server bill</strong>. Nothing else is asked for.</li>
 </ul>`,
     },

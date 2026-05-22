@@ -89,8 +89,8 @@ ${tracks.map((t) => `  <li><strong>${esc(t.title)}</strong>, ${esc(t.tagline)}</
     {
       kicker: 'Slide 6, Go to Market',
       tone: 'amber',
-      title: 'A free 30-day AI-builder challenge each semester.',
-      body: `<p>At the start of every semester, a free cohort runs on Discord. Thirty days, one shipped product per learner.</p>
+      title: 'A free 4-week kickstart each semester.',
+      body: `<p>At the start of every semester, a free cohort runs on Discord. Four weeks, one shipped product per learner.</p>
 <ul class="point-list">
   <li>The first cohort's deployed products become the marketing for the next.</li>
   <li>Growth compounds: every launch is public proof the path works.</li>
@@ -120,14 +120,15 @@ ${tracks.map((t) => `  <li><strong>${esc(t.title)}</strong>, ${esc(t.tagline)}</
       tone: 'indigo',
       title: 'Built by builders. Run as a public good.',
       body: `<p>ParallelCS ships as an open-source project under the MIT license, a remix, credited to its sources, owned by the learners who use it.</p>
-<p>The ask is not money. It is <strong>adoption</strong>: one cohort, one semester, one wave of publicly shipped products. Give us thirty days and a Discord server.</p>`,
+<p>The ask is not money. It is <strong>adoption</strong>: one cohort, one semester, one wave of publicly shipped products. Give us four weeks and a Discord server.</p>`,
+
     },
     {
       kicker: 'Slide 10, The Vision',
       tone: 'emerald',
       title: 'Make "I built this" the default outcome of a CS degree.',
       body: `<p class="big-lede">A learner should graduate with a portfolio of live, public, enterprise-grade products, not just a transcript. ParallelCS turns the gap between syllabus and stack into a path anyone can walk, for free.</p>
-<p class="sig">Start at the graph. Ship in thirty days. Get hired.</p>`,
+<p class="sig">Start at the graph. Ship in weeks. Get hired.</p>`,
     },
   ];
 
