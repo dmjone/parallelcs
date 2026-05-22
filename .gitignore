@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Secrets and local env (only .env.example is committed)
+.env
+.env.local
+.env.*.local
+
+# Logs and OS noise
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Tooling and local agent state
+.playwright-mcp/
+.claude/
+
+# Scratch scripts
+_*.mjs

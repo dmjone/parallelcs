@@ -1,0 +1,2505 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-18T04:53:32.815Z",
+  "tracks": [
+    {
+      "id": "agentic-systems",
+      "title": "Agentic Systems Engineering",
+      "tagline": "Orchestrate fleets of autonomous agents that ship real work.",
+      "focus": "Engineer reliable multi-agent systems: tool use, planning, memory, sandboxed code execution, and orchestration patterns that move from a single augmented LLM to a coordinated fleet. You build agents an enterprise can put in production, not demos. Bridges directly to classic Operating Systems, Distributed Systems, and Compilers."
+    },
+    {
+      "id": "ai-infra-inference",
+      "title": "AI Infrastructure & Inference",
+      "tagline": "Serve frontier models fast, cheap, and at scale.",
+      "focus": "Own the serving layer: the transformer internals that decide cost, quantization, KV-cache management, continuous batching, paged attention, speculative decoding, and GPU-aware deployment. You leave able to stand up an inference platform that holds an SLO under load. Bridges to Operating Systems, Computer Architecture, and Computer Networks."
+    },
+    {
+      "id": "applied-ml-modeling",
+      "title": "Applied ML & Model Engineering",
+      "tagline": "Take a base model and make it yours.",
+      "focus": "Go from neural-net first principles to shipping adapted models: transformer pretraining intuition, supervised fine-tuning, parameter-efficient methods (LoRA/QLoRA), preference optimization (RLHF/DPO), distillation, and rigorous evaluation. You leave able to own a model-customization pipeline end to end. Bridges to Machine Learning, Linear Algebra, and Statistics."
+    },
+    {
+      "id": "production-ai-products",
+      "title": "Production AI Products",
+      "tagline": "Ship AI products that survive real users and real attackers.",
+      "focus": "Build the full product around a model: retrieval and context engineering at scale, LLM evaluation and observability, AI red-teaming and security, cost governance, and LLMOps. You leave able to take an AI feature from prototype to a hardened, monitored, publicly hosted product. Bridges to Databases, Software Engineering, and Information Security."
+    },
+    {
+      "id": "frontier-systems",
+      "title": "Frontier Systems",
+      "tagline": "Build the distributed, real-time substrate AI runs on.",
+      "focus": "Engineer the systems frontier AI depends on: large-scale distributed training, real-time and streaming AI, GPU cluster scheduling, vector databases at scale, and the consistency and fault-tolerance tradeoffs underneath it all. You leave able to reason about and operate planet-scale AI infrastructure. Bridges to Distributed Systems, Databases, and Operating Systems."
+    },
+    {
+      "id": "multimodal-generative",
+      "title": "Multimodal & Generative AI",
+      "tagline": "Build models that see, hear, and create across every modality.",
+      "focus": "Engineer the systems behind vision-language and any-to-any models: how a vision encoder, projection layer, and language decoder fuse into one model; how diffusion and flow-matching generate images and video; how unified architectures process and produce text, image, audio, and video together; and how you train, fine-tune, and rigorously evaluate them. You leave able to own a multimodal model from data to a deployed product. Bridges to Computer Vision, Signal Processing, and Machine Learning."
+    },
+    {
+      "id": "ai-safety-alignment",
+      "title": "AI Safety, Alignment & Interpretability",
+      "tagline": "Make powerful models honest, transparent, and governable.",
+      "focus": "Work on what frontier labs hire most heavily for: alignment techniques (RLHF, DPO, Constitutional AI), mechanistic interpretability that reverse-engineers what a network computes, safety evaluations and scalable oversight, adversarial robustness and red-teaming depth, and AI governance grounded in real frameworks (model cards, the EU AI Act, the NIST AI RMF). You leave able to ship an interpretability tool and a safety-and-governance pipeline. Bridges to Information Security, Theory of Computation, and Software Engineering."
+    },
+    {
+      "id": "land-elite-role",
+      "title": "Land the Elite AI Role",
+      "tagline": "Turn frontier skill into a frontier offer.",
+      "focus": "Convert everything you have built into an elite AI role: AI/ML system-design interviews, a public portfolio that gets noticed, the real hiring pipeline at frontier labs, top product companies, well-funded startups, and global remote teams, technical writing and communication, open-source contribution and visibility, and compensation and negotiation. You leave with a shipped portfolio product and a rigorous public technical writeup. Bridges to professional practice and software-engineering communication."
+    }
+  ],
+  "concepts": [
+    {
+      "id": "as-augmented-llm",
+      "title": "The Augmented LLM as a Building Block",
+      "summary": "An agent is an LLM in a loop with tools, retrieval, and memory. Master the atomic building block before composing it: when a deterministic workflow beats an agent, and the failure modes of handing a model autonomy.",
+      "trackId": "agentic-systems",
+      "week": 1,
+      "prereqs": [],
+      "subjectLink": "Operating Systems, processes, scheduling, and the run loop",
+      "resources": [
+        {
+          "title": "Building Effective Agents",
+          "url": "https://www.anthropic.com/research/building-effective-agents",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "A practical guide to building agents",
+          "url": "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf",
+          "source": "OpenAI",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-tool-use",
+      "title": "Tool Use & Function Calling",
+      "summary": "Give a model hands: structured tool schemas, argument validation, error feedback loops, and parallel tool calls. The contract between a model and the outside world is an API design problem.",
+      "trackId": "agentic-systems",
+      "week": 2,
+      "prereqs": [
+        "as-augmented-llm"
+      ],
+      "subjectLink": "Software Engineering, interface design and API contracts",
+      "resources": [
+        {
+          "title": "Tool use with Claude",
+          "url": "https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Function calling guide",
+          "url": "https://platform.openai.com/docs/guides/function-calling",
+          "source": "OpenAI",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-mcp",
+      "title": "Model Context Protocol & Interoperable Tooling",
+      "summary": "Standardize how agents connect to tools, data, and other agents. MCP servers and clients, transports, capability negotiation, and why a protocol beats bespoke integrations at scale.",
+      "trackId": "agentic-systems",
+      "week": 3,
+      "prereqs": [
+        "as-tool-use"
+      ],
+      "subjectLink": "Computer Networks, protocols, client-server architecture, and RPC",
+      "resources": [
+        {
+          "title": "Model Context Protocol, specification and concepts",
+          "url": "https://modelcontextprotocol.io/docs/getting-started/intro",
+          "source": "Anthropic / MCP",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "MCP servers reference repository",
+          "url": "https://github.com/modelcontextprotocol/servers",
+          "source": "Model Context Protocol",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-planning",
+      "title": "Planning, Reasoning & Task Decomposition",
+      "summary": "How agents break a goal into steps: chain-of-thought, ReAct, plan-and-execute, and reflection. When explicit planning helps and when it just adds latency and drift.",
+      "trackId": "agentic-systems",
+      "week": 4,
+      "prereqs": [
+        "as-tool-use"
+      ],
+      "subjectLink": "Artificial Intelligence, search, planning, and state-space reasoning",
+      "resources": [
+        {
+          "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+          "url": "https://arxiv.org/abs/2210.03629",
+          "source": "arXiv (Yao et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Stanford CS25: Transformers United, agent and reasoning lectures",
+          "url": "https://web.stanford.edu/class/cs25/",
+          "source": "Stanford University",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-memory",
+      "title": "Agent Memory & Context Management",
+      "summary": "Agents forget. Engineer short-term scratchpads, long-term vector memory, summarization, and context-window budgeting so an agent stays coherent across a long-running task.",
+      "trackId": "agentic-systems",
+      "week": 5,
+      "prereqs": [
+        "as-planning"
+      ],
+      "subjectLink": "Operating Systems, memory hierarchy, paging, and caching",
+      "resources": [
+        {
+          "title": "MemGPT: Towards LLMs as Operating Systems",
+          "url": "https://arxiv.org/abs/2310.08560",
+          "source": "arXiv (Packer et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Effective context engineering for AI agents",
+          "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-sandboxed-execution",
+      "title": "Sandboxed Code Execution",
+      "summary": "Letting an agent run code it wrote is a security problem first. Isolation via containers and microVMs, filesystem and network confinement, resource limits, and safe failure.",
+      "trackId": "agentic-systems",
+      "week": 6,
+      "prereqs": [
+        "as-memory"
+      ],
+      "subjectLink": "Operating Systems, virtualization, namespaces, and process isolation",
+      "resources": [
+        {
+          "title": "gVisor, application kernel for container isolation",
+          "url": "https://gvisor.dev/docs/",
+          "source": "Google",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Firecracker microVM, design and documentation",
+          "url": "https://github.com/firecracker-microvm/firecracker/blob/main/docs/design.md",
+          "source": "AWS / Firecracker",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-multi-agent",
+      "title": "Multi-Agent Orchestration",
+      "summary": "Compose specialized agents into a system: orchestrator-worker, handoffs, shared state, and message passing. The coordination problems are the same ones distributed systems have always had.",
+      "trackId": "agentic-systems",
+      "week": 8,
+      "prereqs": [
+        "as-sandboxed-execution"
+      ],
+      "subjectLink": "Distributed Systems, coordination, message passing, and consensus",
+      "resources": [
+        {
+          "title": "How we built our multi-agent research system",
+          "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "LangGraph, multi-agent orchestration documentation",
+          "url": "https://langchain-ai.github.io/langgraph/concepts/multi_agent/",
+          "source": "LangChain",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-agent-eval",
+      "title": "Evaluating & Observing Agents",
+      "summary": "Agents fail silently and non-deterministically. Build trajectory evals, tool-call assertions, LLM-as-judge, and tracing so you can tell a regression from noise.",
+      "trackId": "agentic-systems",
+      "week": 10,
+      "prereqs": [
+        "as-multi-agent"
+      ],
+      "subjectLink": "Software Engineering, testing, regression suites, and observability",
+      "resources": [
+        {
+          "title": "Building evaluations for AI agents",
+          "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "LangSmith, tracing and evaluation for agentic apps",
+          "url": "https://docs.smith.langchain.com/",
+          "source": "LangChain",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "as-agent-security",
+      "title": "Agent Security & Prompt Injection",
+      "summary": "An autonomous agent with tools is an attack surface. Prompt injection, tool poisoning, the lethal trifecta of private data plus untrusted content plus exfiltration, and least-privilege agent design.",
+      "trackId": "agentic-systems",
+      "week": 11,
+      "prereqs": [
+        "as-agent-eval"
+      ],
+      "subjectLink": "Information Security, threat modeling and least privilege",
+      "resources": [
+        {
+          "title": "OWASP Top 10 for Large Language Model Applications",
+          "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+          "source": "OWASP",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Mitigating prompt injection and other agentic risks",
+          "url": "https://www.anthropic.com/research/agentic-misalignment",
+          "source": "Anthropic",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-transformer-internals",
+      "title": "Transformer Internals for Serving",
+      "summary": "You cannot optimize what you do not understand. Tokens, attention, the prefill and decode phases, and exactly where compute and memory go during a forward pass.",
+      "trackId": "ai-infra-inference",
+      "week": 1,
+      "prereqs": [],
+      "subjectLink": "Computer Architecture, instruction-level parallelism and the memory wall",
+      "resources": [
+        {
+          "title": "Let's build GPT: from scratch, in code, spelled out",
+          "url": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+          "source": "Andrej Karpathy",
+          "type": "video",
+          "free": true
+        },
+        {
+          "title": "Stanford CS336: Language Modeling from Scratch",
+          "url": "https://stanford-cs336.github.io/spring2025/",
+          "source": "Stanford University",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-gpu-fundamentals",
+      "title": "GPU Architecture & the Memory Wall",
+      "summary": "Why inference is memory-bandwidth bound, not compute bound. SMs, warps, HBM versus SRAM, arithmetic intensity, and the roofline model that decides what 'fast' even means.",
+      "trackId": "ai-infra-inference",
+      "week": 2,
+      "prereqs": [
+        "ii-transformer-internals"
+      ],
+      "subjectLink": "Computer Architecture, parallelism, memory hierarchy, and the roofline model",
+      "resources": [
+        {
+          "title": "How to Optimize a CUDA Matmul Kernel for cuBLAS-like Performance",
+          "url": "https://siboehm.com/articles/22/CUDA-MMM",
+          "source": "Simon Boehm",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "GPU Glossary, modern GPU architecture explained",
+          "url": "https://modal.com/gpu-glossary",
+          "source": "Modal",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-flash-attention",
+      "title": "FlashAttention & Kernel-Level Optimization",
+      "summary": "The attention kernel that made long context affordable: tiling, kernel fusion, and being IO-aware about HBM traffic. The general principle of fusing memory-bound operations.",
+      "trackId": "ai-infra-inference",
+      "week": 3,
+      "prereqs": [
+        "ii-gpu-fundamentals"
+      ],
+      "subjectLink": "Operating Systems, I/O scheduling and memory-bound versus compute-bound work",
+      "resources": [
+        {
+          "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+          "url": "https://arxiv.org/abs/2205.14135",
+          "source": "arXiv (Dao et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "FlashAttention reference implementation",
+          "url": "https://github.com/Dao-AILab/flash-attention",
+          "source": "Dao AI Lab",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-kv-cache",
+      "title": "KV-Cache & Paged Attention",
+      "summary": "The KV cache is the dominant memory cost of serving. Fragmentation, paging, prefix sharing, and how PagedAttention applied virtual-memory ideas to GPU memory.",
+      "trackId": "ai-infra-inference",
+      "week": 4,
+      "prereqs": [
+        "ii-flash-attention"
+      ],
+      "subjectLink": "Operating Systems, virtual memory, paging, and fragmentation",
+      "resources": [
+        {
+          "title": "Efficient Memory Management for LLM Serving with PagedAttention",
+          "url": "https://arxiv.org/abs/2309.06180",
+          "source": "arXiv (Kwon et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "vLLM, paged attention and KV-cache documentation",
+          "url": "https://docs.vllm.ai/en/latest/",
+          "source": "vLLM",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-continuous-batching",
+      "title": "Continuous Batching & Throughput Scheduling",
+      "summary": "Static batching wastes the GPU. Continuous (iteration-level) batching, request scheduling, prefill-decode tradeoffs, and how to push throughput without wrecking tail latency.",
+      "trackId": "ai-infra-inference",
+      "week": 5,
+      "prereqs": [
+        "ii-kv-cache"
+      ],
+      "subjectLink": "Operating Systems, CPU scheduling, throughput versus latency tradeoffs",
+      "resources": [
+        {
+          "title": "Orca: A Distributed Serving System for Transformer-Based Generative Models",
+          "url": "https://www.usenix.org/conference/osdi22/presentation/yu",
+          "source": "USENIX OSDI",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "How continuous batching enables 23x throughput in LLM inference",
+          "url": "https://www.anyscale.com/blog/continuous-batching-llm-inference",
+          "source": "Anyscale",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-quantization",
+      "title": "Quantization & Model Compression",
+      "summary": "Shrink a model to fit and run faster: INT8/INT4 weight quantization, GPTQ and AWQ, FP8, and the accuracy-versus-cost tradeoff measured honestly.",
+      "trackId": "ai-infra-inference",
+      "week": 7,
+      "prereqs": [
+        "ii-continuous-batching"
+      ],
+      "subjectLink": "Computer Architecture, number representation and fixed-point arithmetic",
+      "resources": [
+        {
+          "title": "Hugging Face, Quantization concepts and methods",
+          "url": "https://huggingface.co/docs/transformers/main/en/quantization/overview",
+          "source": "Hugging Face",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers",
+          "url": "https://arxiv.org/abs/2210.17323",
+          "source": "arXiv (Frantar et al.)",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-speculative-decoding",
+      "title": "Speculative Decoding & Latency Optimization",
+      "summary": "Cut decode latency by guessing ahead: a small draft model proposes tokens a large model verifies in parallel. Acceptance rates, draft selection, and when speculation pays off.",
+      "trackId": "ai-infra-inference",
+      "week": 8,
+      "prereqs": [
+        "ii-quantization"
+      ],
+      "subjectLink": "Computer Architecture, speculative and out-of-order execution",
+      "resources": [
+        {
+          "title": "Fast Inference from Transformers via Speculative Decoding",
+          "url": "https://arxiv.org/abs/2211.17192",
+          "source": "arXiv (Leviathan et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Assisted Generation: a new direction toward low-latency text generation",
+          "url": "https://huggingface.co/blog/assisted-generation",
+          "source": "Hugging Face",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "ii-serving-deployment",
+      "title": "Production Serving & Autoscaling",
+      "summary": "Wrap a model in a service that holds an SLO: load balancing across replicas, GPU autoscaling, cold-start mitigation, and observability for tokens-per-second and time-to-first-token.",
+      "trackId": "ai-infra-inference",
+      "week": 10,
+      "prereqs": [
+        "ii-speculative-decoding"
+      ],
+      "subjectLink": "Distributed Systems, load balancing, replication, and capacity planning",
+      "resources": [
+        {
+          "title": "vLLM, production deployment and serving guide",
+          "url": "https://docs.vllm.ai/en/latest/serving/distributed_serving.html",
+          "source": "vLLM",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "KServe, model inference platform documentation",
+          "url": "https://kserve.github.io/website/latest/",
+          "source": "KServe",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-neural-nets",
+      "title": "Neural Networks & Backpropagation from Scratch",
+      "summary": "Build a neural net and autograd by hand. Gradients, the chain rule, and what 'training' actually computes, no framework magic until you have earned the abstraction.",
+      "trackId": "applied-ml-modeling",
+      "week": 1,
+      "prereqs": [],
+      "subjectLink": "Calculus & Linear Algebra, gradients, the chain rule, and vector spaces",
+      "resources": [
+        {
+          "title": "Neural Networks: Zero to Hero, building micrograd and makemore",
+          "url": "https://karpathy.ai/zero-to-hero.html",
+          "source": "Andrej Karpathy",
+          "type": "video",
+          "free": true
+        },
+        {
+          "title": "3Blue1Brown, Neural Networks series",
+          "url": "https://www.3blue1brown.com/topics/neural-networks",
+          "source": "3Blue1Brown",
+          "type": "video",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-deep-learning",
+      "title": "Deep Learning Foundations",
+      "summary": "Optimization that actually converges: SGD and Adam, regularization, normalization, initialization, and the failure modes (vanishing gradients, overfitting) every practitioner must recognize.",
+      "trackId": "applied-ml-modeling",
+      "week": 2,
+      "prereqs": [
+        "am-neural-nets"
+      ],
+      "subjectLink": "Machine Learning, optimization, generalization, and the bias-variance tradeoff",
+      "resources": [
+        {
+          "title": "Practical Deep Learning for Coders",
+          "url": "https://course.fast.ai/",
+          "source": "fast.ai",
+          "type": "course",
+          "free": true
+        },
+        {
+          "title": "Stanford CS231n: Deep Learning for Computer Vision",
+          "url": "https://cs231n.stanford.edu/",
+          "source": "Stanford University",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-transformers",
+      "title": "Transformers, Attention & Pretraining",
+      "summary": "Why attention replaced recurrence, and what pretraining a language model on a corpus actually optimizes. Tokenization, the training objective, and scaling laws.",
+      "trackId": "applied-ml-modeling",
+      "week": 3,
+      "prereqs": [
+        "am-deep-learning"
+      ],
+      "subjectLink": "Machine Learning, sequence modeling and representation learning",
+      "resources": [
+        {
+          "title": "Attention Is All You Need",
+          "url": "https://arxiv.org/abs/1706.03762",
+          "source": "arXiv (Vaswani et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Stanford CS336: Language Modeling from Scratch",
+          "url": "https://stanford-cs336.github.io/spring2025/",
+          "source": "Stanford University",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-data-engineering",
+      "title": "Training Data Engineering",
+      "summary": "Model quality is data quality. Building, filtering, and deduplicating datasets; instruction-data curation; contamination; and why most fine-tuning failures are data failures.",
+      "trackId": "applied-ml-modeling",
+      "week": 4,
+      "prereqs": [
+        "am-transformers"
+      ],
+      "subjectLink": "Databases, data cleaning, deduplication, and ETL pipelines",
+      "resources": [
+        {
+          "title": "Hugging Face, Datasets documentation and processing",
+          "url": "https://huggingface.co/docs/datasets/index",
+          "source": "Hugging Face",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "The FineWeb Datasets: decanting the web for the finest text data",
+          "url": "https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1",
+          "source": "Hugging Face",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-finetuning",
+      "title": "Supervised Fine-Tuning",
+      "summary": "Adapt a base model to a task or style with SFT: instruction tuning, hyperparameters that matter, overfitting and catastrophic forgetting, and measuring whether it worked.",
+      "trackId": "applied-ml-modeling",
+      "week": 6,
+      "prereqs": [
+        "am-data-engineering"
+      ],
+      "subjectLink": "Machine Learning, transfer learning and supervised training",
+      "resources": [
+        {
+          "title": "Hugging Face, Supervised Fine-tuning Trainer (TRL) documentation",
+          "url": "https://huggingface.co/docs/trl/main/en/sft_trainer",
+          "source": "Hugging Face",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Hugging Face LLM Course, Fine-tuning chapter",
+          "url": "https://huggingface.co/learn/llm-course/chapter3/1",
+          "source": "Hugging Face",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-peft-lora",
+      "title": "Parameter-Efficient Fine-Tuning: LoRA & QLoRA",
+      "summary": "Adapt billion-parameter models on a single GPU. Low-rank adaptation, QLoRA's 4-bit base plus adapters, and the cost-versus-quality math that makes customization affordable.",
+      "trackId": "applied-ml-modeling",
+      "week": 7,
+      "prereqs": [
+        "am-finetuning"
+      ],
+      "subjectLink": "Linear Algebra, matrix rank, decomposition, and low-rank approximation",
+      "resources": [
+        {
+          "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+          "url": "https://arxiv.org/abs/2106.09685",
+          "source": "arXiv (Hu et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "url": "https://arxiv.org/abs/2305.14314",
+          "source": "arXiv (Dettmers et al.)",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-preference-optimization",
+      "title": "Preference Optimization: RLHF & DPO",
+      "summary": "Align a model to human preference: reward modeling and PPO-based RLHF, and the simpler Direct Preference Optimization. What 'alignment training' changes and what it does not.",
+      "trackId": "applied-ml-modeling",
+      "week": 9,
+      "prereqs": [
+        "am-peft-lora"
+      ],
+      "subjectLink": "Machine Learning, reinforcement learning and policy optimization",
+      "resources": [
+        {
+          "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+          "url": "https://arxiv.org/abs/2305.18290",
+          "source": "arXiv (Rafailov et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Illustrating Reinforcement Learning from Human Feedback (RLHF)",
+          "url": "https://huggingface.co/blog/rlhf",
+          "source": "Hugging Face",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-distillation",
+      "title": "Knowledge Distillation & Model Compression",
+      "summary": "Compress a large teacher into a small, deployable student that keeps most of the capability. Distillation objectives, synthetic-data distillation, and honest accuracy accounting.",
+      "trackId": "applied-ml-modeling",
+      "week": 10,
+      "prereqs": [
+        "am-preference-optimization"
+      ],
+      "subjectLink": "Machine Learning, model compression and the teacher-student paradigm",
+      "resources": [
+        {
+          "title": "Distilling the Knowledge in a Neural Network",
+          "url": "https://arxiv.org/abs/1503.02531",
+          "source": "arXiv (Hinton et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "DistilBERT, a distilled version of BERT",
+          "url": "https://arxiv.org/abs/1910.01108",
+          "source": "arXiv (Sanh et al.)",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "am-model-eval",
+      "title": "Rigorous Model Evaluation",
+      "summary": "Benchmarks lie when misused. Build evaluation harnesses, control for contamination, measure on task-representative data, and report uncertainty instead of a single number.",
+      "trackId": "applied-ml-modeling",
+      "week": 11,
+      "prereqs": [
+        "am-distillation"
+      ],
+      "subjectLink": "Statistics, sampling, confidence intervals, and experimental design",
+      "resources": [
+        {
+          "title": "EleutherAI, Language Model Evaluation Harness",
+          "url": "https://github.com/EleutherAI/lm-evaluation-harness",
+          "source": "EleutherAI",
+          "type": "repo",
+          "free": true
+        },
+        {
+          "title": "Hugging Face, Open LLM Leaderboard and evaluation methodology",
+          "url": "https://huggingface.co/docs/leaderboards/open_llm_leaderboard/about",
+          "source": "Hugging Face",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-llm-app-foundations",
+      "title": "LLM Application Foundations",
+      "summary": "The anatomy of a production LLM feature: the model call, structured output, streaming, error handling, and the latency and cost budget you design against from day one.",
+      "trackId": "production-ai-products",
+      "week": 1,
+      "prereqs": [],
+      "subjectLink": "Software Engineering, application architecture and API design",
+      "resources": [
+        {
+          "title": "OpenAI Cookbook, practical recipes for building with LLMs",
+          "url": "https://cookbook.openai.com/",
+          "source": "OpenAI",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Anthropic, Building with Claude documentation",
+          "url": "https://docs.anthropic.com/en/docs/build-with-claude/overview",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-embeddings-vector",
+      "title": "Embeddings & Vector Search",
+      "summary": "Represent meaning as vectors and search it fast: embedding models, similarity metrics, approximate nearest neighbor (HNSW), and the recall-versus-latency tradeoff.",
+      "trackId": "production-ai-products",
+      "week": 2,
+      "prereqs": [
+        "pa-llm-app-foundations"
+      ],
+      "subjectLink": "Databases, indexing, search structures, and query optimization",
+      "resources": [
+        {
+          "title": "Hugging Face, Embeddings and semantic search course chapter",
+          "url": "https://huggingface.co/learn/llm-course/chapter5/6",
+          "source": "Hugging Face",
+          "type": "course",
+          "free": true
+        },
+        {
+          "title": "pgvector, open-source vector similarity search for Postgres",
+          "url": "https://github.com/pgvector/pgvector",
+          "source": "pgvector",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-rag-systems",
+      "title": "Production RAG & Context Engineering",
+      "summary": "Retrieval-augmented generation that holds up: chunking strategy, hybrid and contextual retrieval, reranking, and why retrieval quality dominates generation quality.",
+      "trackId": "production-ai-products",
+      "week": 4,
+      "prereqs": [
+        "pa-embeddings-vector"
+      ],
+      "subjectLink": "Databases, query processing, joins, and information retrieval",
+      "resources": [
+        {
+          "title": "Introducing Contextual Retrieval",
+          "url": "https://www.anthropic.com/news/contextual-retrieval",
+          "source": "Anthropic",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "url": "https://arxiv.org/abs/2005.11401",
+          "source": "arXiv (Lewis et al.)",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-eval-harness",
+      "title": "LLM Evaluation Harnesses",
+      "summary": "Treat eval as engineering: golden datasets, LLM-as-judge with calibration, regression suites in CI, and catching silent quality drift before users do.",
+      "trackId": "production-ai-products",
+      "week": 5,
+      "prereqs": [
+        "pa-rag-systems"
+      ],
+      "subjectLink": "Software Engineering, automated testing and continuous integration",
+      "resources": [
+        {
+          "title": "Anthropic, Create strong empirical evaluations",
+          "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "OpenAI Evals, framework for evaluating LLMs",
+          "url": "https://github.com/openai/evals",
+          "source": "OpenAI",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-observability",
+      "title": "AI Observability & Tracing",
+      "summary": "See inside a non-deterministic system: distributed tracing of LLM calls, token and cost metrics, latency percentiles, and structured logging with correlation IDs.",
+      "trackId": "production-ai-products",
+      "week": 7,
+      "prereqs": [
+        "pa-eval-harness"
+      ],
+      "subjectLink": "Software Engineering, monitoring, logging, and distributed tracing",
+      "resources": [
+        {
+          "title": "OpenTelemetry, observability concepts and signals",
+          "url": "https://opentelemetry.io/docs/concepts/",
+          "source": "OpenTelemetry",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "OpenTelemetry, semantic conventions for generative AI",
+          "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+          "source": "OpenTelemetry",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-ai-security",
+      "title": "AI Security & Red-Teaming",
+      "summary": "Attack your own product before someone else does: prompt injection, jailbreaks, data exfiltration, PII leakage, and building input/output guardrails that actually hold.",
+      "trackId": "production-ai-products",
+      "week": 9,
+      "prereqs": [
+        "pa-observability"
+      ],
+      "subjectLink": "Information Security, threat modeling, penetration testing, and OWASP",
+      "resources": [
+        {
+          "title": "OWASP Top 10 for Large Language Model Applications",
+          "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+          "source": "OWASP",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "source": "NIST",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-llmops",
+      "title": "LLMOps & Cost Governance",
+      "summary": "Run AI in production sustainably: prompt and model versioning, A/B rollout, caching, fallback chains, rate limiting, and a cost model you can defend to finance.",
+      "trackId": "production-ai-products",
+      "week": 10,
+      "prereqs": [
+        "pa-ai-security"
+      ],
+      "subjectLink": "Software Engineering, release management, versioning, and CI/CD",
+      "resources": [
+        {
+          "title": "Google, MLOps: Continuous delivery and automation pipelines",
+          "url": "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+          "source": "Google Cloud",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Prompt caching with Claude",
+          "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching",
+          "source": "Anthropic",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "pa-ai-product-launch",
+      "title": "Shipping & Operating AI Products",
+      "summary": "Take an AI feature to a real public launch: containerized deploy, health checks, graceful degradation when the model is slow or down, and a launch story that sells the experience.",
+      "trackId": "production-ai-products",
+      "week": 12,
+      "prereqs": [
+        "pa-llmops"
+      ],
+      "subjectLink": "Software Engineering, deployment, resilience, and product engineering",
+      "resources": [
+        {
+          "title": "Google SRE Book, table of contents and core practices",
+          "url": "https://sre.google/sre-book/table-of-contents/",
+          "source": "Google SRE",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Google Cloud Run, documentation and deployment guides",
+          "url": "https://cloud.google.com/run/docs",
+          "source": "Google Cloud",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-distributed-foundations",
+      "title": "Distributed Systems Foundations",
+      "summary": "Latency, partial failure, and the eight fallacies. Why a single-process mental model breaks the moment AI infrastructure spans more than one machine.",
+      "trackId": "frontier-systems",
+      "week": 1,
+      "prereqs": [],
+      "subjectLink": "Distributed Systems, failure models, latency, and the CAP theorem",
+      "resources": [
+        {
+          "title": "MIT 6.5840 (6.824) Distributed Systems",
+          "url": "https://pdos.csail.mit.edu/6.824/",
+          "source": "MIT PDOS",
+          "type": "course",
+          "free": true
+        },
+        {
+          "title": "Fallacies of distributed computing and Latency Numbers",
+          "url": "https://gist.github.com/jboner/2841832",
+          "source": "Jeff Dean / Peter Norvig",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-consensus",
+      "title": "Consensus & Coordination",
+      "summary": "How distributed components agree under failure: Raft, leader election, replicated logs, and the coordination primitives that GPU schedulers and metadata stores depend on.",
+      "trackId": "frontier-systems",
+      "week": 3,
+      "prereqs": [
+        "fs-distributed-foundations"
+      ],
+      "subjectLink": "Distributed Systems, consensus, replication, and fault tolerance",
+      "resources": [
+        {
+          "title": "In Search of an Understandable Consensus Algorithm (Raft)",
+          "url": "https://raft.github.io/raft.pdf",
+          "source": "Ongaro & Ousterhout (Stanford)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "The Raft Consensus Algorithm, visualization and resources",
+          "url": "https://raft.github.io/",
+          "source": "raft.github.io",
+          "type": "interactive",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-parallelism",
+      "title": "Distributed Training & Parallelism",
+      "summary": "Train a model too big for one GPU: data, tensor, pipeline, and fully-sharded parallelism, plus the collective communication (all-reduce) that makes them work.",
+      "trackId": "frontier-systems",
+      "week": 4,
+      "prereqs": [
+        "fs-consensus"
+      ],
+      "subjectLink": "Parallel Computing, collective communication and parallel decomposition",
+      "resources": [
+        {
+          "title": "Hugging Face, The Ultra-Scale Playbook: Training LLMs on GPU Clusters",
+          "url": "https://huggingface.co/spaces/nanotron/ultrascale-playbook",
+          "source": "Hugging Face",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism",
+          "url": "https://arxiv.org/abs/1909.08053",
+          "source": "arXiv (Shoeybi et al.)",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-gpu-scheduling",
+      "title": "GPU Cluster Scheduling",
+      "summary": "Pack expensive accelerators efficiently: gang scheduling, fairness, preemption, topology-aware placement, and the scheduling tradeoffs that decide cluster utilization.",
+      "trackId": "frontier-systems",
+      "week": 6,
+      "prereqs": [
+        "fs-parallelism"
+      ],
+      "subjectLink": "Operating Systems, scheduling, resource allocation, and fairness",
+      "resources": [
+        {
+          "title": "Kubernetes, Scheduling, Preemption and Eviction documentation",
+          "url": "https://kubernetes.io/docs/concepts/scheduling-eviction/",
+          "source": "Kubernetes",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Large-scale cluster management at Google with Borg",
+          "url": "https://research.google/pubs/large-scale-cluster-management-at-google-with-borg/",
+          "source": "Google Research",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-streaming",
+      "title": "Real-Time & Streaming AI Systems",
+      "summary": "Process events as they arrive: streaming logs, exactly-once semantics, windowing, backpressure, and serving low-latency inference on a live data stream.",
+      "trackId": "frontier-systems",
+      "week": 7,
+      "prereqs": [
+        "fs-gpu-scheduling"
+      ],
+      "subjectLink": "Distributed Systems, event-driven architecture and stream processing",
+      "resources": [
+        {
+          "title": "The Log: What every software engineer should know about real-time data",
+          "url": "https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying",
+          "source": "LinkedIn Engineering",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "Apache Flink, concepts of stream processing",
+          "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/overview/",
+          "source": "Apache Flink",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-vector-databases",
+      "title": "Vector Databases at Scale",
+      "summary": "Index and serve billions of embeddings: HNSW and IVF indexes, sharding, quantization for storage, and the recall-latency-cost surface of large-scale similarity search.",
+      "trackId": "frontier-systems",
+      "week": 9,
+      "prereqs": [
+        "fs-streaming"
+      ],
+      "subjectLink": "Databases, indexing, sharding, and query optimization",
+      "resources": [
+        {
+          "title": "Billion-scale similarity search with GPUs (FAISS)",
+          "url": "https://arxiv.org/abs/1702.08734",
+          "source": "arXiv (Johnson et al.)",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "FAISS, wiki on indexing, sharding, and large-scale search",
+          "url": "https://github.com/facebookresearch/faiss/wiki",
+          "source": "Meta AI / FAISS",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-fault-tolerance",
+      "title": "Fault Tolerance & Resilient Operations",
+      "summary": "Build systems that survive failure: checkpointing long training runs, circuit breakers, retries with backoff and jitter, graceful degradation, and SLO-driven operations.",
+      "trackId": "frontier-systems",
+      "week": 11,
+      "prereqs": [
+        "fs-vector-databases"
+      ],
+      "subjectLink": "Distributed Systems, fault tolerance, checkpointing, and recovery",
+      "resources": [
+        {
+          "title": "Google SRE Book, Embracing Risk, SLOs, and Handling Overload",
+          "url": "https://sre.google/sre-book/table-of-contents/",
+          "source": "Google SRE",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Release It! patterns, circuit breakers and bulkheads (overview)",
+          "url": "https://martinfowler.com/bliki/CircuitBreaker.html",
+          "source": "Martin Fowler",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "fs-systems-observability",
+      "title": "Cluster Observability & Capacity Planning",
+      "summary": "Operate a fleet you can see: metrics, traces, and logs across nodes; SLOs and error budgets; and capacity planning so an AI cluster neither starves nor burns money idle.",
+      "trackId": "frontier-systems",
+      "week": 12,
+      "prereqs": [
+        "fs-fault-tolerance"
+      ],
+      "subjectLink": "Distributed Systems, monitoring, capacity planning, and performance analysis",
+      "resources": [
+        {
+          "title": "Prometheus, monitoring concepts and best practices",
+          "url": "https://prometheus.io/docs/introduction/overview/",
+          "source": "Prometheus",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Google SRE Workbook, implementing SLOs and capacity planning",
+          "url": "https://sre.google/workbook/table-of-contents/",
+          "source": "Google SRE",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-vision-encoders",
+      "title": "Vision Encoders & Image Representation",
+      "summary": "How pixels become tokens: convolutional and Vision Transformer backbones, patch embeddings, and the contrastive image-text pretraining (CLIP) that lets a model relate an image to language. The representation decides everything downstream.",
+      "trackId": "multimodal-generative",
+      "week": 1,
+      "prereqs": [],
+      "subjectLink": "Computer Vision, image representation, feature extraction, and convolution",
+      "resources": [
+        {
+          "title": "Stanford CS231n: Deep Learning for Computer Vision",
+          "url": "https://cs231n.stanford.edu/",
+          "source": "Stanford",
+          "type": "course",
+          "free": true
+        },
+        {
+          "title": "Computer Vision Course, Vision Transformers and feature extraction",
+          "url": "https://huggingface.co/learn/computer-vision-course/unit3/vision-transformers/vision-transformers-for-image-classification",
+          "source": "Hugging Face",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-vlm-architecture",
+      "title": "Vision-Language Model Architecture",
+      "summary": "The standard VLM recipe: a vision encoder turns an image into tokens, a projection layer aligns them with the language model embedding space, and an LLM decoder generates over the joined sequence. Why this connector design works and where it breaks.",
+      "trackId": "multimodal-generative",
+      "week": 2,
+      "prereqs": [
+        "mm-vision-encoders"
+      ],
+      "subjectLink": "Machine Learning, representation learning and modality fusion",
+      "resources": [
+        {
+          "title": "Introduction to Vision Language Models",
+          "url": "https://huggingface.co/learn/computer-vision-course/unit4/multimodal-models/vlm-intro",
+          "source": "Hugging Face",
+          "type": "course",
+          "free": true
+        },
+        {
+          "title": "Vision Language Models Explained",
+          "url": "https://huggingface.co/blog/vlms",
+          "source": "Hugging Face",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-diffusion-foundations",
+      "title": "Diffusion & Flow-Matching Foundations",
+      "summary": "Generative vision from first principles: the forward noising process, learning to reverse it, and the flow-matching view that frames generation as solving an ordinary differential equation. The math that underlies every modern image and video generator.",
+      "trackId": "multimodal-generative",
+      "week": 3,
+      "prereqs": [],
+      "subjectLink": "Probability & Statistics, stochastic processes and generative modeling",
+      "resources": [
+        {
+          "title": "MIT 6.S184: Flow Matching and Diffusion Models (2026)",
+          "url": "https://diffusion.csail.mit.edu/2026/index.html",
+          "source": "MIT",
+          "type": "course",
+          "free": true
+        },
+        {
+          "title": "What are Diffusion Models?",
+          "url": "https://lilianweng.github.io/posts/2021-07-11-diffusion-models/",
+          "source": "Lilian Weng, Lil'Log",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-latent-diffusion",
+      "title": "Latent Diffusion & Conditioning",
+      "summary": "Why generation moved into a compressed latent space, and how text, images, and layout steer the result: cross-attention conditioning, classifier-free guidance, and the autoencoder that makes high-resolution generation affordable.",
+      "trackId": "multimodal-generative",
+      "week": 5,
+      "prereqs": [
+        "mm-diffusion-foundations",
+        "mm-vlm-architecture"
+      ],
+      "subjectLink": "Computer Vision, image synthesis and conditional generation",
+      "resources": [
+        {
+          "title": "High-Resolution Image Synthesis with Latent Diffusion Models",
+          "url": "https://arxiv.org/abs/2112.10752",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "The Annotated Diffusion Model",
+          "url": "https://huggingface.co/blog/annotated-diffusion",
+          "source": "Hugging Face",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-video-generation",
+      "title": "Video & Temporal Generative Models",
+      "summary": "Extending generation across time: spatiotemporal diffusion transformers, temporal consistency, and the compute cost of adding a time axis. Why video is the hardest modality and what tricks make it tractable.",
+      "trackId": "multimodal-generative",
+      "week": 6,
+      "prereqs": [
+        "mm-latent-diffusion"
+      ],
+      "subjectLink": "Signal Processing, temporal signals, sampling, and reconstruction",
+      "resources": [
+        {
+          "title": "Diffusion Models for Video Generation",
+          "url": "https://lilianweng.github.io/posts/2024-04-12-diffusion-video/",
+          "source": "Lilian Weng, Lil'Log",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "Video Diffusion Models",
+          "url": "https://arxiv.org/abs/2204.03458",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-any-to-any",
+      "title": "Any-to-Any & Unified Multimodal Models",
+      "summary": "One model that takes text, image, audio, or video in and produces any of them out. Unified token spaces, the thinker-talker split for real-time interaction, and the autoregressive-plus-diffusion hybrids behind 2026 omni-models.",
+      "trackId": "multimodal-generative",
+      "week": 8,
+      "prereqs": [
+        "mm-video-generation"
+      ],
+      "subjectLink": "Machine Learning, sequence modeling and unified representations",
+      "resources": [
+        {
+          "title": "Unified Multimodal Understanding and Generation Models: Advances, Challenges, and Opportunities",
+          "url": "https://arxiv.org/abs/2505.02567",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Awesome Unified Multimodal Models",
+          "url": "https://github.com/AIDC-AI/Awesome-Unified-Multimodal-Models",
+          "source": "GitHub",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-multimodal-training",
+      "title": "Multimodal Training & Instruction Tuning",
+      "summary": "How a multimodal model is actually trained: aligning a frozen vision encoder to a language model, multimodal instruction tuning, parameter-efficient fine-tuning on a few thousand image-text pairs, and the data curation that decides quality.",
+      "trackId": "multimodal-generative",
+      "week": 9,
+      "prereqs": [
+        "mm-any-to-any"
+      ],
+      "subjectLink": "Machine Learning, transfer learning and supervised fine-tuning",
+      "resources": [
+        {
+          "title": "Visual Instruction Tuning (LLaVA)",
+          "url": "https://arxiv.org/abs/2304.08485",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Fine-tuning a Vision Language Model with TRL",
+          "url": "https://huggingface.co/learn/cookbook/fine_tuning_vlm_trl",
+          "source": "Hugging Face",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "mm-multimodal-eval",
+      "title": "Multimodal Inference & Evaluation",
+      "summary": "Serving multimodal models and proving they work: image-token cost, holistic benchmarks across perception, reasoning, and bias, hallucination measurement, and why a single accuracy number hides a multimodal model true behavior.",
+      "trackId": "multimodal-generative",
+      "week": 11,
+      "prereqs": [
+        "mm-multimodal-training"
+      ],
+      "subjectLink": "Machine Learning, model evaluation and benchmark design",
+      "resources": [
+        {
+          "title": "VHELM: Holistic Evaluation of Vision-Language Models",
+          "url": "https://crfm.stanford.edu/helm/vhelm/latest/",
+          "source": "Stanford CRFM",
+          "type": "interactive",
+          "free": true
+        },
+        {
+          "title": "Evaluating Object Hallucination in Large Vision-Language Models (POPE)",
+          "url": "https://arxiv.org/abs/2305.10355",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-alignment-problem",
+      "title": "The Alignment Problem & Safety Foundations",
+      "summary": "Why a capable model can be unsafe even when it is accurate: specification gaming, reward hacking, goal misgeneralization, and the gap between what we train and what we want. The conceptual map before the techniques.",
+      "trackId": "ai-safety-alignment",
+      "week": 1,
+      "prereqs": [],
+      "subjectLink": "Theory of Computation, specification, correctness, and the limits of formal goals",
+      "resources": [
+        {
+          "title": "AI Safety Fundamentals, Alignment Course",
+          "url": "https://aisafetyfundamentals.com/alignment/",
+          "source": "BlueDot Impact",
+          "type": "course",
+          "free": true
+        },
+        {
+          "title": "Concrete Problems in AI Safety",
+          "url": "https://arxiv.org/abs/1606.06565",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-rlhf-preference",
+      "title": "RLHF & Preference-Based Alignment",
+      "summary": "How a base model is shaped to human preferences: reward modeling, PPO, and the direct-optimization alternatives (DPO, GRPO) that drop the separate reward model. The modular SFT then preference then reasoning pipeline used in 2026.",
+      "trackId": "ai-safety-alignment",
+      "week": 2,
+      "prereqs": [
+        "sa-alignment-problem"
+      ],
+      "subjectLink": "Machine Learning, reinforcement learning and optimization under feedback",
+      "resources": [
+        {
+          "title": "The RLHF Book, A Little Bit of Reinforcement Learning from Human Feedback",
+          "url": "https://rlhfbook.com/",
+          "source": "Nathan Lambert",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+          "url": "https://arxiv.org/abs/2305.18290",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-scalable-oversight",
+      "title": "Constitutional AI & Scalable Oversight",
+      "summary": "Aligning models you can no longer fully supervise by hand: AI feedback, Constitutional AI, debate, and recursive reward modeling. How supervision scales when the model is smarter than the average human labeler.",
+      "trackId": "ai-safety-alignment",
+      "week": 4,
+      "prereqs": [
+        "sa-rlhf-preference"
+      ],
+      "subjectLink": "Distributed Systems, delegation, trust, and verification of work you cannot fully check",
+      "resources": [
+        {
+          "title": "Constitutional AI: Harmlessness from AI Feedback",
+          "url": "https://arxiv.org/abs/2212.08073",
+          "source": "Anthropic / arXiv",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "Claude's Constitution",
+          "url": "https://www.anthropic.com/news/claudes-constitution",
+          "source": "Anthropic",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-interp-foundations",
+      "title": "Mechanistic Interpretability Foundations",
+      "summary": "Reverse-engineering a neural network into human-understandable algorithms: features, circuits, the residual stream, and induction heads. Reading what a transformer actually computes instead of treating it as a black box.",
+      "trackId": "ai-safety-alignment",
+      "week": 5,
+      "prereqs": [
+        "sa-alignment-problem"
+      ],
+      "subjectLink": "Compilers, reverse engineering, intermediate representations, and program analysis",
+      "resources": [
+        {
+          "title": "A Mathematical Framework for Transformer Circuits",
+          "url": "https://transformer-circuits.pub/2021/framework/index.html",
+          "source": "Anthropic",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "ARENA, Chapter 1: Transformer Interpretability",
+          "url": "https://www.arena.education/chapter1",
+          "source": "ARENA",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-interp-tools",
+      "title": "Interpretability in Practice: Probes, SAEs & Activation Patching",
+      "summary": "The working interpretability toolkit: linear probes, sparse autoencoders that pull monosemantic features out of superposition, activation patching for causal claims, and TransformerLens for hands-on circuit analysis.",
+      "trackId": "ai-safety-alignment",
+      "week": 7,
+      "prereqs": [
+        "sa-interp-foundations"
+      ],
+      "subjectLink": "Software Engineering, instrumentation, debugging, and observability of complex systems",
+      "resources": [
+        {
+          "title": "Towards Monosemanticity: Decomposing Language Models With Dictionary Learning",
+          "url": "https://transformer-circuits.pub/2023/monosemantic-features/index.html",
+          "source": "Anthropic",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "TransformerLens, library and tutorials",
+          "url": "https://github.com/TransformerLensOrg/TransformerLens",
+          "source": "GitHub",
+          "type": "repo",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-safety-evals",
+      "title": "Safety Evaluations & Dangerous-Capability Testing",
+      "summary": "Measuring whether a model is safe to release: capability and propensity evals, dangerous-capability assessments, honesty and sycophancy tests, and the benchmark-overfitting trap where high public scores hide real-world failure.",
+      "trackId": "ai-safety-alignment",
+      "week": 8,
+      "prereqs": [
+        "sa-scalable-oversight"
+      ],
+      "subjectLink": "Software Engineering, test design, coverage, and validation under uncertainty",
+      "resources": [
+        {
+          "title": "Anthropic, Frontier Red Team and dangerous-capability evaluations",
+          "url": "https://www.anthropic.com/research/evaluating-feature-steering",
+          "source": "Anthropic",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "Inspect, UK AI Safety Institute's open-source LLM evaluation framework",
+          "url": "https://inspect.aisi.org.uk/",
+          "source": "UK AI Safety Institute",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-adversarial-redteam",
+      "title": "Adversarial Robustness & Red-Teaming Depth",
+      "summary": "Attacking a model to make it safer: jailbreaks, prompt injection and indirect injection, automated adversarial attack generation, and the OWASP LLM and Agentic-Security taxonomies that structure a serious red-team program.",
+      "trackId": "ai-safety-alignment",
+      "week": 9,
+      "prereqs": [
+        "sa-safety-evals"
+      ],
+      "subjectLink": "Information Security, adversarial thinking, threat modeling, and penetration testing",
+      "resources": [
+        {
+          "title": "OWASP Top 10 for Large Language Model Applications",
+          "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+          "source": "OWASP",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Universal and Transferable Adversarial Attacks on Aligned Language Models",
+          "url": "https://arxiv.org/abs/2307.15043",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-governance-frameworks",
+      "title": "AI Governance: Model Cards, the EU AI Act & NIST AI RMF",
+      "summary": "The compliance layer that ships with a model: model cards and system cards, the EU AI Act risk tiers and its August 2026 transparency rules, and the NIST AI RMF Govern-Map-Measure-Manage core that frames responsible AI in practice.",
+      "trackId": "ai-safety-alignment",
+      "week": 10,
+      "prereqs": [
+        "sa-safety-evals"
+      ],
+      "subjectLink": "Information Security, policy, compliance, and audit-ready documentation",
+      "resources": [
+        {
+          "title": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "source": "NIST",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "EU AI Act, Regulatory framework for AI",
+          "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+          "source": "European Commission",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Model Cards for Model Reporting",
+          "url": "https://arxiv.org/abs/1810.03993",
+          "source": "arXiv",
+          "type": "paper",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "sa-research-methodology",
+      "title": "Research Methodology: Reading & Reproducing Papers",
+      "summary": "Working like a researcher: reading a paper for its claim and evidence, reproducing a result from scratch, and designing the ablations that isolate what actually caused a gain. The skill frontier and research-adjacent roles assume.",
+      "trackId": "ai-safety-alignment",
+      "week": 11,
+      "prereqs": [
+        "sa-interp-tools"
+      ],
+      "subjectLink": "Software Engineering, the scientific method, controlled experiments, and reproducibility",
+      "resources": [
+        {
+          "title": "How to Read a Paper",
+          "url": "https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf",
+          "source": "S. Keshav, Stanford",
+          "type": "paper",
+          "free": true
+        },
+        {
+          "title": "ML Reproducibility Challenge and reproducibility checklist",
+          "url": "https://reproml.org/",
+          "source": "ML Reproducibility Challenge",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "le-ml-system-design",
+      "title": "AI / ML System-Design Interviews",
+      "summary": "The interview that decides senior AI offers: scoping an ML problem, designing data pipelines, feature stores, training and serving infrastructure, and monitoring, then defending the tradeoffs out loud under time pressure.",
+      "trackId": "land-elite-role",
+      "week": 1,
+      "prereqs": [],
+      "resources": [
+        {
+          "title": "Machine Learning System Design Interview, examples and prep",
+          "url": "https://igotanoffer.com/en/advice/machine-learning-system-design-interview",
+          "source": "IGotAnOffer",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Made With ML, MLOps and system design course",
+          "url": "https://madewithml.com/",
+          "source": "Made With ML",
+          "type": "course",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "le-experiment-tracking",
+      "title": "Running Experiments, Ablations & Tracking",
+      "summary": "Turning a project into evidence: framing a hypothesis, running clean ablations, and tracking every run, config, code commit, metrics, artifacts, so a result is reproducible and a reviewer trusts your numbers.",
+      "trackId": "land-elite-role",
+      "week": 2,
+      "prereqs": [
+        "le-ml-system-design"
+      ],
+      "resources": [
+        {
+          "title": "Experiment tracking with Weights & Biases",
+          "url": "https://wandb.ai/site/experiment-tracking/",
+          "source": "Weights & Biases",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "W&B, intro to ML experiment tracking",
+          "url": "https://wandb.ai/site/articles/intro-to-mlops-machine-learning-experiment-tracking/",
+          "source": "Weights & Biases",
+          "type": "article",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "le-portfolio",
+      "title": "Building a Portfolio That Gets Noticed",
+      "summary": "A portfolio is a product: a small number of deep, shipped, publicly hosted projects with live demos, clean repos, and honest writeups beat a long list of tutorials. Curation, presentation, and proof of real work.",
+      "trackId": "land-elite-role",
+      "week": 4,
+      "prereqs": [
+        "le-experiment-tracking"
+      ],
+      "resources": [
+        {
+          "title": "The AI Engineering Field Guide, hiring practices and take-homes",
+          "url": "https://github.com/alexeygrigorev/ai-engineering-field-guide",
+          "source": "GitHub",
+          "type": "repo",
+          "free": true
+        },
+        {
+          "title": "GitHub, building a profile README and showcasing work",
+          "url": "https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme",
+          "source": "GitHub Docs",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "le-technical-writing",
+      "title": "Technical Writing & Communication",
+      "summary": "Writing that makes your work legible: a clear claim, evidence, and honest limitations; explaining a hard idea simply; and the interactive, visual standard set by Distill. Communication is the multiplier on every project you ship.",
+      "trackId": "land-elite-role",
+      "week": 6,
+      "prereqs": [
+        "le-portfolio"
+      ],
+      "resources": [
+        {
+          "title": "Distill, research communication and clear ML explanations",
+          "url": "https://distill.pub/about/",
+          "source": "Distill",
+          "type": "article",
+          "free": true
+        },
+        {
+          "title": "Communicating with Interactive Articles",
+          "url": "https://distill.pub/2020/communicating-with-interactive-articles/",
+          "source": "Distill",
+          "type": "interactive",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "le-open-source",
+      "title": "Open-Source Contribution & Visibility",
+      "summary": "Earning a public track record: scoping a first contribution, working with maintainers, and building visibility through real PRs to AI libraries. Open source is a hiring signal a recruiter can verify without trusting your resume.",
+      "trackId": "land-elite-role",
+      "week": 8,
+      "prereqs": [
+        "le-technical-writing"
+      ],
+      "resources": [
+        {
+          "title": "Open Source Guides, How to Contribute to Open Source",
+          "url": "https://opensource.guide/how-to-contribute/",
+          "source": "GitHub",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "Hugging Face, contributing to Transformers",
+          "url": "https://huggingface.co/docs/transformers/en/contributing",
+          "source": "Hugging Face",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "le-hiring-pipeline",
+      "title": "The Elite AI Hiring Pipeline",
+      "summary": "How frontier labs, top product companies, well-funded startups, and global remote teams actually hire: research-engineer interview loops, take-home projects, the weight of referrals over cold applications, and how to enter the pipeline.",
+      "trackId": "land-elite-role",
+      "week": 9,
+      "prereqs": [
+        "le-open-source"
+      ],
+      "resources": [
+        {
+          "title": "AI Research Engineer Interview Guide: OpenAI, Anthropic, DeepMind",
+          "url": "https://www.sundeepteki.org/advice/the-ultimate-ai-research-engineer-interview-guide-cracking-openai-anthropic-google-deepmind-top-ai-labs",
+          "source": "Sundeep Teki",
+          "type": "guide",
+          "free": true
+        },
+        {
+          "title": "80,000 Hours, AI safety and research career guidance",
+          "url": "https://80000hours.org/career-reviews/ai-safety-researcher/",
+          "source": "80,000 Hours",
+          "type": "guide",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "le-negotiation",
+      "title": "Compensation & Negotiation",
+      "summary": "Closing the offer well: how AI compensation is structured (base, equity, sign-on), how to benchmark a number, and how to negotiate respectfully from leverage instead of accepting the first figure on the table.",
+      "trackId": "land-elite-role",
+      "week": 11,
+      "prereqs": [
+        "le-hiring-pipeline"
+      ],
+      "resources": [
+        {
+          "title": "levels.fyi, compensation benchmarking for engineering roles",
+          "url": "https://www.levels.fyi/",
+          "source": "levels.fyi",
+          "type": "interactive",
+          "free": true
+        },
+        {
+          "title": "Ten Rules for Negotiating a Job Offer",
+          "url": "https://haseebq.com/my-ten-rules-for-negotiating-a-job-offer/",
+          "source": "Haseeb Qureshi",
+          "type": "article",
+          "free": true
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "as-project-research-fleet",
+      "title": "Autonomous Multi-Agent Research-and-Ship System",
+      "trackId": "agentic-systems",
+      "week": 7,
+      "brief": "You are handed an enterprise mandate: the research division needs a launched product, a system that takes an open-ended technical question, autonomously researches it across many sources, synthesizes a defensible report, and ships the report as a published artifact, with zero human steps in the middle. Build an orchestrator-worker multi-agent system: a lead agent that decomposes the question and spawns specialized worker agents (search, read, synthesize, fact-check), coordinates their results through shared state, and produces a cited deliverable. This is not a notebook demo. The result must be a directly deployable, hyperscalable product: real public hosting, CI/CD on every commit, observability, security hardening, a polished and accessible web UI a non-technical analyst will happily use, and complete go-to-market material, a landing page, a pitch, and a recorded demo. The architecture must absorb concurrent research runs without falling over, and recover from a failed worker. We are not here to babysit the run; ship it as a real product.",
+      "deliverable": "A publicly hosted product with its own domain or stable URL, plus a public repo: the orchestrator and worker agents, an MCP-based tool layer, a fast accessible web UI for submitting questions and reading results, CI/CD running lint/tests/build on every commit, persisted and inspectable run traces, a marketing landing page, a 10-slide pitch, a recorded demo video, and a README documenting the coordination design, the failure-recovery and scaling strategy, and three example end-to-end runs with their published reports.",
+      "evalRubric": [
+        "The orchestrator decomposes a question and coordinates at least three specialized worker agents through explicit shared state.",
+        "Tools are exposed through a standard protocol (MCP), not bespoke per-agent glue.",
+        "The system is deployed to real public hosting with CI/CD on every commit and production observability (logs, traces, metrics).",
+        "The architecture handles concurrent research runs under load, and a worker failure mid-run still yields a complete, correct deliverable.",
+        "The web UI is fast, WCAG 2.2 AA accessible, and usable by a non-technical analyst without instruction.",
+        "Every claim in the output report is traceable to a retrieved source, and run traces are persisted and inspectable.",
+        "The project ships complete marketing: a landing page, a 10-slide pitch, and a recorded demo, presentable as a real product.",
+        "The product is publicly reachable and fully reproducible from the repo by a stranger."
+      ],
+      "syllabusTag": "Distributed Systems, coordination, message passing, and fault tolerance",
+      "stack": [
+        "Claude API or open-weight LLM",
+        "Model Context Protocol",
+        "LangGraph",
+        "Node.js or Python",
+        "Docker",
+        "Google Cloud Run",
+        "a tracing backend (LangSmith or OpenTelemetry)"
+      ],
+      "industryContext": "Multi-agent research and synthesis systems are being deployed across consulting, finance, and R&D to compress weeks of analyst work into hours. Shipping a coordinated, fault-tolerant agent fleet makes a builder ready for an Agentic Systems Engineer or Applied AI Engineer role, where the bar is production reliability, not a demo.",
+      "features": [
+        "Submit-a-question interface accepting an open-ended technical or market question with a depth setting (quick scan vs deep dive).",
+        "A lead orchestrator agent that decomposes the question into a research plan and spawns specialized worker agents.",
+        "Specialized workers, web search, source reading, synthesis, and an independent fact-checker that verifies every claim.",
+        "An MCP tool layer exposing search, fetch, and document tools so the same tools are reusable across agents and projects.",
+        "Live run view: a real-time graph of agent activity, sub-questions in flight, and sources being consumed.",
+        "Inline-cited report output where every claim links to the exact retrieved passage that supports it.",
+        "Export to PDF, Markdown, and a shareable public report URL.",
+        "Persisted, replayable run traces with token spend and latency per agent for cost auditing.",
+        "Automatic worker-failure detection and re-dispatch so a crashed worker never aborts a run.",
+        "A workspace history of past research runs with search and one-click re-run.",
+        "Concurrency controls and per-run budget caps so many users can run research in parallel safely."
+      ],
+      "marketSignal": "Agentic deep-research is one of the hottest 2026 categories: the AI agent market is projected to grow from $7.84B in 2025 to $52.62B by 2030 (41% CAGR), and a16z reports a portfolio pivot from copilots to autonomous systems, with Sierra, Glean, and Decagon as comparables and YC W26 funding multi-agent orchestration startups such as Tensol and Korso. Consulting, finance, and corporate R&D teams are actively buying systems that compress weeks of analyst work into hours; investors fund this because it sells time back to high-cost knowledge workers."
+    },
+    {
+      "id": "as-project-coding-agent",
+      "title": "Autonomous Coding Agent with Sandboxed Execution",
+      "trackId": "agentic-systems",
+      "week": 12,
+      "brief": "An enterprise mandate: ship a launched product, an autonomous coding agent that, given a real GitHub issue, plans a fix, writes and runs code inside a hardened sandbox, iterates against test feedback, and opens a pull request, with untrusted code never touching the host. This is an operating-systems problem as much as an AI problem: the agent's generated code is hostile by assumption. Confine it with containers or microVMs, enforce filesystem and network policy, cap CPU and memory, and survive an agent that tries to escape or hang. The deliverable is not a script, it is a directly deployable, hyperscalable product: real public hosting, CI/CD, observability, a clean dashboard where a developer queues issues and watches trajectories, security hardening, and full marketing (landing page, pitch, demo). The sandbox fleet must scale horizontally to many concurrent jobs. We are not here to babysit a run; ship it as a real product.",
+      "deliverable": "A publicly hosted product with a stable URL, plus a public repo: the planning-and-execution loop, the sandbox isolation layer, a fast accessible dashboard for queuing issues and inspecting trajectories, CI/CD on every commit, production observability, an eval suite over a set of real issues with pass/fail trajectories, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the isolation threat model, the horizontal-scaling design, and the workflow-versus-agent decision.",
+      "evalRubric": [
+        "Generated code executes only inside an isolated sandbox with enforced CPU, memory, filesystem, and network limits.",
+        "The agent iterates on test feedback and recovers from its own failed attempts.",
+        "The sandbox fleet scales horizontally to many concurrent jobs and the scaling design is documented.",
+        "The product is deployed to real public hosting with CI/CD on every commit and production observability.",
+        "A fast, WCAG 2.2 AA accessible dashboard lets a developer queue issues and inspect agent trajectories.",
+        "An eval suite reports pass rate and trajectory quality over a fixed set of real issues.",
+        "The isolation threat model is documented, including sandbox-escape containment, and prompt-injection via issue or repo content is mitigated with least-privilege tool access.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo, and is publicly hosted and reproducible from the repo."
+      ],
+      "syllabusTag": "Operating Systems, virtualization, process isolation, and resource management",
+      "stack": [
+        "Claude API or open-weight LLM",
+        "gVisor or Firecracker microVMs",
+        "Docker",
+        "GitHub API",
+        "Node.js or Python",
+        "an eval framework",
+        "Google Cloud Run"
+      ],
+      "industryContext": "Autonomous coding agents are now a core part of engineering org tooling, and the hard part is safe execution at scale, not code generation. A builder who can ship a sandboxed, evaluated coding agent is directly deployable as an Agent Infrastructure Engineer or AI Platform Engineer, scarce roles because they sit at the intersection of security and AI.",
+      "features": [
+        "GitHub integration: connect a repo, and the agent picks up issues labeled for automation.",
+        "A planning stage that reads the issue, explores the codebase, and produces a fix plan before writing code.",
+        "Generated code runs only inside a hardened microVM or container sandbox with enforced CPU, memory, filesystem, and network limits.",
+        "An iterative loop: run the test suite, read failures, revise, and retry until tests pass or a budget is hit.",
+        "Automatic pull-request creation with a written summary of the change and the test evidence.",
+        "A live trajectory dashboard showing the agent's plan, edits, command output, and retries in real time.",
+        "An eval mode that runs the agent over a fixed set of real issues and reports pass rate and trajectory quality.",
+        "Prompt-injection defenses: untrusted issue and repo text is treated as hostile, with least-privilege tool scopes.",
+        "Horizontal sandbox-fleet scaling so many issues are worked concurrently without contention.",
+        "Per-job cost and time tracking, with configurable budget caps and a hard kill on runaway jobs.",
+        "An audit log of every command the agent ran inside the sandbox."
+      ],
+      "marketSignal": "Autonomous coding agents are the breakout 2026 developer-tools category: Cursor reached $2B ARR in February 2026 and is raising at a $50B+ valuation, and Replit raised a $400M Series D at a $9B valuation in March 2026. SWE-bench Verified is now the industry yardstick, with top agents exceeding 80%. A whole sub-market of sandbox-execution infrastructure (E2B, Northflank, Modal, Blaxel) is being funded specifically to run agent-written code safely; investors back this because safe execution at scale, not code generation, is the unsolved bottleneck."
+    },
+    {
+      "id": "ii-project-inference-server",
+      "title": "Production LLM Inference Server with Continuous Batching",
+      "trackId": "ai-infra-inference",
+      "week": 6,
+      "brief": "An enterprise mandate: the platform team needs a launched inference product that holds a strict latency SLO while maximizing GPU throughput. Build (or extend a serving engine into) an inference service that implements a KV cache with paged memory management, iteration-level continuous batching, and a request scheduler that balances time-to-first-token against tokens-per-second. The deliverable is not a benchmark notebook, it is a directly deployable, hyperscalable product: a real public API and a clean playground UI, CI/CD, autoscaling across replicas, production observability for tokens-per-second and latency percentiles, security on the endpoint, and full marketing (landing page, pitch, demo) so it is presentable as a real product. Measure it honestly under load. The GPU is the most expensive thing in the building; idle cycles are a defect. We are not here to babysit it; ship it as a real product.",
+      "deliverable": "A publicly hosted inference service with a stable URL and a clean playground UI, plus a public repo: the batching scheduler and KV-cache manager, an autoscaling deployment, CI/CD on every commit, production observability dashboards, a load-test harness, a benchmark report comparing static versus continuous batching across concurrency levels, a marketing landing page, a 10-slide pitch, a recorded demo, and a README explaining the memory, scheduling, and scaling design.",
+      "evalRubric": [
+        "The server implements paged KV-cache management and iteration-level continuous batching.",
+        "A request scheduler is present and its time-to-first-token versus throughput tradeoff is documented.",
+        "The service is deployed publicly with a clean playground UI, CI/CD on every commit, and autoscaling across replicas.",
+        "Production observability tracks tokens-per-second and latency percentiles, and the endpoint is secured.",
+        "A load-test report shows throughput and latency percentiles across concurrency levels, with continuous batching measurably compared against a static-batching baseline.",
+        "GPU memory usage and KV-cache fragmentation are reported with the design that controls them.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The service is publicly reachable and reproducible, with a clear benchmark methodology."
+      ],
+      "syllabusTag": "Operating Systems, scheduling, virtual memory, and throughput optimization",
+      "stack": [
+        "vLLM or a from-scratch serving loop",
+        "PyTorch",
+        "CUDA",
+        "Python",
+        "a load-testing tool (Locust or k6)",
+        "Prometheus",
+        "Docker"
+      ],
+      "industryContext": "Inference serving is where AI cost is won or lost; a 2x throughput gain is a direct margin gain for any company running models. Shipping a measured, SLO-holding inference server makes a builder a credible AI Infrastructure or Inference Engineer, an in-demand frontier role because it converts directly into saved spend.",
+      "features": [
+        "An OpenAI-compatible HTTP API (chat/completions, streaming) so the service is a drop-in for existing clients.",
+        "A paged KV-cache manager that eliminates memory fragmentation and supports prefix sharing across requests.",
+        "Iteration-level continuous batching so new requests join the running batch without waiting for it to drain.",
+        "A request scheduler with configurable priority and a tunable time-to-first-token versus throughput policy.",
+        "Token-level response streaming over server-sent events or WebSocket.",
+        "A clean playground UI to send prompts, watch streaming output, and see live latency and throughput.",
+        "A live metrics dashboard: tokens-per-second, time-to-first-token, queue depth, GPU memory, and KV-cache utilization.",
+        "Autoscaling across replicas driven by queue depth, with health and readiness probes.",
+        "A built-in load-test harness that sweeps concurrency and emits a static-vs-continuous-batching benchmark report.",
+        "API-key authentication and per-key rate limiting on the endpoint.",
+        "Graceful degradation and request shedding when the GPU is saturated, instead of timeouts."
+      ],
+      "marketSignal": "Inference is now a FinOps problem: at production scale it accounts for over 80% of AI GPU spend, and software optimization alone has driven cost-per-million-tokens down 5x on new hardware within months. A funded infrastructure category has formed around exactly this product, vLLM, Runpod (FlashBoot sub-250ms cold starts), BentoML, and Yotta Labs, because self-hosting beats managed APIs on unit economics above ~100M tokens/month. Investors fund inference platforms because every company running open-weight models needs to cut serving cost without losing quality."
+    },
+    {
+      "id": "ii-project-edge-optimization",
+      "title": "Quantized, Speculatively-Decoded Model Deployment",
+      "trackId": "ai-infra-inference",
+      "week": 12,
+      "brief": "An enterprise mandate: a capable open-weight model must run within a fixed GPU budget at half the current latency, with no unacceptable accuracy loss, and it must ship as a launched product. Quantize the model (INT4/INT8 or FP8), pair it with a draft model for speculative decoding, deploy it behind an autoscaling service, and prove the result. The deliverable is directly deployable and hyperscalable: a real public API and a hyper-usable demo UI, CI/CD, autoscaling, production observability, endpoint security, a finance-grade cost-per-token report, and full marketing (landing page, pitch, demo). Deliver a deployment a finance team would sign off on: the cost-per-million-tokens must drop and you must show it did. We are not here to babysit it; ship it as a real product.",
+      "deliverable": "A publicly hosted deployment with a stable URL and a hyper-usable demo UI, plus a public repo: the quantization and speculative-decoding pipeline, an autoscaling serving setup, CI/CD on every commit, production observability, an accuracy report on a representative benchmark before and after compression, a marketing landing page, a 10-slide pitch, a recorded demo, and a README with the cost-per-token analysis and scaling design.",
+      "evalRubric": [
+        "The model is quantized with a named method and the accuracy delta on a representative benchmark is reported.",
+        "Speculative decoding is implemented and its acceptance rate and latency gain are measured.",
+        "The deployment is publicly hosted with a hyper-usable demo UI, CI/CD on every commit, autoscaling, and production observability tracking time-to-first-token and tokens-per-second.",
+        "The endpoint is secured and the architecture holds under concurrent load.",
+        "A finance-grade cost-per-million-tokens analysis shows the before-and-after improvement, and accuracy loss is reported honestly with the tradeoff justified.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The deployment is publicly reachable and fully reproducible from the repo."
+      ],
+      "syllabusTag": "Computer Architecture, number representation, speculative execution, and the memory hierarchy",
+      "stack": [
+        "vLLM or TGI",
+        "GPTQ/AWQ or bitsandbytes",
+        "PyTorch",
+        "an eval harness",
+        "Kubernetes or Cloud Run",
+        "Prometheus",
+        "Docker"
+      ],
+      "industryContext": "Every company running open-weight models in production needs someone who can cut inference cost without breaking quality. A builder who can quantize, speculate, and deploy with a defensible cost report is directly deployable as a Senior Inference Engineer, an in-demand role because the savings are measured in real money.",
+      "features": [
+        "A quantization pipeline supporting INT4/INT8 (GPTQ or AWQ) and FP8, with a one-command recompress workflow.",
+        "An automatic accuracy-regression check that benchmarks the model before and after compression on a representative task.",
+        "Speculative decoding with a paired draft model, exposing the acceptance rate as a tunable, observable metric.",
+        "An OpenAI-compatible serving API behind the optimized model so it is a drop-in replacement.",
+        "A hyper-usable demo UI showing side-by-side latency of the baseline versus the optimized deployment.",
+        "A live cost dashboard computing cost-per-million-tokens from real throughput and GPU pricing.",
+        "Autoscaling with fast cold starts and scale-to-zero so idle GPU spend is eliminated.",
+        "A finance-grade report export: before/after cost, latency, and accuracy in one shareable document.",
+        "Configurable quality gates that block a deployment if accuracy loss exceeds a set threshold.",
+        "API-key auth, rate limiting, and request quotas on the public endpoint.",
+        "Production observability for time-to-first-token, tokens-per-second, and GPU utilization."
+      ],
+      "marketSignal": "GPU FinOps is a defined 2026 budget line: inference is over 80% of AI GPU spend, and quantization plus speculative decoding are the highest-leverage cost cuts (FP8 alone gives 1.3-2x throughput at under 2% quality loss). Hardware-plus-software optimization has delivered 5x cost-per-token reductions, and a market of inference-cost tooling (Spheron, regolo.ai, BentoML, Yotta Labs) has formed around it. Investors fund cost-optimization products because the savings convert directly into gross margin for anyone serving open-weight models at volume."
+    },
+    {
+      "id": "am-project-finetune-pipeline",
+      "title": "End-to-End Fine-Tuning Pipeline for a Domain Model",
+      "trackId": "applied-ml-modeling",
+      "week": 8,
+      "brief": "An enterprise mandate: take a base open-weight model and adapt it into a specialist for a real domain you choose (legal, medical, code, support), then ship it as a launched product. Own the whole pipeline: build and clean the training dataset, run parameter-efficient fine-tuning (LoRA or QLoRA), and prove on a held-out, contamination-controlled evaluation that the adapted model beats the base model on the target task. The deliverable is not a notebook, it is a directly deployable, hyperscalable product: the fine-tuned model served behind a real public API with a hyper-usable demo UI, autoscaling, CI/CD, observability, security, and full marketing (landing page, pitch, demo) so a domain user can try it and a buyer can evaluate it. We do not accept 'it seems better', bring the numbers, and ship it as a real product.",
+      "deliverable": "A publicly hosted product with a stable URL and a hyper-usable demo UI, plus a public repo and a published model card: the data pipeline, the QLoRA training configuration and run logs, an autoscaling serving deployment, CI/CD on every commit, production observability, an evaluation comparing base versus fine-tuned on a held-out set, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting data sourcing, the contamination check, the scaling design, and the cost of the run.",
+      "evalRubric": [
+        "A training dataset is built, cleaned, and deduplicated, with sourcing documented.",
+        "Parameter-efficient fine-tuning (LoRA or QLoRA) is run with a reproducible configuration.",
+        "A held-out evaluation shows a measured improvement of the fine-tuned model over the base, with train/eval contamination explicitly checked and catastrophic forgetting measured.",
+        "The fine-tuned model is served behind a real public API with a hyper-usable demo UI, autoscaling, CI/CD on every commit, observability, and a secured endpoint.",
+        "The serving architecture holds under concurrent load and the scaling design is documented.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The repo is reproducible, a model card documents intended use and limitations, and the product is publicly reachable."
+      ],
+      "syllabusTag": "Machine Learning, transfer learning, supervised training, and evaluation",
+      "stack": [
+        "Hugging Face Transformers",
+        "TRL",
+        "PEFT",
+        "bitsandbytes",
+        "PyTorch",
+        "Hugging Face Datasets",
+        "a GPU runtime (Colab, Kaggle, or a cloud instance)"
+      ],
+      "industryContext": "Domain-adapted models are how companies turn a generic LLM into a defensible product, and most fine-tuning projects fail on data discipline. A builder who can run a clean, evaluated, reproducible fine-tuning pipeline is directly deployable as an ML Engineer or Model Engineer, a sought-after frontier role.",
+      "features": [
+        "A dataset builder that ingests raw domain documents and turns them into cleaned, deduplicated instruction data.",
+        "An automatic train/eval contamination check that flags and removes overlap before training.",
+        "A LoRA/QLoRA training workflow with a reproducible config file and full run logging.",
+        "An experiment view comparing runs across hyperparameters, with loss curves and eval scores.",
+        "A held-out evaluation harness reporting target-task accuracy for the base model versus the fine-tuned model.",
+        "A catastrophic-forgetting check that scores the fine-tuned model on general tasks, not just the target task.",
+        "Adapter management: deploy one base model and hot-swap LoRA adapters per request.",
+        "An OpenAI-compatible serving API for the fine-tuned model, with autoscaling.",
+        "A hyper-usable demo UI where a domain user can try the specialist model on real prompts.",
+        "An auto-generated model card documenting data sourcing, intended use, limitations, and run cost.",
+        "Production observability and a secured, rate-limited endpoint."
+      ],
+      "marketSignal": "Domain fine-tuning is a funded 2026 platform category: Together AI, Predibase (acquired by Rubrik in June 2025 for enterprise security depth), and Prem Studio compete on managed LoRA/QLoRA, and adapter-routing (one base model, many adapters per request) is now standard. The economics are compelling, a 7B model can be specialized on a single consumer GPU in an afternoon. Enterprises buy custom models that speak their technical language; investors fund fine-tuning platforms because every vertical AI product needs a model adapted to its own data."
+    },
+    {
+      "id": "am-project-distillation",
+      "title": "Distill a Frontier Model into a Deployable Specialist",
+      "trackId": "applied-ml-modeling",
+      "week": 12,
+      "brief": "An enterprise mandate: a large model solves a task well but is too expensive to serve at volume. Distill its capability on that task into a small student model that can run cheaply, then ship the student as a launched product. Use the teacher to generate or label training data, train and align the student, and prove the student keeps most of the capability at a fraction of the cost. The deliverable is not a benchmark table, it is a directly deployable, hyperscalable product: the student served behind a real public API with a hyper-usable demo UI, autoscaling, CI/CD, observability, security, and full marketing (landing page, pitch, demo). Whatever time it takes, the deliverable is a model the business can actually afford to run and a product a buyer can try. Ship it as a real product.",
+      "deliverable": "A publicly hosted product with a stable URL and a hyper-usable demo UI, plus a public repo and a published student model: the distillation data pipeline, the student training and preference-optimization configuration, an autoscaling serving deployment, CI/CD on every commit, production observability, a benchmark comparing teacher, student, and base on the target task, a cost-and-latency comparison, a marketing landing page, a 10-slide pitch, a recorded demo, and a README on the distillation method and scaling design.",
+      "evalRubric": [
+        "A teacher model is used to generate or label distillation data with a documented method.",
+        "A smaller student is trained and the capability retained on the target task is measured against the teacher.",
+        "Preference optimization (DPO or RLHF) or alignment of the student is applied where appropriate and justified.",
+        "The student is served behind a real public API with a hyper-usable demo UI, autoscaling, CI/CD on every commit, observability, and a secured endpoint that holds under concurrent load.",
+        "A cost and latency comparison shows the student is materially cheaper to serve, with the accuracy-versus-cost tradeoff reported honestly.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The repo is reproducible, the student model is published with a model card, and the product is publicly reachable."
+      ],
+      "syllabusTag": "Machine Learning, model compression and the teacher-student paradigm",
+      "stack": [
+        "Hugging Face Transformers",
+        "TRL",
+        "PEFT",
+        "PyTorch",
+        "vLLM for serving",
+        "an eval harness",
+        "Docker"
+      ],
+      "industryContext": "Distillation is the standard route from an expensive frontier model to an economically viable product feature. A builder who can distill, align, and deploy a specialist student is directly deployable as a senior Model Engineer or Applied Scientist, a high-leverage role because distillation work converts directly into serving-cost reduction at scale.",
+      "features": [
+        "A teacher-labeling pipeline that uses a frontier model to generate or label distillation data for a chosen task.",
+        "Synthetic-data generation with quality filtering so the student trains on clean, diverse examples.",
+        "A student-training workflow producing a small (0.6B-8B) model, with reproducible configs and run logs.",
+        "Optional preference optimization (DPO) to align the student where the task needs it.",
+        "A three-way benchmark, teacher, student, and base, reporting capability retained on the target task.",
+        "A cost-and-latency comparison computing the serving-cost reduction versus the teacher.",
+        "An accuracy-floor gate that blocks shipping a student that drops below a configured retention threshold.",
+        "An OpenAI-compatible serving API for the student model with autoscaling and scale-to-zero.",
+        "A hyper-usable demo UI letting a buyer try teacher and student side by side on real prompts.",
+        "An auto-generated model card with the distillation method, retention numbers, and intended use.",
+        "Production observability and a secured, rate-limited endpoint."
+      ],
+      "marketSignal": "Distillation drives the most-cited 2026 enterprise-AI economics: task-specific small models (0.6B-8B) match or beat frontier models at 10-100x lower inference cost, retaining 85-95% of capability. A $35K-$120K distillation project pays back in three weeks to three months against frontier inference bills, and startups like distil labs are funded purely to 'replace LLMs with custom small language models.' Investors back distillation because it is the clearest path from an expensive frontier model to a margin-positive product feature."
+    },
+    {
+      "id": "pa-project-rag-platform",
+      "title": "Production RAG Platform with a Real Eval Harness",
+      "trackId": "production-ai-products",
+      "week": 6,
+      "brief": "An enterprise mandate: deliver a launched retrieval-augmented product over a large, real corpus that a non-technical team can trust for answers. Build the full system: ingestion and chunking, hybrid plus contextual retrieval with reranking, a grounded-and-cited generation layer, and, non-negotiable, an automated evaluation harness that scores retrieval and answer quality and runs in CI so quality regressions are caught before users see them. The deliverable must be production-grade and directly deployable: real public hosting, CI/CD, observability, security hardening against the OWASP LLM Top 10, and a hyper-usable, fast, accessible chat UI. It must be hyperscalable, the retrieval and serving layers hold as the corpus and traffic grow. And it ships complete with marketing: a landing page, a pitch, and a demo. A RAG demo is easy; a launched RAG product you can defend is the job. Ship it as a real product.",
+      "deliverable": "A publicly hosted RAG product with a stable URL and a fast, accessible chat UI, plus a public repo: the ingestion and retrieval pipeline, the citation-grounded answer layer, an automated eval harness with a golden dataset wired into CI, CI/CD on every commit, observability of cost and latency, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the retrieval, evaluation, security, and scaling design.",
+      "evalRubric": [
+        "Ingestion, chunking, and a hybrid or contextual retrieval pipeline are implemented and justified.",
+        "Answers are grounded in and cite the retrieved passages they rely on.",
+        "An automated eval harness scores retrieval and answer quality against a golden dataset and runs in CI, where a quality regression fails the build.",
+        "The platform is deployed to real public hosting with CI/CD on every commit, observability of cost and latency, and security hardening mapped to the OWASP LLM Top 10.",
+        "The retrieval and serving layers are hyperscalable and hold as corpus and traffic grow; the scaling design is documented.",
+        "The chat UI is fast, WCAG 2.2 AA accessible, and usable by a non-technical stranger without instruction.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The product is publicly reachable and fully reproducible from the repo."
+      ],
+      "syllabusTag": "Databases, indexing, information retrieval, and query optimization",
+      "stack": [
+        "Claude API or open-weight LLM",
+        "pgvector or a vector database",
+        "an embedding and reranking model",
+        "Node.js or Python",
+        "GitHub Actions",
+        "OpenTelemetry",
+        "Google Cloud Run"
+      ],
+      "industryContext": "RAG is the default architecture for enterprise AI products, and the differentiator between teams is rigorous evaluation, not retrieval cleverness. A builder who ships a RAG platform with a CI-integrated eval harness is directly deployable as an AI Product Engineer or Applied AI Engineer, an in-demand role at companies betting their roadmap on grounded AI.",
+      "features": [
+        "Document ingestion for PDFs, web pages, and office files, with incremental re-indexing as the corpus changes.",
+        "Configurable chunking plus contextual retrieval that prepends document context to each chunk before embedding.",
+        "Hybrid retrieval combining dense vector search and keyword search, followed by a reranking model.",
+        "A grounded answer layer where every response cites the exact passages it relied on, with click-through to source.",
+        "A fast, accessible chat UI with streaming answers, source citations, and conversation history.",
+        "An automated eval harness scoring faithfulness, context precision, context recall, and answer relevancy against a golden dataset.",
+        "CI integration where an eval-score regression fails the build before a change ships.",
+        "A cost-and-latency dashboard with per-request token usage and retrieval timing.",
+        "Out-of-scope detection so the assistant declines questions the corpus cannot answer instead of hallucinating.",
+        "Input/output guardrails mapped to the OWASP LLM Top 10, including prompt-injection filtering on ingested content.",
+        "Multi-tenant workspaces with access controls so different teams query different corpora."
+      ],
+      "marketSignal": "Production RAG is a mature, funded 2026 market, and its defining requirement is rigorous evaluation: systematic eval frameworks (context precision, context recall, faithfulness, answer relevancy) are now mandatory for enterprise deployments, served by RAGAS, Galileo, Braintrust, and Maxim AI. Enterprise knowledge systems are forecast to keep evolving hard through 2026-2030. Investors fund RAG platforms with built-in eval because retrieval cleverness is commoditized; trustworthy, regression-proof answer quality is what enterprises actually pay for."
+    },
+    {
+      "id": "pa-project-observability-redteam",
+      "title": "AI Observability & Red-Team Pipeline",
+      "trackId": "production-ai-products",
+      "week": 12,
+      "brief": "An enterprise mandate: the company's AI features are live and the security and reliability teams are flying blind. Build and launch a product with two interlocking systems: an observability pipeline that traces every LLM call with token, cost, and latency telemetry and surfaces silent quality drift; and an automated red-team harness that continuously attacks the AI product with prompt injection, jailbreaks, and data-exfiltration probes, and reports which guardrails held. The deliverable is directly deployable and hyperscalable: real public hosting, CI/CD, a hyper-usable dashboard a security lead reads at a glance, the platform itself secured, and the ingestion path able to absorb high call volume. It ships complete with marketing, a landing page, a pitch, and a demo. Deliver something an enterprise can buy and run on a real product before an incident, not after. Ship it as a real product.",
+      "deliverable": "A publicly hosted product with a stable URL and a hyper-usable security dashboard, plus a public repo: the tracing and observability pipeline, the automated red-team attack suite with a results report, the guardrails it validates, CI/CD on every commit, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the threat model, the drift-detection method, and the scaling design.",
+      "evalRubric": [
+        "Every LLM call is traced with token, cost, and latency telemetry and correlation IDs.",
+        "Silent quality drift is detected and surfaced, not just raw metrics displayed.",
+        "An automated red-team suite runs prompt-injection, jailbreak, and exfiltration attacks, and the report shows which input/output guardrails held and which failed.",
+        "The platform is deployed to real public hosting with CI/CD on every commit and is itself secured.",
+        "The ingestion path is hyperscalable and absorbs high call volume; the scaling design is documented.",
+        "The dashboard is fast, WCAG 2.2 AA accessible, and readable at a glance by a security lead.",
+        "The threat model is documented and mapped to the OWASP LLM Top 10.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo, and is publicly reachable and reproducible."
+      ],
+      "syllabusTag": "Information Security, threat modeling, penetration testing, and monitoring",
+      "stack": [
+        "Claude API or open-weight LLM",
+        "OpenTelemetry",
+        "a tracing backend",
+        "a guardrails library",
+        "Node.js or Python",
+        "GitHub Actions",
+        "Google Cloud Run"
+      ],
+      "industryContext": "AI security and observability is a board-level concern as AI features ship into regulated industries, and almost no one combines both. A builder who delivers a tracing-plus-red-team pipeline is directly deployable as an AI Security Engineer or LLMOps Lead, a scarce role because it sits at the intersection of security, reliability, and AI.",
+      "features": [
+        "An SDK/proxy that traces every LLM call with token counts, cost, latency, model, and a correlation ID.",
+        "A real-time dashboard of spend, latency percentiles, error rate, and call volume, sliceable by feature and model.",
+        "Silent-quality-drift detection that scores live traffic and alerts when output quality degrades.",
+        "An automated red-team suite running prompt-injection, jailbreak, indirect-injection, and data-exfiltration attack batteries.",
+        "A continuously updated attack library so new jailbreak techniques are tested as they emerge.",
+        "Input and output guardrails (PII redaction, injection filtering, policy checks) with a report of which held under attack.",
+        "A red-team scorecard mapping every finding to the OWASP LLM Top 10, exportable for audit.",
+        "Alerting integrations (email, webhook, Slack) for cost spikes, drift, and failed guardrails.",
+        "A high-throughput ingestion path that absorbs production call volume without sampling loss.",
+        "Scheduled red-team runs in CI so a regression in defenses fails the build.",
+        "Multi-project workspaces with role-based access so security leads and engineers see scoped views."
+      ],
+      "marketSignal": "AI security is a proven, acquisition-grade 2026 market: Lakera, which built exactly this guardrails-plus-red-teaming product (Lakera Guard at 98%+ detection, sub-50ms; Lakera Red for automated attack simulation), was acquired by Cisco in May 2025 and folded into Cisco AI Defense. Evaluation leaders like Galileo now ship guardrails that intercept outputs before tool execution. Investors fund AI observability and red-teaming because shipping AI into regulated industries makes pre-incident security a board-level requirement, and almost no product combines tracing and red-teaming in one."
+    },
+    {
+      "id": "fs-project-distributed-training",
+      "title": "Distributed Training System for a Multi-GPU Model",
+      "trackId": "frontier-systems",
+      "week": 8,
+      "brief": "An enterprise mandate: train a model that does not fit on one GPU, and turn the result into a launched product. Build a distributed training setup that uses data and at least one model-parallel strategy (tensor, pipeline, or fully-sharded), with correct collective communication, checkpointing that survives a node failure, and a throughput report. The run will be long; it must resume cleanly from a checkpoint after a simulated crash. The deliverable is not just training logs, the resulting model must be served as a directly deployable, hyperscalable product: a real public API with a hyper-usable demo UI, autoscaling, CI/CD, observability, security, and a live training-metrics dashboard. It ships complete with marketing, a landing page, a pitch, and a demo. We are not here to babysit a job that loses days of compute on one failure; ship the model as a real product.",
+      "deliverable": "A public repo, a benchmark report, and a publicly hosted product with a stable URL and a hyper-usable demo UI serving the trained model: the distributed training configuration, the parallelism strategy, the checkpoint-and-resume logic, a live training-metrics dashboard, an autoscaling serving deployment, CI/CD on every commit, production observability, a scaling report across GPU counts, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the communication pattern, the failure-recovery design, and the serving-scale design.",
+      "evalRubric": [
+        "Training runs across multiple GPUs using data plus at least one model-parallel strategy, with correct collective communication and the parallelism decomposition documented.",
+        "Checkpointing is implemented and the run resumes correctly after a simulated node failure.",
+        "A scaling report shows throughput and efficiency across GPU counts, and communication-versus-computation overhead is measured and discussed.",
+        "The trained model is served as a directly deployable product behind a real public API with a hyper-usable demo UI, autoscaling, CI/CD on every commit, observability, and a secured endpoint.",
+        "A live training-metrics dashboard is provided, and the serving layer holds under concurrent load.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The repo is reproducible with a clear benchmark methodology and the product is publicly reachable."
+      ],
+      "syllabusTag": "Distributed Systems, parallelism, collective communication, and fault tolerance",
+      "stack": [
+        "PyTorch",
+        "PyTorch FSDP or DeepSpeed",
+        "NCCL",
+        "Python",
+        "a multi-GPU runtime",
+        "a cluster scheduler (Slurm or Kubernetes)",
+        "Weights & Biases or TensorBoard"
+      ],
+      "industryContext": "Distributed training is the backbone skill behind every frontier model, and few engineers can debug a stalled all-reduce or a corrupt checkpoint. A builder who ships a fault-tolerant multi-GPU training system is directly deployable as a Distributed Systems or Training Infrastructure Engineer, one of the scarcest frontier roles.",
+      "features": [
+        "A job launcher that takes a model and dataset and spreads training across multiple GPUs from a simple config.",
+        "Data parallelism plus at least one model-parallel strategy (tensor, pipeline, or fully-sharded).",
+        "Gang scheduling so every worker in a job starts together, preventing partial scheduling that idles GPUs.",
+        "Periodic distributed checkpointing with clean resume after a simulated node failure, losing no completed steps.",
+        "A live training dashboard: loss curves, throughput, GPU utilization, and inter-node communication overhead.",
+        "A scaling report that sweeps GPU counts and reports throughput and parallel efficiency.",
+        "Automatic detection and recovery from a stalled or crashed worker mid-run.",
+        "Spot/preemptible-instance support with checkpoint-driven recovery to cut training cost.",
+        "Serving of the trained model behind an OpenAI-compatible API with autoscaling.",
+        "A hyper-usable demo UI where a user can try the trained model on real prompts.",
+        "Production observability and a secured, rate-limited serving endpoint."
+      ],
+      "marketSignal": "Distributed training infrastructure is a heavily funded 2026 category: Gartner projects $37.5B of end-user spending on AI-optimized infrastructure in 2026, and a market of training-orchestration products has formed, CoreWeave's Kubernetes-native GPU cloud, dstack's distributed-training orchestration, NVIDIA's open-source KAI Scheduler with gang scheduling, and NVIDIA Run:ai. Investors fund training infrastructure that keeps expensive clusters above 70% utilization; the scarce, decisive skill is making multi-GPU jobs fault-tolerant and efficient, not merely launching them."
+    },
+    {
+      "id": "fs-project-realtime-platform",
+      "title": "Real-Time Streaming AI Inference Platform",
+      "trackId": "frontier-systems",
+      "week": 12,
+      "brief": "An enterprise mandate: build and launch a platform that consumes a high-rate live event stream, runs inference on each event with low latency, indexes results into a vector store, and serves real-time similarity queries, all while staying healthy under bursty load and a node failure. This is a distributed-systems problem with AI inside it: exactly-once or well-reasoned delivery semantics, backpressure, autoscaling, GPU-aware scheduling, and observability across the fleet. The deliverable is a directly deployable, hyperscalable product: real public hosting, CI/CD, security, a hyper-usable real-time dashboard and query UI, and full marketing, a landing page, a pitch, and a demo. Deliver a platform that does not fall over when traffic spikes, that a buyer can evaluate, and that is presentable as a real product. Ship it as a real product.",
+      "deliverable": "A publicly hosted platform with a stable URL and a hyper-usable real-time dashboard plus query UI, plus a public repo: the streaming ingestion and inference pipeline, the at-scale vector index, the autoscaling and backpressure design, CI/CD on every commit, fleet observability, a load-and-failure test report, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting delivery semantics, fault tolerance, security, and capacity planning.",
+      "evalRubric": [
+        "A live event stream is consumed and inference runs per event with measured low latency.",
+        "Delivery semantics (exactly-once or at-least-once with idempotency) are stated and justified.",
+        "Inference results are indexed into a vector store that serves real-time similarity queries.",
+        "Backpressure and autoscaling keep the platform healthy under a simulated traffic burst, and an injected node failure is recovered with graceful degradation.",
+        "The platform is deployed to real public hosting with CI/CD on every commit, fleet observability, and security hardening.",
+        "A fast, WCAG 2.2 AA accessible real-time dashboard and query UI lets a stranger use the platform without instruction.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The platform is publicly reachable and fully reproducible from the repo."
+      ],
+      "syllabusTag": "Distributed Systems, stream processing, fault tolerance, and capacity planning",
+      "stack": [
+        "Apache Kafka or a streaming log",
+        "Apache Flink or a stream processor",
+        "vLLM or a serving engine",
+        "FAISS or a vector database",
+        "Kubernetes",
+        "Prometheus and Grafana",
+        "Docker"
+      ],
+      "industryContext": "Real-time AI on live data powers fraud detection, recommendations, and observability products across every major platform. A builder who ships a streaming inference platform that holds up under load and failure is directly deployable as a senior Distributed Systems or Real-Time AI Engineer, a role in demand because it requires both systems depth and AI fluency.",
+      "features": [
+        "Ingestion of a high-rate live event stream (transactions, clicks, logs) from a streaming log such as Kafka.",
+        "Per-event low-latency inference with a documented end-to-end latency budget (target sub-100ms).",
+        "Stated delivery semantics, exactly-once, or at-least-once with idempotent processing, enforced in the pipeline.",
+        "A feature layer that assembles per-event features within the latency window for the model.",
+        "Inference results indexed into a vector store serving real-time similarity and nearest-neighbor queries.",
+        "Backpressure and autoscaling that keep the platform healthy through a sudden traffic burst.",
+        "Node-failure recovery with graceful degradation, demonstrated via injected failure.",
+        "A real-time dashboard of event throughput, inference latency percentiles, and fleet health.",
+        "A query UI for similarity search and recent-event lookup, usable without instruction.",
+        "Alerting on latency-SLO breaches, lag buildup, and anomalous event rates.",
+        "Multi-tenant isolation and a secured, rate-limited query API."
+      ],
+      "marketSignal": "Real-time streaming AI is a funded 2026 category anchored in fraud detection and live personalization: Artie raised a $12M Series A to make real-time data the default for AI systems, Experian launched real-time AI fraud detection with Resistant AI's 80+ models, and global fintech venture funding hit $12B across 751 deals by April 2026. Production fraud models need sub-millisecond feature retrieval and 20-100+ features within a 100ms window, served by vector databases like Pinecone, Milvus, and Redis. Investors fund streaming-AI platforms because regulated finance and large consumer platforms must score live events instantly or lose money."
+    },
+    {
+      "id": "mm-project-vlm-assistant",
+      "title": "Multimodal Visual Assistant with a Fine-Tuned VLM",
+      "trackId": "multimodal-generative",
+      "week": 6,
+      "brief": "An enterprise mandate: ship a launched product, a visual assistant that answers grounded questions about images a user uploads (documents, charts, product photos, screenshots), built on a fine-tuned open-weight vision-language model. Adapt a base VLM with parameter-efficient fine-tuning on a domain image-text dataset you build, prove on a held-out set that it beats the base model, and serve it. The deliverable is not a notebook, it is a directly deployable, hyperscalable product: the VLM behind a real public API with a fast, accessible image-and-chat UI, autoscaling, CI/CD, observability, security, and full marketing (landing page, pitch, demo). Hallucination on images is the failure mode that loses trust; measure it and report it honestly. Ship it as a real product.",
+      "deliverable": "A publicly hosted visual-assistant product with a stable URL and a fast, accessible image-upload-and-chat UI, plus a public repo and a published model card: the image-text dataset pipeline, the LoRA/QLoRA fine-tuning configuration and run logs, an autoscaling serving deployment, CI/CD on every commit, production observability, an evaluation comparing the base versus fine-tuned VLM on a held-out set including a hallucination measurement, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the architecture, data sourcing, and scaling design.",
+      "evalRubric": [
+        "A domain image-text dataset is built, cleaned, and documented, with a train/eval split that is contamination-checked.",
+        "A base open-weight VLM is fine-tuned with a parameter-efficient method (LoRA or QLoRA) using a reproducible configuration.",
+        "A held-out evaluation shows a measured improvement of the fine-tuned VLM over the base model, and visual hallucination is measured and reported honestly.",
+        "The VLM is served behind a real public API with a fast, WCAG 2.2 AA accessible image-upload-and-chat UI, autoscaling, CI/CD on every commit, observability, and a secured endpoint.",
+        "Answers are grounded in the uploaded image, and the assistant declines or flags questions the image cannot support instead of fabricating.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The repo is reproducible, a model card documents intended use and limitations, and the product is publicly reachable."
+      ],
+      "syllabusTag": "Computer Vision, image understanding, representation learning, and evaluation",
+      "stack": [
+        "Hugging Face Transformers",
+        "TRL",
+        "PEFT",
+        "an open-weight VLM (Qwen-VL or similar)",
+        "PyTorch",
+        "Node.js or Python",
+        "Google Cloud Run"
+      ],
+      "industryContext": "Vision-language assistants are moving into document processing, support, retail, and accessibility tooling, and the hard part is grounded, low-hallucination answers on real images, not a demo on a benchmark photo. A builder who can fine-tune, evaluate, and ship a VLM product is directly deployable as a Multimodal AI Engineer or Applied AI Engineer, a growing frontier role.",
+      "features": [
+        "Image upload supporting documents, charts, screenshots, and photos, with a chat thread per image.",
+        "A fine-tuned open-weight vision-language model adapted to a chosen domain with LoRA or QLoRA.",
+        "A domain dataset builder that turns raw images and annotations into cleaned image-text training pairs.",
+        "Grounded answers that reference regions or content of the uploaded image, with an explicit decline when the image cannot support the question.",
+        "A held-out evaluation harness reporting target-task accuracy for the base versus the fine-tuned model.",
+        "A visual-hallucination check that scores how often the model asserts content not present in the image.",
+        "An OpenAI-compatible multimodal serving API so the assistant is a drop-in for existing clients.",
+        "A fast, accessible chat UI with streaming answers, image thumbnails, and conversation history.",
+        "A cost-and-latency dashboard tracking image-token usage and per-request timing.",
+        "Autoscaling with health and readiness probes, and a secured, rate-limited endpoint.",
+        "An auto-generated model card documenting data sourcing, intended use, and measured limitations."
+      ],
+      "marketSignal": "Open-weight vision-language models are a fast-moving 2026 category: models such as Qwen2.5-VL now match closed frontier VLMs on many tasks and can be fine-tuned on 5,000-50,000 examples with LoRA for modest compute, and unified omni-models (Qwen3.5-Omni) extend this to audio and video. Document intelligence, retail visual search, and accessibility tooling are active buyers, and Stanford VHELM has standardized how VLM quality is compared. Investors fund multimodal-AI products because customer data is overwhelmingly visual, not just text."
+    },
+    {
+      "id": "mm-project-generative-studio",
+      "title": "Generative Image Studio with a Diffusion Pipeline",
+      "trackId": "multimodal-generative",
+      "week": 12,
+      "brief": "An enterprise mandate: build and launch a generative image studio, a product where a user describes or sketches what they want and the system generates, edits, and refines images with a diffusion pipeline you assemble and control. Use a latent diffusion model with text and image conditioning and classifier-free guidance, add controllable editing (inpainting, image-to-image), and prove generation quality and safety. The deliverable is directly deployable and hyperscalable: real public hosting, an autoscaling generation queue, CI/CD, observability, a hyper-usable creative UI, content-safety filtering, and full marketing (landing page, pitch, demo). A diffusion demo is easy; a launched, safe, queue-backed studio is the job. Ship it as a real product.",
+      "deliverable": "A publicly hosted generative image studio with a stable URL and a hyper-usable creative UI, plus a public repo: the diffusion generation and editing pipeline, an autoscaling generation queue, content-safety filtering, CI/CD on every commit, production observability, a quality-and-latency report across guidance and step settings, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the conditioning design, the safety design, and the scaling design.",
+      "evalRubric": [
+        "A latent diffusion pipeline generates images from text prompts with classifier-free guidance, and the guidance-versus-quality tradeoff is documented.",
+        "Controllable editing is implemented, at least inpainting and image-to-image, and works on user-supplied images.",
+        "The studio runs on an autoscaling generation queue that absorbs bursts without dropping jobs, and the scaling design is documented.",
+        "Content-safety filtering screens prompts and outputs, and the policy and its enforcement are documented.",
+        "The product is deployed to real public hosting with CI/CD on every commit, production observability of generation latency and queue depth, and a secured endpoint.",
+        "The creative UI is fast, WCAG 2.2 AA accessible, and usable by a non-technical creator without instruction.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo, and is publicly reachable and reproducible."
+      ],
+      "syllabusTag": "Computer Vision, image synthesis, conditional generation, and sampling",
+      "stack": [
+        "Hugging Face Diffusers",
+        "PyTorch",
+        "an open-weight latent diffusion model",
+        "a job queue (Redis or Cloud Tasks)",
+        "Node.js or Python",
+        "Prometheus",
+        "Google Cloud Run"
+      ],
+      "industryContext": "Generative image tooling is a mainstream creative-software category, and the engineering differentiator is a controllable, safe, queue-backed pipeline, not a single text-to-image call. A builder who ships a generation studio with editing, safety filtering, and autoscaling is directly deployable as a Generative AI Engineer or Applied AI Engineer, a sought-after role in creative-tools and media teams.",
+      "features": [
+        "Text-to-image generation with a latent diffusion model and tunable classifier-free guidance.",
+        "Image-to-image and inpainting so a user can edit and refine an uploaded or generated image.",
+        "A prompt workspace with generation history, versioning, and one-click re-run of a past generation.",
+        "An autoscaling generation queue that accepts bursts of jobs and reports position and estimated wait.",
+        "Content-safety filtering on prompts and outputs, with a documented policy and a clear refusal path.",
+        "A quality-and-latency panel comparing step count and guidance settings on real prompts.",
+        "A creative UI with live previews, thumbnails, and a gallery of past generations.",
+        "Negative prompts and seed control so a creator can reproduce or steer a result deterministically.",
+        "Export to common image formats and a shareable public gallery URL.",
+        "A cost-and-throughput dashboard tracking generations, queue depth, and per-image compute.",
+        "Autoscaling with health and readiness probes and a secured, rate-limited generation API."
+      ],
+      "marketSignal": "Generative media is a large, funded 2026 market with diffusion and flow-matching as the dominant techniques across image and now video, taught in fresh university courses such as MIT 6.S184. Creative-tools companies and marketing, design, and media teams are active buyers, and the production bar has moved from raw generation to controllable editing, safety filtering, and reliable throughput. Investors fund generative-media products because controllable, safe creation at scale is what turns a model into a usable creative tool."
+    },
+    {
+      "id": "sa-project-interp-tool",
+      "title": "Mechanistic Interpretability Tool for a Transformer",
+      "trackId": "ai-safety-alignment",
+      "week": 7,
+      "brief": "An enterprise mandate: build and launch an interpretability tool, a product that lets a user load a small open-weight transformer, run a prompt, and inspect what the model is actually computing: attention patterns, per-layer activations, the contribution of individual components, and features surfaced by a sparse autoencoder. This is reverse engineering as a product: make the internals of a black-box model legible. The deliverable is directly deployable and hyperscalable: real public hosting, a fast accessible inspector UI, CI/CD, observability, security, and full marketing (landing page, pitch, demo). Interpretability is what frontier labs hire most heavily for; ship a tool a researcher would actually use. Ship it as a real product.",
+      "deliverable": "A publicly hosted interpretability tool with a stable URL and a fast, accessible model-inspector UI, plus a public repo: the activation-capture and analysis backend, attention and activation visualizations, an activation-patching workflow, a sparse-autoencoder feature view, CI/CD on every commit, production observability, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the interpretability methods, their limitations, and the scaling design.",
+      "evalRubric": [
+        "A small open-weight transformer is loaded and instrumented, and per-layer activations and attention patterns are captured for an arbitrary prompt.",
+        "An activation-patching workflow lets a user make a causal claim about which component drives a behavior, with the method documented.",
+        "A sparse-autoencoder or probe-based feature view surfaces interpretable features from the residual stream, with honest limitations stated.",
+        "The tool is deployed to real public hosting with a fast, WCAG 2.2 AA accessible inspector UI, CI/CD on every commit, production observability, and a secured endpoint.",
+        "The analysis backend handles concurrent inspection sessions and the scaling design is documented.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo.",
+        "The tool is publicly reachable and fully reproducible from the repo, and a researcher can use it without instruction."
+      ],
+      "syllabusTag": "Compilers, program analysis, intermediate representations, and reverse engineering",
+      "stack": [
+        "TransformerLens",
+        "PyTorch",
+        "a small open-weight transformer",
+        "a sparse-autoencoder library",
+        "Node.js or Python",
+        "OpenTelemetry",
+        "Google Cloud Run"
+      ],
+      "industryContext": "Mechanistic interpretability is among the most heavily hired-for research directions at frontier labs, because regulators and leadership increasingly want to know what a deployed model is doing internally, not just how it scores. A builder who ships an interpretability tool that runs real circuit and feature analysis is directly deployable as an Interpretability Researcher or AI Safety Engineer, a scarce and rapidly growing role.",
+      "features": [
+        "Load a small open-weight transformer and run an arbitrary prompt through an instrumented forward pass.",
+        "Attention-pattern visualization per head and per layer, with token-to-token attribution.",
+        "Per-layer residual-stream and activation inspection, with the ability to compare two prompts side by side.",
+        "An activation-patching workflow that swaps activations between runs to make causal claims about components.",
+        "A sparse-autoencoder feature view that surfaces interpretable features and shows where they activate.",
+        "Logit-lens style projection so a user can see how a prediction forms across layers.",
+        "A saved-investigation workspace so a researcher can revisit and share a prior analysis.",
+        "A fast, accessible inspector UI with clear, labelled visualizations and keyboard navigation.",
+        "Concurrent-session support so multiple users can run analyses without contention.",
+        "Production observability for analysis latency and session load, and a secured, rate-limited backend.",
+        "A documentation panel stating, for each method, what it can and cannot tell you."
+      ],
+      "marketSignal": "Interpretability is a defined and growing 2026 research field with a dedicated ICML 2026 workshop and standard open tooling (TransformerLens, sparse autoencoders, Anthropic's Transformer Circuits sequence). Frontier labs invest in it because understanding a model internally is increasingly a release and governance requirement, and the open-source ARENA curriculum exists specifically to train people into these roles. Investors and labs back interpretability because a model you cannot inspect is a model you cannot safely scale."
+    },
+    {
+      "id": "sa-project-safety-governance",
+      "title": "AI Safety Evaluation & Governance Pipeline",
+      "trackId": "ai-safety-alignment",
+      "week": 12,
+      "brief": "An enterprise mandate: a company is about to ship an AI feature and has no defensible answer to \"is this safe and is it compliant?\". Build and launch a product with two interlocking systems: a safety-evaluation pipeline that runs capability, propensity, honesty, and adversarial red-team batteries against a model and scores how it behaves; and a governance layer that turns those results into an audit-ready model card and a risk classification mapped to the NIST AI RMF and the EU AI Act. The deliverable is directly deployable and hyperscalable: real public hosting, CI/CD, a hyper-usable dashboard a safety or compliance lead reads at a glance, security, and full marketing (landing page, pitch, demo). Deliver something an organization can run before release, not after an incident. Ship it as a real product.",
+      "deliverable": "A publicly hosted product with a stable URL and a hyper-usable safety-and-governance dashboard, plus a public repo: the safety-evaluation pipeline with capability, propensity, honesty, and red-team batteries, the auto-generated model card and risk-classification layer, CI/CD on every commit, production observability, a marketing landing page, a 10-slide pitch, a recorded demo, and a README documenting the evaluation methodology, the governance mapping, and the scaling design.",
+      "evalRubric": [
+        "A safety-evaluation pipeline runs capability, propensity, honesty, and adversarial red-team batteries against a target model and produces structured, reproducible scores.",
+        "The red-team battery includes jailbreaks, prompt injection, and indirect injection, and the report shows which behaviors held and which failed.",
+        "An auto-generated model card documents intended use, evaluation results, and limitations in an audit-ready format.",
+        "A risk-classification layer maps the model and its results to the NIST AI RMF functions and the EU AI Act risk tiers, with the mapping justified.",
+        "The platform is deployed to real public hosting with CI/CD on every commit, production observability, and a secured endpoint, and the evaluation path is hyperscalable under load.",
+        "A fast, WCAG 2.2 AA accessible dashboard lets a safety or compliance lead read results and risk status at a glance.",
+        "The project ships complete marketing, a landing page, a 10-slide pitch, and a recorded demo, and is publicly reachable and reproducible."
+      ],
+      "syllabusTag": "Information Security, threat modeling, evaluation, audit, and compliance",
+      "stack": [
+        "Inspect or an LLM eval framework",
+        "an open-weight or API model",
+        "a red-teaming library",
+        "Node.js or Python",
+        "GitHub Actions",
+        "OpenTelemetry",
+        "Google Cloud Run"
+      ],
+      "industryContext": "AI safety evaluation and governance is becoming a release gate, not an afterthought: the EU AI Act transparency rules apply from August 2026 and the NIST AI RMF is the de facto governance structure organizations adopt. A builder who can ship an evaluation-plus-governance pipeline is directly deployable as an AI Safety Engineer, an Evaluations Engineer, or an AI Governance specialist, scarce roles because they combine ML, security, and policy.",
+      "features": [
+        "A safety-evaluation runner with capability, propensity, honesty, and sycophancy batteries against a target model.",
+        "An adversarial red-team suite covering jailbreaks, prompt injection, and indirect injection, with a continuously updated attack library.",
+        "Structured, reproducible scoring so the same evaluation can be re-run and compared across model versions.",
+        "An auto-generated, audit-ready model card capturing intended use, evaluation results, and limitations.",
+        "A risk-classification layer that maps results to the NIST AI RMF Govern-Map-Measure-Manage functions and the EU AI Act risk tiers.",
+        "A benchmark-overfitting check that runs novel held-out prompts alongside public benchmarks to expose inflated scores.",
+        "A safety dashboard showing per-category results, risk status, and trend across evaluation runs.",
+        "CI integration so a safety regression in a new model version fails the release gate.",
+        "Exportable compliance reports suitable for an internal audit or external review.",
+        "Role-based access so safety engineers, compliance leads, and reviewers see scoped views.",
+        "Production observability and a secured, rate-limited evaluation API."
+      ],
+      "marketSignal": "AI governance and safety evaluation is a defined 2026 enterprise requirement: the EU AI Act transparency obligations take effect in August 2026, NIST released an AI RMF profile for critical infrastructure in April 2026, and enterprises are explicitly investing in audit-ready model cards, risk classification, and incident response. Research shows public benchmark scores can hide real-world failure, making independent evaluation valuable. Investors and enterprises fund safety-and-governance tooling because shipping AI into regulated industries without it is now a legal and reputational liability."
+    },
+    {
+      "id": "le-project-portfolio-product",
+      "title": "Ship Your Portfolio as a Real Product",
+      "trackId": "land-elite-role",
+      "week": 7,
+      "brief": "A career mandate: your portfolio is itself a product, and a hiring manager judges it the way a user judges any product, in seconds. Build and launch a portfolio site that presents a small number of your deep, shipped AI projects with live demos, clean repos, honest writeups, and real metrics. This is not a resume page: it is a directly deployable, hyperscalable, hyper-usable product with real public hosting, CI/CD, observability, accessibility, security headers, and full marketing polish. Treat curation as ruthlessly as engineering, three projects shown well beat ten shown badly. The portfolio must load fast, be reachable by anyone, and make a stranger want to talk to you. Ship it as a real product.",
+      "deliverable": "A publicly hosted portfolio product with a stable URL and a polished, fast, accessible UI, plus a public repo: the portfolio site, deep writeups of a curated set of AI projects each with a live demo link and real metrics, CI/CD on every commit, observability, security headers, a README documenting the build and design decisions, and a short pitch of the portfolio itself as a product.",
+      "evalRubric": [
+        "The portfolio presents a curated, small set of deep AI projects, each with a live demo, a public repo, an honest writeup, and real metrics.",
+        "The site is deployed to real public hosting with CI/CD on every commit, observability, and security headers on every response.",
+        "The UI is fast, WCAG 2.2 AA accessible, and communicates the value of each project to a non-expert within seconds.",
+        "Each project writeup states what was built, the result, and the limitations honestly, without inflation.",
+        "The portfolio is hyperscalable and reachable globally, with the build and design decisions documented in the repo.",
+        "The portfolio ships with a clear narrative and presentation polish, defensible as a real product.",
+        "The product is publicly reachable and fully reproducible from the repo."
+      ],
+      "syllabusTag": "Professional Practice, portfolio building and engineering communication",
+      "stack": [
+        "Astro or a static site framework",
+        "a CI/CD provider (GitHub Actions)",
+        "a static or edge host (Cloudflare Pages or Vercel)",
+        "analytics or observability tooling",
+        "HTML, CSS, and JavaScript"
+      ],
+      "industryContext": "For AI roles, a public portfolio of deep, shipped projects is one of the strongest hiring signals, because it lets a hiring manager verify real work instead of trusting a resume. A builder who can present curated, hosted, well-documented projects stands out in the elite hiring pipeline, where take-home quality and demonstrable shipped work weigh heavily.",
+      "features": [
+        "A landing view that communicates who the builder is and the strongest project within seconds.",
+        "A curated set of deep project pages, each with a live demo link, a public repo, and an honest writeup.",
+        "Real metrics on each project, usage, performance, or evaluation numbers, presented without inflation.",
+        "A fast, accessible, responsive UI with semantic HTML, keyboard navigation, and security headers.",
+        "CI/CD that rebuilds and redeploys the portfolio on every commit.",
+        "An honest limitations section per project, so the portfolio reads as credible rather than marketed.",
+        "A contact and links section that makes it frictionless for a recruiter to reach out.",
+        "Lightweight observability or analytics so the builder sees how the portfolio performs.",
+        "A documented build so the portfolio itself doubles as a reproducible engineering artifact."
+      ],
+      "marketSignal": "In the 2026 AI hiring market, demonstrable shipped work is a primary screening signal: field-guide research into AI-engineering hiring shows take-home projects and write-up quality are weighted heavily, and recruiters respond to verifiable public work over cold resumes. A portfolio of deep, hosted projects is what moves a candidate from the application pile into a real conversation."
+    },
+    {
+      "id": "le-project-technical-writeup",
+      "title": "Publish a Rigorous Public Technical Writeup",
+      "trackId": "land-elite-role",
+      "week": 12,
+      "brief": "A career mandate: take one frontier project you have built, a fine-tuned model, an interpretability tool, an inference system, a safety evaluation, and publish a rigorous, public technical writeup of it. This is the artifact that demonstrates research-grade communication: a clear claim, a reproducible method, honest results with ablations, and stated limitations, written so a frontier-lab engineer takes it seriously. Publish it as a launched product: a real public page with its own stable URL, fast and accessible, with the code and data to reproduce it linked, and presentation polish to the standard set by Distill. A writeup nobody can find or reproduce does not count. Ship it as a real product.",
+      "deliverable": "A publicly hosted technical writeup with a stable URL and a fast, accessible reading experience, plus a public repo: the writeup itself with a clear claim, method, results, ablations, and limitations, the code and data needed to reproduce the central result, CI/CD on every commit, and a README pointing to the reproduction steps.",
+      "evalRubric": [
+        "The writeup makes a clear, specific claim and supports it with a reproducible method and honest results.",
+        "At least one ablation is reported that isolates what actually caused the result, with the experiment design described.",
+        "Limitations are stated explicitly, and no claim is overstated beyond the evidence.",
+        "The code and data needed to reproduce the central result are public and the reproduction steps are documented.",
+        "The writeup is published on real public hosting with a stable URL, CI/CD on every commit, and a fast, WCAG 2.2 AA accessible reading experience.",
+        "The writeup is written and presented to a standard a frontier-lab engineer would take seriously, with clear structure and figures.",
+        "The product is publicly reachable and the result is independently reproducible from the linked repo."
+      ],
+      "syllabusTag": "Professional Practice, technical writing, research communication, and reproducibility",
+      "stack": [
+        "a static site or publishing framework",
+        "a notebook or script for the reproducible experiment",
+        "a CI/CD provider (GitHub Actions)",
+        "a static or edge host",
+        "an experiment-tracking tool (Weights & Biases or equivalent)"
+      ],
+      "industryContext": "Research-grade technical communication is a differentiator in elite AI hiring: frontier and research-adjacent roles expect a candidate to read, reproduce, and clearly write up results. A builder who can publish a rigorous, reproducible writeup demonstrates exactly the communication and methodology those roles assume, and creates a durable, verifiable public signal of frontier-level work.",
+      "features": [
+        "A clear claim stated upfront, with the method and results structured so a reader can follow the argument.",
+        "A reproducible experiment, code and data public, that a reader can run to confirm the central result.",
+        "At least one ablation that isolates the cause of the result, with the experiment design explained.",
+        "Honest, explicit limitations so the writeup reads as credible research rather than marketing.",
+        "Clear figures and, where it helps, interactive or visual explanation to the standard set by Distill.",
+        "Experiment tracking linked so the runs behind the numbers are inspectable.",
+        "A fast, accessible reading experience with semantic structure and keyboard navigation.",
+        "CI/CD that rebuilds and republishes the writeup on every commit.",
+        "A stable public URL suitable for sharing in an application or with a referral."
+      ],
+      "marketSignal": "Clear public technical writing is a recognized signal in AI hiring and research culture: venues like Distill established that rigorous, well-communicated research artifacts are real contributions, and frontier-lab interview guides emphasize the ability to read, reproduce, and communicate results. A reproducible public writeup gives a candidate a durable, verifiable demonstration of frontier-level methodology and communication."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-05-18",
+      "version": 1,
+      "summary": "Expanded into a deeper elite-builder path: added three 12-week tracks, Multimodal & Generative AI, AI Safety / Alignment & Interpretability, and Land the Elite AI Role, with 24 web-researched concepts (including research methodology: reading and reproducing papers, ablations, experiment tracking) and 6 investor-grade milestone projects. Removed compensation figures from project industryContext and marketSignal so public-facing curriculum copy is strictly factual."
+    },
+    {
+      "date": "2026-05-18",
+      "version": 1,
+      "summary": "Elite enterprise-grade curriculum, frontier AI tracks; projects rebuilt as investor-grade real products with web-scouted 2026 market signals and detailed feature listings (production-grade, hyperscalable, hyper-usable, marketing-complete)."
+    }
+  ]
+}

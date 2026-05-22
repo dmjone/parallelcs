@@ -1,0 +1,12 @@
+node_modules
+.git
+.gitignore
+*.md
+.env
+.env.*
+!.env.example
+deploy
+autoconfig.sh
+autoconfig.bat
+npm-debug.log*
+.DS_Store

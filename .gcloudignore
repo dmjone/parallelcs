@@ -1,0 +1,13 @@
+# Files excluded from `gcloud run deploy --source .` uploads.
+.git
+.gitignore
+node_modules
+.env
+.env.*
+!.env.example
+*.md
+deploy
+autoconfig.sh
+autoconfig.bat
+npm-debug.log*
+.DS_Store

@@ -1,0 +1,39 @@
+# ParallelCS — local / single-host run.
+#
+# This is for local development and a future Tier-0 single-VM deploy. Production
+# runs on Cloud Run (scale-to-zero, $0 idle). On a real host, authenticate with
+# Application Default Credentials before `docker compose up`:
+#
+#   gcloud auth application-default login
+#
+# and mount the ADC file (see the `volumes` block below). On a GCP VM the
+# attached service account provides ADC automatically and no mount is needed.
+
+services:
+  parallelcs:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: parallelcs:local
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      NODE_ENV: production
+      # Override these for your environment. No secrets / API keys here by design.
+      CONTENT_BUCKET: "${CONTENT_BUCKET:-dmjone-parallelcs-content}"
+      GCP_PROJECT: "${GCP_PROJECT:-dmjone}"
+      VERTEX_LOCATION: "${VERTEX_LOCATION:-global}"
+      GEMINI_MODEL: "${GEMINI_MODEL:-gemini-2.5-flash}"
+      # Point the Google SDKs at the mounted ADC file.
+      GOOGLE_APPLICATION_CREDENTIALS: /adc/application_default_credentials.json
+    volumes:
+      # Local ADC mount (read-only). Remove on a GCP VM with an attached SA.
+      - "${APPDATA:-~/.config}/gcloud/application_default_credentials.json:/adc/application_default_credentials.json:ro"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

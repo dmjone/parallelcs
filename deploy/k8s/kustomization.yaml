@@ -1,0 +1,43 @@
+# ParallelCS — Kustomize entrypoint for a future Kubernetes tier.
+#
+# NOT used by the current deploy. ParallelCS runs on Cloud Run today (scale-to-zero,
+# $0 idle). These manifests exist so a move to GKE/Autopilot at a higher scale tier
+# does not require rewriting infrastructure from scratch.
+#
+#   kubectl apply -k deploy/k8s
+#
+# Workload Identity must be bound so the pod uses the parallelcs-run service account
+# (no key files): annotate the KSA and run
+#   gcloud iam service-accounts add-iam-policy-binding \
+#     parallelcs-run@dmjone.iam.gserviceaccount.com \
+#     --role roles/iam.workloadIdentityUser \
+#     --member "serviceAccount:dmjone.svc.id.goog[parallelcs/parallelcs]"
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: parallelcs
+
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - deployment.yaml
+  - service.yaml
+
+commonLabels:
+  app.kubernetes.io/name: parallelcs
+  app.kubernetes.io/part-of: parallelcs
+
+configMapGenerator:
+  - name: parallelcs-env
+    literals:
+      - NODE_ENV=production
+      - CONTENT_BUCKET=dmjone-parallelcs-content
+      - GCP_PROJECT=dmjone
+      - VERTEX_LOCATION=global
+      - GEMINI_MODEL=gemini-2.5-flash
+
+images:
+  - name: parallelcs
+    newName: asia-south1-docker.pkg.dev/dmjone/cloud-run-source-deploy/parallelcs
+    newTag: latest
