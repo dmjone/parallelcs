@@ -6,6 +6,28 @@ this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `GET /learn/:conceptId` study-notes pages. Each concept gets a precise, readable
+  deep dive written by the in-house ParallelCS model (the Quality 31B served as
+  `llama-3.1-70b`, confirmed the best available chat model on the endpoint),
+  alongside its curated free sources. A "Read the study notes" link sits on every
+  concept card. Notes are cached in GCS (`deep/<id>.json`, keyed by a hash of the
+  concept's title and summary) so each is generated at most once per content
+  version, then served from cache.
+- Expanded curated free resources across all tracks (courses 15 to 25, interactive
+  4 to 8, videos 3 to 7). Every added URL was verified to resolve.
+
+### Security
+
+- The in-house model key is stored in Secret Manager (`zs-api-key`) and injected
+  into Cloud Run at runtime; it is never in the repo, never logged, never returned,
+  and never rendered. Verified zero key occurrences in served HTML.
+- The `/learn` route accepts only a concept id from the curriculum's closed set, so
+  it cannot be used as a general model proxy. Output is escaped before render. A
+  per-IP token bucket rate limits the route (verified: a burst returns 429). If the
+  key is absent or a call fails, the page falls back to curated sources.
+
 ### Changed
 
 - **Navigation simplified 8 → 4 items** (Start · Tracks · Projects · Challenge). Home is the
