@@ -53,6 +53,22 @@ this project uses [Semantic Versioning](https://semver.org/).
 - Curriculum content versioning is owned by the self-update job; see `meta/state.json`
   in the content bucket for the live version and last-update timestamp.
 
+### Deployed - 2026-05-22
+
+- Redeployed to Cloud Run (`parallelcs`, asia-east1, revision `parallelcs-00011-htm`,
+  100% traffic) with the simplified navigation, the `/start` roadmap, the weeks-based
+  kickstart, the humanized copy, and the WCAG 2.0 AAA palette. Verified live: all page
+  routes 200, `/health/ready` 200, 4-item nav present, zero em dashes in the HTML.
+- Triggered the weekly self-update on production to verify it end to end. Result:
+  `updated`, version 1 to 2, 8 changes applied in ~94s via the auto-discovered
+  `gemini-3.5-flash` (max thinking), incorporating real May 2026 developments. The
+  result was non-destructive: schema valid, every floor respected (8 tracks, 67
+  concepts, 16 projects), zero orphaned concepts or projects, zero broken
+  prerequisites, every concept still has at least one resource. The live `/graph`,
+  `/status`, track and project pages all render the evolved content with the layout
+  intact. A pre-update backup of the curriculum is kept at
+  `gs://dmjone-parallelcs-ae1/backups/curriculum.before-selfupdate.json`.
+
 ### Deployed - 2026-05-17
 
 - ParallelCS is live on Cloud Run, current revision `parallelcs-00004-btf`, 100% traffic:
