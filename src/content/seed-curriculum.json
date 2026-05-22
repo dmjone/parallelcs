@@ -74,6 +74,13 @@
           "source": "OpenAI",
           "type": "guide",
           "free": true
+        },
+        {
+          "title": "Intro to Large Language Models (1 hour talk)",
+          "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+          "source": "Andrej Karpathy",
+          "type": "video",
+          "free": true
         }
       ]
     },
@@ -556,6 +563,13 @@
           "source": "Stanford University",
           "type": "course",
           "free": true
+        },
+        {
+          "title": "Neural networks: the visual series",
+          "url": "https://www.youtube.com/playlist?list=PLZZWrBYkx7Otcjr3eCLZDCgfpqnxMY29s",
+          "source": "3Blue1Brown",
+          "type": "video",
+          "free": true
         }
       ]
     },
@@ -582,6 +596,20 @@
           "url": "https://stanford-cs336.github.io/spring2025/",
           "source": "Stanford University",
           "type": "course",
+          "free": true
+        },
+        {
+          "title": "But what is a GPT? Visual intro to transformers",
+          "url": "https://www.youtube.com/watch?v=wjZofJX0v4M",
+          "source": "3Blue1Brown",
+          "type": "video",
+          "free": true
+        },
+        {
+          "title": "Attention in transformers, step by step",
+          "url": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
+          "source": "3Blue1Brown",
+          "type": "video",
           "free": true
         }
       ]
