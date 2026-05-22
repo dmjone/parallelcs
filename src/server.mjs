@@ -20,9 +20,11 @@ import {
   notFoundView,
   statusView,
   readyView,
+  learnView,
 } from './views/index.mjs';
 import { pitchPage } from './views/pitch.mjs';
 import { pitchCloPage } from './views/pitch-clo.mjs';
+import { getDeepDive } from './lib/deepdive.mjs';
 
 const app = Fastify({
   logger: loggerOptions,
@@ -62,7 +64,31 @@ app.addHook('onRequest', async (req, reply) => {
 const HTML_ROUTES = new Set(['/', '/start', '/tracks', '/graph', '/projects', '/challenge', '/status', '/ready']);
 function isPageRoute(url) {
   const path = url.split('?')[0];
-  return HTML_ROUTES.has(path) || path.startsWith('/track/');
+  return HTML_ROUTES.has(path) || path.startsWith('/track/') || path.startsWith('/learn/');
+}
+
+// --- Per-IP token bucket guarding the model-backed /learn route ----------
+// Cheap, in-memory (single instance, maxScale=1). Cached deep-dives are served
+// freely; this only throttles bursts that could trigger live generation or
+// abuse the endpoint. Refills to LEARN_BURST tokens over LEARN_WINDOW_MS.
+const LEARN_BURST = 20;
+const LEARN_WINDOW_MS = 60_000;
+const learnBuckets = new Map();
+function learnAllowed(ip) {
+  const now = Date.now();
+  const b = learnBuckets.get(ip) || { tokens: LEARN_BURST, at: now };
+  const refill = ((now - b.at) / LEARN_WINDOW_MS) * LEARN_BURST;
+  b.tokens = Math.min(LEARN_BURST, b.tokens + refill);
+  b.at = now;
+  if (b.tokens < 1) {
+    learnBuckets.set(ip, b);
+    return false;
+  }
+  b.tokens -= 1;
+  learnBuckets.set(ip, b);
+  // Bound memory: drop the map if it grows unreasonably (single instance).
+  if (learnBuckets.size > 5000) learnBuckets.clear();
+  return true;
 }
 
 app.addHook('preHandler', async (req) => {
@@ -146,6 +172,58 @@ app.get('/track/:id', async (req, reply) => {
       description: track.tagline,
       path: `/track/${track.id}`,
       bodyHtml: trackView(curriculum, track),
+      nonce: req.cspNonce,
+    }),
+  );
+});
+
+// Per-concept study notes. Input is a concept id from our own closed set (never
+// free user text), so this cannot be used as a general model proxy. Output is
+// cached in GCS and escaped before render. Rate limited per IP.
+app.get('/learn/:conceptId', async (req, reply) => {
+  if (!learnAllowed(req.ip)) {
+    reply.code(429).header('Retry-After', '30').header('Cache-Control', 'no-store');
+    return html(
+      reply,
+      page({
+        title: 'Slow down, ParallelCS',
+        description: 'Too many requests.',
+        path: req.url,
+        bodyHtml: notFoundView(),
+        nonce: req.cspNonce,
+      }),
+    );
+  }
+  const curriculum = await getCurriculum();
+  const concept = curriculum.concepts.find((c) => c.id === req.params.conceptId);
+  const track = concept && curriculum.tracks.find((t) => t.id === concept.trackId);
+  if (!concept || !track) {
+    reply.code(404);
+    return html(
+      reply,
+      page({
+        title: 'Not found, ParallelCS',
+        description: 'The page you requested does not exist.',
+        path: req.url,
+        bodyHtml: notFoundView(),
+        nonce: req.cspNonce,
+      }),
+    );
+  }
+  // Never let a generation failure break the page; learnView handles null.
+  let deep = null;
+  try {
+    deep = await getDeepDive(concept, track.title);
+  } catch {
+    deep = null;
+  }
+  html(
+    reply,
+    page({
+      title: `${concept.title}, study notes, ParallelCS`,
+      description: concept.summary.slice(0, 180),
+      path: `/learn/${concept.id}`,
+      bodyHtml: learnView({ curriculum, concept, track, deep }),
       nonce: req.cspNonce,
     }),
   );

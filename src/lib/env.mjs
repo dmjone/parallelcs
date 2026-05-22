@@ -19,6 +19,15 @@ const EnvSchema = z.object({
   // Shared secret guarding the internal self-refresh endpoint. Set at deploy;
   // empty in local dev (the weekly lock is the real guard either way).
   REFRESH_KEY: z.string().default(''),
+  // In-house LLM used to generate precise per-concept study notes. The key is
+  // server-side only and never reaches the browser. An empty key disables the
+  // feature gracefully (pages still serve the curated, static content).
+  ZS_API_URL: z
+    .string()
+    .url()
+    .default('https://ai.zsapiens.com/v1/32b/chat/completions'),
+  ZS_MODEL: z.string().min(1).default('llama-3.1-70b'),
+  ZS_API_KEY: z.string().default(''),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
 });
 

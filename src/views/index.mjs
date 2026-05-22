@@ -434,6 +434,14 @@ img{max-width:100%;height:auto}
 .textlink{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;text-decoration:none;color:var(--indigo)}
 .textlink:hover{color:var(--indigo-deep)}
 .textlink:hover .arrow{transform:translateX(3px)}
+.deepen{margin:.9rem 0 0}
+.notes-body{max-width:72ch}
+.notes-body .notes-h{font-size:1.15rem;margin:1.4rem 0 .5rem}
+.notes-body p{color:var(--ink-soft);margin:0 0 .9rem}
+.notes-body strong{color:var(--ink)}
+.notes-list{margin:0 0 1rem;padding-left:1.2rem}
+.notes-list li{color:var(--ink-soft);margin:0 0 .45rem}
+.notes-meta{margin:1.1rem 0 0;font-size:.86rem;color:var(--ink-faint)}
 
 /* ---- staggered entrance: one orchestrated page load ---- */
 .rise{animation:rise .62s var(--ease) both}
@@ -1025,6 +1033,51 @@ function resourceItem(res) {
 </a></li>`;
 }
 
+/**
+ * Render model-generated notes as safe HTML. The text is UNTRUSTED, so it is
+ * escaped first; only then is a tiny, fixed set of formatting applied (bold
+ * lead-ins, bullet lists, paragraphs). No raw HTML from the model survives.
+ * @param {string} text
+ * @returns {string}
+ */
+function renderNotes(text) {
+  // Normalise the model output to the house style: no em or en dashes.
+  const clean = String(text)
+    .replace(/\r/g, '')
+    .replace(/(\d)\s*[–—]\s*(\d)/g, '$1-$2')
+    .replace(/\s*[–—]\s*/g, ', ');
+  const lines = clean.split('\n');
+  const out = [];
+  let list = null;
+  const inline = (s) => esc(s).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  const closeList = () => {
+    if (list) {
+      out.push(`<ul class="notes-list">${list.join('')}</ul>`);
+      list = null;
+    }
+  };
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) {
+      closeList();
+      continue;
+    }
+    const heading = line.match(/^#{1,6}\s+(.*?):?\s*$/);
+    const bullet = line.match(/^(?:[-*•]|\d+\.)\s+(.*)$/);
+    if (heading) {
+      closeList();
+      out.push(`<h3 class="notes-h">${inline(heading[1])}</h3>`);
+    } else if (bullet) {
+      (list ||= []).push(`<li>${inline(bullet[1])}</li>`);
+    } else {
+      closeList();
+      out.push(`<p>${inline(line)}</p>`);
+    }
+  }
+  closeList();
+  return out.join('');
+}
+
 /** Map a concept id to its title for prereq chips. */
 function conceptTitleMap(curriculum) {
   const m = new Map();
@@ -1402,6 +1455,9 @@ export function trackView(curriculum, track) {
   <ul class="res-list" aria-label="Free resources for ${esc(c.title)}">${c.resources
           .map(resourceItem)
           .join('')}</ul>
+  <p class="deepen"><a class="textlink" href="/learn/${esc(
+    c.id,
+  )}">Read the study notes <span class="arrow" aria-hidden="true">&rarr;</span></a></p>
 </article>`;
       })
       .join('');
@@ -1909,6 +1965,77 @@ export function statusView(state, curriculum) {
       recent || '<tr><td colspan="3">No changelog entries yet.</td></tr>'
     }</tbody>
   </table>
+</section>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* learnView, per-concept study notes (in-house model + curated links) */
+/* ------------------------------------------------------------------ */
+
+/**
+ * @param {object} args
+ * @param {import('../lib/schema.mjs').Curriculum} args.curriculum
+ * @param {object} args.concept
+ * @param {object} args.track
+ * @param {{text:string,generatedAt:string,model:string}|null} args.deep
+ */
+export function learnView({ curriculum, concept, track, deep }) {
+  const titles = conceptTitleMap(curriculum);
+  const trackIdx = curriculum.tracks.findIndex((t) => t.id === track.id);
+  const accClass = `acc-${(trackIdx < 0 ? 0 : trackIdx) % LANE_ACCENTS.length}`;
+  const prereqs = (concept.prereqs || []).length
+    ? `<p class="prereq-row"><span>Builds on:</span> ${concept.prereqs
+        .map((id) => `<span class="prereq-chip">${esc(titles.get(id) || id)}</span>`)
+        .join(' ')}</p>`
+    : '';
+  const bridge = concept.subjectLink
+    ? `<span class="bridge"><span class="b-key">Bridges to</span> ${esc(
+        concept.subjectLink,
+      )}</span>`
+    : '';
+
+  const notes = deep
+    ? `<section class="section notes" aria-labelledby="notes-h">
+  <div class="section-head">
+    ${kicker('Study notes')}
+    <h2 id="notes-h">Master this concept.</h2>
+  </div>
+  <div class="notes-body">${renderNotes(deep.text)}</div>
+  <p class="notes-meta">Notes written for this concept by the ParallelCS in-house model. Always cross-check against the linked sources below.</p>
+</section>`
+    : `<section class="section" aria-labelledby="notes-h">
+  <div class="section-head">
+    ${kicker('Study notes')}
+    <h2 id="notes-h">Start with the sources.</h2>
+    <p class="lead">Use the curated, free materials below to master this concept. Each one is hand-picked for this exact topic.</p>
+  </div>
+</section>`;
+
+  return `<p class="crumbs"><a href="/">Home</a> &rsaquo; <a href="/tracks">Tracks</a> &rsaquo; <a href="/track/${esc(
+    track.id,
+  )}">${esc(track.title)}</a> &rsaquo; <span>${esc(concept.title)}</span></p>
+<section class="hero ${accClass}" aria-labelledby="learn-h">
+  ${kicker('Week ' + esc(concept.week) + ' concept', 'emerald')}
+  <h1 id="learn-h" class="rise d1">${esc(concept.title)}</h1>
+  <p class="hero-lede rise d2">${esc(concept.summary)}</p>
+  ${bridge}
+  ${prereqs}
+</section>
+
+${notes}
+
+<section class="section" aria-labelledby="src-h">
+  <div class="section-head">
+    ${kicker('Go to the source', 'amber')}
+    <h2 id="src-h">Read, watch, and practice.</h2>
+    <p class="lead">Free, world-class material chosen for this concept.</p>
+  </div>
+  <ul class="res-list" aria-label="Free resources for ${esc(concept.title)}">${concept.resources
+    .map(resourceItem)
+    .join('')}</ul>
+  <p class="section-foot"><a class="textlink" href="/track/${esc(
+    track.id,
+  )}">Back to the ${esc(track.title)} plan <span class="arrow" aria-hidden="true">&rarr;</span></a></p>
 </section>`;
 }
 
