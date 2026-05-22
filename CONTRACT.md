@@ -28,7 +28,7 @@ export function homeView(curriculum)        // -> bodyHtml string
 export function trackView(curriculum, track)// track = one TrackSchema obj; -> bodyHtml
 export function graphView(curriculum)       // knowledge-graph page; -> bodyHtml
 export function projectsView(curriculum)    // -> bodyHtml
-export function challengeView(curriculum)   // 30-day AI-builder challenge; -> bodyHtml
+export function challengeView(curriculum)   // The 30-Day Challenge; -> bodyHtml
 export function notFoundView()              // -> bodyHtml
 export function statusView(state, curriculum) // shows last self-update result; -> bodyHtml
 ```

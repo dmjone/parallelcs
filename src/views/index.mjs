@@ -107,7 +107,7 @@ function footer() {
       <a href="/start">Start</a>
       <a href="/tracks">Tracks</a>
       <a href="/projects">Projects</a>
-      <a href="/challenge">Kickstart (weeks 1-4)</a>
+      <a href="/challenge">The 30-Day Challenge</a>
       <a href="/graph">Knowledge graph</a>
       <a href="/ready">Are you ready?</a>
       <a href="/status">Status</a>
@@ -131,10 +131,10 @@ function kicker(label, tone = 'indigo') {
 }
 
 /**
- * The week bridge, one shared visual that reconciles "12-week track" with the
- * "kickstart". Shows all 12 weeks in one bar: weeks 1-4 are the cohort
- * kickstart, weeks 5-12 you finish solo. Used on /start, /challenge and tracks
- * so the two never read as separate, conflicting timelines.
+ * The journey bridge, one shared visual for the whole arc: the first stretch
+ * (your first 30 days) you build with a cohort, then you keep going week by
+ * week until you ship. Used on /, /start and /challenge so the on-ramp and the
+ * longer path always read as one continuous journey, never competing timelines.
  */
 function weekBridge() {
   let segs = '';
@@ -142,11 +142,11 @@ function weekBridge() {
     const phase = w <= 4 ? 'wb-kick' : 'wb-solo';
     segs += `<span class="wb-seg ${phase}"><span class="wb-w">${w}</span></span>`;
   }
-  return `<div class="week-bridge" role="img" aria-label="One track is 12 weeks. Weeks 1 to 4 are the cohort kickstart; weeks 5 to 12 you finish solo.">
+  return `<div class="week-bridge" role="img" aria-label="Your journey: build with a cohort for your first 30 days, then keep going week by week until you ship a public product.">
   <div class="wb-bar">${segs}</div>
   <div class="wb-legend">
-    <span class="wb-tag wb-tag-kick">Weeks 1-4 · Cohort kickstart</span>
-    <span class="wb-tag wb-tag-solo">Weeks 5-12 · Finish solo</span>
+    <span class="wb-tag wb-tag-kick">Your first 30 days · with a cohort</span>
+    <span class="wb-tag wb-tag-solo">Then week by week · your pace</span>
   </div>
 </div>`;
 }
@@ -625,7 +625,7 @@ img{max-width:100%;height:auto}
   .road-link{gap:.7rem;padding:.85rem .9rem}
 }
 
-/* ---- week bridge: reconciles 12-week track with the 4-week kickstart ---- */
+/* ---- journey bridge: the first 30 days, then week by week to the ship ---- */
 .week-bridge-wrap{max-width:660px;margin:1.4rem 0 0}
 .week-bridge{margin:1.6rem 0 0}
 .wb-bar{display:flex;gap:4px;border-radius:999px;overflow:hidden}
@@ -807,7 +807,7 @@ table{border-collapse:collapse;width:100%}
 }
 .syllabus-tag .tag-key{color:var(--ink-faint);font-weight:700}
 
-/* ---- kickstart (weeks 1-4) ---- */
+/* ---- the 30-day challenge ---- */
 .phase-list{display:grid;gap:1rem;margin-top:1.3rem;list-style:none;padding:0}
 .phase{padding:1.4rem 1.5rem;display:flex;gap:1.2rem;align-items:flex-start;border-left:4px solid var(--indigo)}
 .phase-range{
@@ -1119,11 +1119,9 @@ export function homeView(curriculum) {
     })
     .join('');
 
-  const totalResources = curriculum.concepts.reduce((n, c) => n + c.resources.length, 0);
-
   // The deal, three short beats. One idea each.
   const steps = [
-    ['Pick a track.', '8 paths. Each one is 12 focused weeks.'],
+    ['Pick a track.', 'Choose the one that excites you most.'],
     ['Learn from the best, free.', '3Blue1Brown, MIT, Karpathy, Anthropic. All linked, all free.'],
     ['Ship a real product.', 'Deploy it publicly. That live URL is your proof.'],
   ]
@@ -1156,7 +1154,7 @@ export function homeView(curriculum) {
     <div>
       ${kicker(`AI-native CS · version ${esc(curriculum.version)}`)}
       <h1 class="hero-title rise d1" id="hero-h">Become the <span class="grad">obvious hire</span>.</h1>
-      <p class="hero-lede rise d2">A free, AI-native CS path. Pick a track, learn from the best on Earth, and ship a real product.</p>
+      <p class="hero-lede rise d2">A free, AI-native CS path. Pick a track, ship your first real product in your first 30 days, then keep building until you are the obvious hire.</p>
       <div class="hero-actions rise d3">
         <a class="btn btn-primary" href="/start">Start free <span class="arrow" aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="/tracks">See the tracks</a>
@@ -1178,19 +1176,13 @@ export function homeView(curriculum) {
       </ul>
     </aside>
   </div>
-  <div class="stat-band rise d5" role="list" aria-label="Curriculum at a glance">
+  <div class="stat-band rise d5" role="list" aria-label="Your journey at a glance">
+    <div class="stat" role="listitem"><span class="stat-num">30</span><span class="stat-label">days to your first ship</span></div>
     <div class="stat" role="listitem"><span class="stat-num">${esc(
       curriculum.tracks.length,
-    )}</span><span class="stat-label">12-week tracks</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">${esc(
-      curriculum.concepts.length,
-    )}</span><span class="stat-label">concepts</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">${esc(
-      curriculum.projects.length,
-    )}</span><span class="stat-label">real projects</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">${esc(
-      totalResources,
-    )}<span class="plus">+</span></span><span class="stat-label">free resources</span></div>
+    )}</span><span class="stat-label">paths, you pick one</span></div>
+    <div class="stat" role="listitem"><span class="stat-num">1</span><span class="stat-label">public product, yours</span></div>
+    <div class="stat" role="listitem"><span class="stat-num">100%</span><span class="stat-label">free, forever</span></div>
   </div>
 </section>
 
@@ -1206,7 +1198,7 @@ export function homeView(curriculum) {
 <section class="section" aria-labelledby="tracks-h">
   <div class="section-head">
     ${kicker('Choose your path', 'emerald')}
-    <h2 id="tracks-h">8 tracks. Pick one.</h2>
+    <h2 id="tracks-h">${esc(curriculum.tracks.length)} tracks. Pick one.</h2>
     <p class="lead">Start anywhere, each track stands alone and ends in a product you can show.</p>
   </div>
   <div class="grid grid-2">${trackCards}</div>
@@ -1225,13 +1217,13 @@ export function homeView(curriculum) {
 <section class="section" aria-labelledby="how-h">
   <div class="section-head">
     ${kicker('How you start')}
-    <h2 id="how-h">New here? Start with a cohort.</h2>
-    <p class="lead">Every track is 12 weeks. The kickstart is the first four of them, done with a cohort, so you start strong and don't stop. Prefer solo? Pick any track and go.</p>
+    <h2 id="how-h">New here? Start your first 30 days with a cohort.</h2>
+    <p class="lead">Your first 30 days, you build alongside a cohort, so you start strong and ship something real fast. Then you keep going, week by week, at your own pace. Prefer solo from day one? Pick any track and go.</p>
   </div>
   <div class="week-bridge-wrap">${weekBridge()}</div>
   <div class="hero-actions">
     <a class="btn btn-primary" href="/start">See your roadmap <span class="arrow" aria-hidden="true">→</span></a>
-    <a class="btn btn-ghost" href="/challenge">Join the kickstart</a>
+    <a class="btn btn-ghost" href="/challenge">Start the 30-Day Challenge</a>
   </div>
   <div class="callout">
     <span class="callout-bar" aria-hidden="true"></span>
@@ -1286,7 +1278,7 @@ export function startView(curriculum) {
       <span class="road-title">${esc(t.title)} ${tag}</span>
       <span class="road-tagline">${esc(t.tagline)}</span>
     </span>
-    <span class="road-meta">${conceptN} concepts · 12 weeks</span>
+    <span class="road-meta">${conceptN} concepts · week by week</span>
     <span class="arrow" aria-hidden="true">→</span>
   </a>
 </li>`;
@@ -1296,7 +1288,7 @@ export function startView(curriculum) {
   return `<section class="hero" aria-labelledby="start-h">
   ${kicker('Start here', 'emerald')}
   <h1 id="start-h" class="rise d1">Pick one track. Ship one product.</h1>
-  <p class="hero-lede rise d2">Every track stands alone: 12 weeks, then a real product you deploy. Begin with our pick, join a cohort, or choose any path below. There's no wrong door.</p>
+  <p class="hero-lede rise d2">Every track stands alone. Start your first 30 days with a cohort, then keep building until you deploy a real product. Begin with our pick, join a cohort, or choose any path below. There's no wrong door.</p>
   <div class="hero-actions rise d3">
     <a class="btn btn-primary" href="/track/${esc(first.id)}">Begin with ${esc(
       first.title,
@@ -1309,14 +1301,14 @@ export function startView(curriculum) {
   <div class="section-head">
     ${kicker('Two ways to begin')}
     <h2 id="paths-h">Together, or solo.</h2>
-    <p class="lead">Same 12-week track either way. The only question is whether you run the first four weeks with a cohort.</p>
+    <p class="lead">Same track either way. The only question is whether you start your first 30 days with a cohort, or go solo from day one.</p>
   </div>
   <div class="week-bridge-wrap">${weekBridge()}</div>
   <div class="grid grid-2">
     <a class="card promise tone-amber" href="/challenge">
       <span class="promise-icon" aria-hidden="true">C</span>
       <h3>With a cohort</h3>
-      <p>The kickstart runs weeks 1-4 of your track with others, so you start strong. Then you finish weeks 5-12 solo.</p>
+      <p>The 30-Day Challenge: your first 30 days alongside others, so you start strong and ship fast. Then you keep building, week by week, solo.</p>
     </a>
     <a class="card promise tone-indigo" href="/tracks">
       <span class="promise-icon" aria-hidden="true">S</span>
@@ -1373,7 +1365,7 @@ export function tracksView(curriculum) {
   return `<section class="hero" aria-labelledby="tracks-page-h">
   ${kicker('The learning portal · ' + curriculum.tracks.length + ' tracks')}
   <h1 id="tracks-page-h" class="rise d1">Pick a track. Start learning today.</h1>
-  <p class="hero-lede rise d2">Every track is 12 weeks of frontier-grade work, knowledge-graph-routed through the best free learning on Earth (3Blue1Brown, MIT OCW, Karpathy, Anthropic, Stanford), with original project briefs and brutal eval rubrics on top. Open any track to see the week-by-week concepts and the resource links that are your lessons.</p>
+  <p class="hero-lede rise d2">Every track routes you through the best free learning on Earth (3Blue1Brown, MIT OCW, Karpathy, Anthropic, Stanford), with original project briefs and brutal eval rubrics on top. Open any track to see the plan, walked week by week, and the resource links that are your lessons.</p>
   <div class="hero-actions rise d3">
     <a class="btn btn-primary" href="/ready">First time? See if you're ready <span class="arrow" aria-hidden="true">→</span></a>
     <a class="btn btn-ghost" href="/graph">See the full knowledge graph</a>
@@ -1397,7 +1389,7 @@ export function tracksView(curriculum) {
     <h2 id="tracks-list-h">${esc(
       curriculum.tracks.length,
     )} tracks. One graph. A product at the end of each.</h2>
-    <p class="lead">Start anywhere. Each track opens to a 12-week plan with concept cards (your lessons, linked to free world-class material) interleaved with production-grade projects you actually deploy.</p>
+    <p class="lead">Start anywhere. Each track opens to a plan you walk week by week, with concept cards (your lessons, linked to free world-class material) interleaved with production-grade projects you actually deploy.</p>
   </div>
   <div class="grid grid-2">${cards}</div>
 </section>`;
@@ -1508,14 +1500,14 @@ export function trackView(curriculum, track) {
     track.title,
   )}</span></p>
 <section class="hero ${accClass}" aria-labelledby="track-h">
-  ${kicker('12-week elite track', 'emerald')}
+  ${kicker('Elite track', 'emerald')}
   <h1 id="track-h" class="rise d1">${esc(track.title)}</h1>
   <p class="hero-lede track-tagline-lede rise d2">${esc(
     track.tagline,
   )}</p>
   <p class="hero-lede rise d2">${esc(track.focus)}</p>
   <div class="hero-actions rise d3">
-    <a class="btn btn-primary" href="/challenge">Start with the 4-week kickstart <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="btn btn-primary" href="/challenge">Start the 30-Day Challenge <span class="arrow" aria-hidden="true">→</span></a>
     <a class="btn btn-ghost" href="/graph">See it on the graph</a>
   </div>
 </section>
@@ -1523,7 +1515,7 @@ export function trackView(curriculum, track) {
 <section class="section" aria-labelledby="plan-h">
   <div class="section-head">
     ${kicker('Week by week')}
-    <h2 id="plan-h">12 weeks, fully mapped.</h2>
+    <h2 id="plan-h">Mapped week by week.</h2>
     <p class="lead">Every week unlocks the next. Concepts route you to free, world-class material; projects turn that knowledge into something deployed.</p>
   </div>
   <div class="timeline">${blocks.join('') || '<p class="lead">Concepts for this track are being curated.</p>'}</div>
@@ -1627,7 +1619,7 @@ export function graphView(curriculum) {
     curriculum.concepts.length,
   )} concepts across ${esc(
     tracks.length,
-  )} tracks and 12 weeks, with prerequisite edges connecting them.">
+  )} tracks, laid out week by week, with prerequisite edges connecting them.">
 <rect width="${width}" height="${height}" fill="transparent"/>
 ${grid}
 ${lanes}
@@ -1665,13 +1657,13 @@ ${nodes}
   return `<section class="hero" aria-labelledby="graph-h">
   ${kicker('The map', 'cyan')}
   <h1 id="graph-h" class="rise d1">One graph. Every concept. A clear path.</h1>
-  <p class="hero-lede rise d2">Every concept is a node. Every edge is a prerequisite. Tracks run left to right across 12 weeks, follow an edge backward and you find exactly what to master first. No guessing what to learn next.</p>
+  <p class="hero-lede rise d2">Every concept is a node. Every edge is a prerequisite. Tracks run left to right, week by week, follow an edge backward and you find exactly what to master first. No guessing what to learn next.</p>
 </section>
 
 <section class="section" aria-labelledby="map-h">
   <div class="section-head">
     ${kicker('Concept map', 'cyan')}
-    <h2 id="map-h">12 weeks, mapped end to end.</h2>
+    <h2 id="map-h">Mapped end to end.</h2>
     <p class="lead">Curved lines connect a concept to its prerequisites. The visual is decorative; the full, screen-reader-friendly version follows as a table.</p>
   </div>
   <div class="graph-wrap">${svg}</div>
@@ -1807,7 +1799,7 @@ ${groups}
 
 /** @param {import('../lib/schema.mjs').Curriculum} curriculum */
 export function challengeView(curriculum) {
-  // The kickstart is weeks 1-4 of any track. One unit everywhere: weeks.
+  // The 30-Day Challenge: your first month, structured as four weekly milestones.
   const weeks = [
     [
       'Week 1',
@@ -1827,7 +1819,7 @@ export function challengeView(curriculum) {
     [
       'Week 4',
       'Ship it',
-      'Deploy to a public URL, run the accessibility and security checklist, and present. Your live product is the proof, and it carries you into week 5.',
+      'Deploy to a public URL, run the accessibility and security checklist, and present. Your live product is the proof, and it carries you into the rest of your track.',
     ],
   ]
     .map(
@@ -1839,9 +1831,9 @@ export function challengeView(curriculum) {
     .join('');
 
   return `<section class="hero" aria-labelledby="ch-h">
-  ${kicker('Weeks 1-4 of your track', 'amber')}
-  <h1 id="ch-h" class="rise d1">Four weeks. One cohort. <span class="grad">A real start.</span></h1>
-  <p class="hero-lede rise d2">The kickstart is simply the <strong>first four weeks of any track</strong>, done with a cohort, so you build momentum and ship a first milestone instead of stalling. Then you finish the remaining eight weeks at your own pace.</p>
+  ${kicker('Your first 30 days', 'amber')}
+  <h1 id="ch-h" class="rise d1">30 days. One cohort. <span class="grad">A real start.</span></h1>
+  <p class="hero-lede rise d2">The 30-Day Challenge is your <strong>first 30 days on any track</strong>, built alongside a cohort, so you gain momentum and ship a real product instead of stalling. Then you keep going, week by week, at your own pace.</p>
   <div class="week-bridge-wrap rise d3">${weekBridge()}</div>
   <div class="hero-actions rise d4">
     <a class="btn btn-primary" href="/start">Pick your track <span class="arrow" aria-hidden="true">→</span></a>
@@ -1851,14 +1843,14 @@ export function challengeView(curriculum) {
 
 <section class="section" aria-labelledby="wk-h">
   <div class="section-head">
-    ${kicker('Week by week')}
-    <h2 id="wk-h">Your first four weeks.</h2>
-    <p class="lead">Same curriculum as the solo track, just the opening weeks, run together with a shared deadline.</p>
+    ${kicker('Your 30 days, week by week')}
+    <h2 id="wk-h">Four weeks. One shipped product.</h2>
+    <p class="lead">The same path as the solo track, just your opening 30 days, run together with a shared deadline.</p>
   </div>
   <ol class="phase-list">${weeks}</ol>
   <div class="callout">
     <span class="callout-bar" aria-hidden="true"></span>
-    <p><strong>Then weeks 5-12 are yours.</strong> The cohort gets you moving; the rest of the 12-week track you finish solo, at your pace. With ${esc(
+    <p><strong>Then the rest is yours.</strong> The cohort gets you moving; you finish your track solo, week by week, at your own pace. With ${esc(
       curriculum.projects.length,
     )} projects across ${esc(
     curriculum.tracks.length,

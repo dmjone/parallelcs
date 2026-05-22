@@ -8,12 +8,25 @@ this project uses [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- **Front page reverted off the 12-week timeline framing**, back to a curriculum-at-a-glance
-  view (tracks, concepts, projects, curated free resources) on both the home hero stat band
-  and the `/tracks` hero proof. The 12-week journey strip (`weekJourney()`) and its CSS are
-  removed. The semester cohort is framed as a **30-day AI-builder challenge** again in the
-  pitch decks (`/pitch`, `/pitch-clo`). Reverts the home/pitch wording from the two prior
-  commits per client direction.
+- **Reframed the whole site as a journey, with one coherent timeline, chosen from research.**
+  The competing "30 days" / "4 weeks" / "12 weeks" copy is resolved by splitting the unit by
+  audience, backed by the goal-gradient effect, the unit effect (Monga & Bagchi, JCR 2012),
+  temporal discounting, and proximal sub-goal research (Bandura & Schunk, 1981):
+  - **Learner-facing surfaces lead with the near, personal horizon**: "your first 30 days" and
+    "start today", with the win ("ship a real, public product") up front. The journey then
+    continues "week by week" as proximal milestones, never an intimidating total.
+  - **The cohort on-ramp is now "The 30-Day Challenge"** everywhere (replacing the old
+    "4-week kickstart" / "weeks 1-4" concept). The `/challenge` page presents it as 30 days
+    structured as four weekly milestones, then "the rest is yours, week by week".
+  - **The faculty (`/pitch-clo`) and investor (`/pitch`) decks keep "12-week, semester-aligned
+    track"** for credibility, with the 30-Day Challenge framed explicitly as the on-ramp into
+    the tracks, so the two never read as competing totals.
+  - The shared journey bridge (`weekBridge()`) was relabeled "Your first 30 days · with a
+    cohort" then "Then week by week · your pace". The home hero stat band changed from a
+    catalog (tracks/concepts/projects/resources) to a journey (30 days to first ship, paths,
+    one public product, 100% free), removing the "scary big numbers" the client flagged.
+  - Route titles/descriptions in `server.mjs`, the home/start/tracks/track/graph/challenge
+    views, `README.md` and `CONTRACT.md` were all aligned to this single narrative.
 
 ### Added
 

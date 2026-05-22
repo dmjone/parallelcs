@@ -126,7 +126,7 @@ app.get('/start', async (req, reply) => {
     page({
       title: 'Start here, ParallelCS',
       description:
-        'Pick one track, ship one product. Begin with our recommendation, run the first four weeks with a cohort, or go solo. There is no wrong door.',
+        'Pick one track, ship one product. Begin with our recommendation, start your first 30 days with a cohort, or go solo. There is no wrong door.',
       path: '/start',
       bodyHtml: startView(curriculum),
       nonce: req.cspNonce,
@@ -141,7 +141,7 @@ app.get('/tracks', async (req, reply) => {
     page({
       title: 'Tracks, ParallelCS',
       description:
-        'Eight 12-week tracks. Pick one and start learning today, frontier AI engineering, knowledge-graph-routed through the best free material on Earth.',
+        'Eight tracks. Pick one and ship a real, public product, knowledge-graph-routed through the best free material on Earth.',
       path: '/tracks',
       bodyHtml: tracksView(curriculum),
       nonce: req.cspNonce,
@@ -262,8 +262,8 @@ app.get('/challenge', async (req, reply) => {
   html(
     reply,
     page({
-      title: 'Kickstart, weeks 1-4 of your track, ParallelCS',
-      description: 'The kickstart is the first four weeks of any track, run with a cohort so you start strong and ship a first milestone.',
+      title: 'The 30-Day Challenge, ParallelCS',
+      description: 'Your first 30 days: join a free cohort on Discord, take the mandate, and ship your first real product in the open.',
       path: '/challenge',
       bodyHtml: challengeView(curriculum),
       nonce: req.cspNonce,

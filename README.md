@@ -31,9 +31,9 @@ ParallelCS does not re-record a single lecture. It **routes**. Every resource li
 
 ParallelCS is a single self-updating service. Once per day it researches the latest free CS and AI learning resources and merges what it finds into the live curriculum. The curriculum cannot go stale, it moves with the frontier. The `/status` page reports the most recent run with full transparency.
 
-## The 30-day challenge
+## The 30-Day Challenge
 
-Each semester a free cohort runs on Discord: thirty days, one shipped product per learner. You take the mandate, learn just enough, build in the open, and ship publicly. The first cohort's deployed products become the marketing for the next, public proof, compounding.
+Each semester a free cohort runs on Discord: 30 days, one shipped product per learner. You take the mandate, learn just enough, build in the open, and ship publicly. The first cohort's deployed products become the marketing for the next, public proof, compounding.
 
 ---
 
@@ -56,7 +56,7 @@ Configuration is environment-driven and validated at startup, see `.env.example`
 | `/track/:id`      | A single 12-week track                          |
 | `/graph`          | The knowledge graph                             |
 | `/projects`       | All project briefs and rubrics                  |
-| `/challenge`      | The 30-day AI-builder challenge                 |
+| `/challenge`      | The 30-Day Challenge                            |
 | `/status`         | Last self-update result                         |
 | `/pitch`          | Ten-slide pitch deck                            |
 | `/api/curriculum` | The full curriculum as JSON                     |
