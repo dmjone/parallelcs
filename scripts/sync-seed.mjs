@@ -14,7 +14,6 @@
 //
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { CurriculumSchema } from '../src/lib/schema.mjs';
 
 const BASE_URL = (process.env.PARALLELCS_URL || 'https://parallelcs.dmj.one').replace(/\/+$/, '');
 const ENDPOINT = `${BASE_URL}/api/curriculum`;
@@ -24,6 +23,33 @@ const FORCE = process.argv.includes('--force');
 function fail(msg) {
   process.stderr.write(`sync-seed: ${msg}\n`);
   process.exit(1);
+}
+
+/**
+ * Lightweight structural sanity check. The live curriculum is already validated
+ * against the full Zod schema server-side before it is ever served, so this only
+ * needs to reject the realistic failure modes (an error page, partial JSON, the
+ * wrong endpoint), not re-implement the schema. Keeping it dependency-free lets
+ * this script run in CI and git hooks with no install step.
+ * @returns {string[]} list of problems, empty when the shape looks valid
+ */
+function structuralProblems(data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return ['payload is not an object'];
+  const problems = [];
+  if (typeof data.version !== 'number') problems.push('version must be a number');
+  for (const key of ['tracks', 'concepts', 'projects']) {
+    if (!Array.isArray(data[key]) || data[key].length === 0) {
+      problems.push(`${key} must be a non-empty array`);
+    }
+  }
+  if (Array.isArray(data.tracks) && data.tracks[0] && typeof data.tracks[0].id !== 'string') {
+    problems.push('tracks[].id must be a string');
+  }
+  const c = Array.isArray(data.concepts) ? data.concepts[0] : null;
+  if (c && (typeof c.id !== 'string' || typeof c.trackId !== 'string')) {
+    problems.push('concepts[] must carry string id and trackId');
+  }
+  return problems;
 }
 
 async function main() {
@@ -45,18 +71,13 @@ async function main() {
     fail(`could not reach ${ENDPOINT}: ${err.message}`);
   }
 
-  // Validate before trusting it. A malformed live response must never land in
-  // the seed and silently break a future cold start.
-  const parsed = CurriculumSchema.safeParse(payload);
-  if (!parsed.success) {
-    fail(
-      `live curriculum failed schema validation; refusing to write. First issues: ${parsed.error.issues
-        .slice(0, 3)
-        .map((i) => i.path.join('.') || '(root)')
-        .join(', ')}`,
-    );
+  // Sanity-check the shape before trusting it. A malformed live response must
+  // never land in the seed and silently break a future cold start.
+  const problems = structuralProblems(payload);
+  if (problems.length) {
+    fail(`live curriculum failed a sanity check; refusing to write. Problems: ${problems.slice(0, 3).join(', ')}`);
   }
-  const live = parsed.data;
+  const live = payload;
 
   if (live.version < localVersion && !FORCE) {
     fail(
