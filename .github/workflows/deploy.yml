@@ -1,0 +1,52 @@
+name: Deploy to Cloud Run
+
+# Auto-redeploy so production (and the bundled seed inside the image, for a clean
+# cold start / DR) tracks main. Authenticates to GCP with keyless Workload
+# Identity Federation, no service-account keys. The deploy inherits the existing
+# service's env, the zs-api-key secret binding and the parallelcs-run runtime SA;
+# it only swaps in the new source.
+
+on:
+  push:
+    branches: [main]
+    # Only rebuild when something that ships in the image changes (skips
+    # docs-only commits, saving Cloud Build minutes).
+    paths:
+      - "src/**"
+      - "Dockerfile"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".dockerignore"
+  workflow_dispatch: {} # manual + triggered by the seed-sync job after a seed bump
+
+permissions:
+  contents: read
+  id-token: write # required to mint the WIF OIDC token
+
+concurrency:
+  group: deploy-cloud-run
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP (keyless, Workload Identity Federation)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/107722137045/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: parallelcs-deployer@dmjone.iam.gserviceaccount.com
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy from source to Cloud Run
+        run: |
+          gcloud run deploy parallelcs \
+            --source . \
+            --region asia-east1 \
+            --project dmjone \
+            --quiet

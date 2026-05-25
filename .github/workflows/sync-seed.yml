@@ -15,9 +15,12 @@ on:
     - cron: "30 3 * * *"
   workflow_dispatch: {} # allow manual runs from the Actions tab
 
-# Only the seed commit needs write access; nothing else is granted.
+# contents: write to push the seed commit; actions: write to dispatch the deploy
+# workflow afterwards (a commit made with GITHUB_TOKEN does not itself trigger
+# other workflows, so we trigger the redeploy explicitly).
 permissions:
   contents: write
+  actions: write
 
 # Never let two syncs race.
 concurrency:
@@ -45,7 +48,9 @@ jobs:
       - name: Sync the seed from the live curriculum
         run: node scripts/sync-seed.mjs
 
-      - name: Commit and push if the seed changed
+      - name: Commit, push, and redeploy if the seed changed
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -n "$(git status --porcelain src/content/seed-curriculum.json)" ]; then
             VER="$(node -p "require('./src/content/seed-curriculum.json').version")"
@@ -55,6 +60,10 @@ jobs:
             git commit -m "chore(seed): sync bundled seed with live curriculum v${VER}"
             git push
             echo "Synced seed to v${VER}."
+            # The bot commit will not auto-trigger deploy.yml, so dispatch it,
+            # this rebuilds the image with the fresh seed (closes the DR gap).
+            gh workflow run deploy.yml --ref main
+            echo "Triggered Cloud Run redeploy for seed v${VER}."
           else
             echo "Seed already current; nothing to commit."
           fi
