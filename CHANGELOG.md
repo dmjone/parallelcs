@@ -8,6 +8,11 @@ this project uses [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- **Daily seed auto-sync** (`.github/workflows/sync-seed.yml`). A scheduled GitHub Action runs
+  `sync-seed` once a day, nudges the live weekly self-update, and commits the refreshed
+  `seed-curriculum.json` to `main` only when the live version has advanced. Keeps the repo in
+  step with the self-evolving production curriculum, hands-off and keyless (uses the default
+  `GITHUB_TOKEN`). Also runnable on demand via `workflow_dispatch`.
 - **Seed-freshness pre-push guard.** `scripts/check-seed-freshness.mjs` compares the bundled
   `src/content/seed-curriculum.json` version against the live `/api/curriculum` version and
   blocks a push when the live curriculum is newer, so a cold start / DR restore can never

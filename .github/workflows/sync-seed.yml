@@ -1,0 +1,60 @@
+name: Sync seed with live curriculum
+
+# Keeps the bundled src/content/seed-curriculum.json in step with the live,
+# self-evolving curriculum. The running service evolves its curriculum weekly
+# (triggered by traffic) and stores it in GCS; this job pulls the live version
+# into the repo so a cold start / DR restore never reseeds stale content.
+#
+# Idempotent: scripts/sync-seed.mjs no-ops when versions match and refuses to
+# downgrade, so a daily run only commits when the live version actually advances.
+
+on:
+  schedule:
+    # 03:30 UTC daily (09:00 IST). Daily cadence reliably catches the weekly
+    # self-update whenever it lands during the week.
+    - cron: "30 3 * * *"
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+# Only the seed commit needs write access; nothing else is granted.
+permissions:
+  contents: write
+
+# Never let two syncs race.
+concurrency:
+  group: sync-seed
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Nudge the live weekly self-update (best effort)
+        # A page request fires the decoupled weekly refresh if the IST week is
+        # stale. Best effort: the refresh runs async and may finish after this
+        # job, in which case tomorrow's run picks up the new version.
+        run: curl -fsS --max-time 30 "https://parallelcs.dmj.one/" > /dev/null || true
+
+      - name: Sync the seed from the live curriculum
+        run: node scripts/sync-seed.mjs
+
+      - name: Commit and push if the seed changed
+        run: |
+          if [ -n "$(git status --porcelain src/content/seed-curriculum.json)" ]; then
+            VER="$(node -p "require('./src/content/seed-curriculum.json').version")"
+            git config user.name "parallelcs-seed-bot"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add src/content/seed-curriculum.json
+            git commit -m "chore(seed): sync bundled seed with live curriculum v${VER}"
+            git push
+            echo "Synced seed to v${VER}."
+          else
+            echo "Seed already current; nothing to commit."
+          fi
