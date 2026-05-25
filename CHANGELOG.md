@@ -6,8 +6,24 @@ this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- **Seed-freshness pre-push guard.** `scripts/check-seed-freshness.mjs` compares the bundled
+  `src/content/seed-curriculum.json` version against the live `/api/curriculum` version and
+  blocks a push when the live curriculum is newer, so a cold start / DR restore can never
+  reseed production with stale local content. Fails open when the server is unreachable;
+  bypass with `SKIP_SEED_CHECK=1`. It runs via a generic dispatcher in the global
+  `core.hooksPath` (no per-repo hooksPath override, leaves the global `pre-commit` intact).
+- **`scripts/sync-seed.mjs`** (`pnpm sync-seed`) pulls the live curriculum into the seed,
+  validates it against the schema, and refuses to downgrade. `PARALLELCS_URL` overrides the
+  source (defaults to production).
+
 ### Changed
 
+- Synced the bundled seed curriculum from the live service: **version 1 -> 3** (67 concepts).
+  Keeps a cold start / DR restore at parity with the self-evolved production curriculum.
+- README corrected: eight tracks (was "four"), weekly self-update (was "once per day"),
+  Node 22+ (was 24+); documented the seed-sync workflow and the pre-push guard.
 - **Reframed the whole site as a journey, with one coherent timeline, chosen from research.**
   The competing "30 days" / "4 weeks" / "12 weeks" copy is resolved by splitting the unit by
   audience, backed by the goal-gradient effect, the unit effect (Monga & Bagchi, JCR 2012),

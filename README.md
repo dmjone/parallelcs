@@ -14,7 +14,7 @@ It is free. It is course-aligned. It exists to get you hired.
 
 ## What it is
 
-Four twelve-week elite tracks, one knowledge graph:
+Eight elite tracks, one knowledge graph (the set evolves with the frontier). A few of them:
 
 - **Agentic Systems Engineering**, multi-agent orchestration, evals, autonomous delivery.
 - **AI Infrastructure & Inference**, serving, batching, quantization at production scale.
@@ -29,7 +29,7 @@ ParallelCS does not re-record a single lecture. It **routes**. Every resource li
 
 ## How it stays current
 
-ParallelCS is a single self-updating service. Once per day it researches the latest free CS and AI learning resources and merges what it finds into the live curriculum. The curriculum cannot go stale, it moves with the frontier. The `/status` page reports the most recent run with full transparency.
+ParallelCS is a single self-updating service. Once a week it researches the latest free CS and AI learning resources and merges what it finds into the live curriculum. The curriculum cannot go stale, it moves with the frontier. The `/status` page reports the most recent run with full transparency.
 
 ## The 30-Day Challenge
 
@@ -39,7 +39,7 @@ Each semester a free cohort runs on Discord: 30 days, one shipped product per le
 
 ## Run it locally
 
-Requires Node 24+ and [pnpm](https://pnpm.io/).
+Requires Node 22+ and [pnpm](https://pnpm.io/).
 
 ```bash
 pnpm install
@@ -47,6 +47,29 @@ pnpm start        # serves on http://localhost:8080
 ```
 
 Configuration is environment-driven and validated at startup, see `.env.example`. The service seeds itself from `src/content/seed-curriculum.json` on first run.
+
+## Keeping the seed fresh
+
+The live service evolves its curriculum weekly and stores it in GCS. The bundled `src/content/seed-curriculum.json` is only used to seed a **cold** bucket (first run or disaster recovery), so it must never fall behind the live version, or a cold start would regress production to stale content.
+
+Pull the live curriculum into the seed before it drifts (this never downgrades a newer seed):
+
+```bash
+pnpm sync-seed                                   # from production
+PARALLELCS_URL=http://localhost:8099 pnpm sync-seed   # from a local instance
+```
+
+A **pre-push guard** enforces the invariant: it blocks a push when the live `/api/curriculum` version is newer than your seed, and tells you to run `pnpm sync-seed` first. It fails open when the server is unreachable, and is bypassable with `SKIP_SEED_CHECK=1 git push` (or `git push --no-verify`).
+
+The check itself ships in the repo (`scripts/check-seed-freshness.mjs`). It runs through a generic pre-push dispatcher in your global `core.hooksPath`, so it does not disturb other repos or your global `pre-commit`. To install the dispatcher on a fresh machine, drop this into `$(git config --global core.hooksPath)/pre-push` and `chmod +x` it:
+
+```sh
+#!/bin/sh
+root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+check="$root/scripts/check-seed-freshness.mjs"
+[ -f "$check" ] || exit 0
+exec node "$check"
+```
 
 ## Routes
 
