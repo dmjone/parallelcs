@@ -48,9 +48,10 @@ this project uses [Semantic Versioning](https://semver.org/).
 - **ESLint v9 flat config** (`eslint.config.mjs`). Locks down `no-console`,
   `no-eval`, `no-implied-eval`, `no-new-func` across `src/` and `scripts/`;
   `test/**` keeps `console.log` for test output.
-- **`CF_EDGE_SECRET` provisioned in Secret Manager** (`cf-edge-secret`, runtime SA
-  scoped). Activation is one Cloud Run env update once Cloudflare is configured to
-  inject the header.
+- **`CF_EDGE_SECRET` activated as a plain Cloud Run env var** (no Secret Manager
+  entry, keeps the secret count inside the free tier). The code reads it from
+  `env.CF_EDGE_SECRET`; activation is one `gcloud run services update ... --update-env-vars`
+  once the matching Cloudflare Transform Rule is in place.
 - **Daily seed auto-sync** (`.github/workflows/sync-seed.yml`). A scheduled GitHub Action runs
   `sync-seed` once a day, nudges the live weekly self-update, and commits the refreshed
   `seed-curriculum.json` to `main` only when the live version has advanced. Keeps the repo in
