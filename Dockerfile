@@ -2,7 +2,7 @@
 # Stage 1 installs production dependencies; stage 2 is a lean, non-root runtime.
 
 # --- deps -----------------------------------------------------------------
-FROM node:24-alpine AS deps
+FROM node:26-alpine AS deps
 WORKDIR /app
 # Pin pnpm via corepack. The version is fixed (not "latest") so the build is
 # deterministic and matches the committed lockfile's generator, newer pnpm
@@ -15,7 +15,7 @@ COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # --- runtime --------------------------------------------------------------
-FROM node:24-alpine AS runtime
+FROM node:26-alpine AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 
