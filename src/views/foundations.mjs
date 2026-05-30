@@ -276,6 +276,82 @@ export const FOUNDATIONS_CSS = `
   background:var(--surface-2);border:1px dashed var(--line-hard);color:var(--ink-soft);
   font-size:.94rem;
 }
+
+/* ---- why-this-resource expandable framing ---- */
+.f-explainer{
+  margin-top:1rem;padding:0;border-radius:var(--r);
+  background:var(--surface-2);border:1px solid var(--line);
+  box-shadow:var(--shadow-1);overflow:hidden;
+}
+.f-explainer[open]{box-shadow:var(--shadow-2)}
+.f-explainer-summary{
+  cursor:pointer;padding:.85rem 1.1rem;font-weight:700;color:var(--ink);
+  display:flex;align-items:center;gap:.55rem;list-style:none;
+  font-size:.95rem;border-left:4px solid var(--indigo);
+}
+.f-explainer-summary::-webkit-details-marker{display:none}
+.f-explainer-summary::before{
+  content:"+";display:inline-grid;place-items:center;
+  width:20px;height:20px;border-radius:6px;
+  background:var(--indigo-tint);color:var(--indigo-deep);
+  font-weight:900;font-size:.85rem;flex:none;
+}
+.f-explainer[open] .f-explainer-summary::before{content:"–"}
+.f-explainer-body{
+  padding:1rem 1.2rem 1.2rem;color:var(--ink-soft);font-size:.95rem;line-height:1.6;
+  border-top:1px solid var(--line);background:var(--surface);
+}
+.f-explainer-body p{margin:0 0 .65rem;text-align:justify}
+.f-explainer-body p:last-child{margin-bottom:0}
+
+/* ---- artifact-review form ---- */
+.f-review{
+  margin-top:1.6rem;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);box-shadow:var(--shadow-1);padding:1.2rem 1.3rem;
+}
+.f-review h2{margin:0 0 .35rem;font-size:1.1rem}
+.f-review .f-review-note{
+  margin:0 0 .9rem;font-size:.86rem;color:var(--ink-soft);text-align:justify;
+}
+.f-review-form{display:flex;flex-direction:column;gap:.6rem}
+.f-review-form textarea{
+  width:100%;min-height:160px;resize:vertical;padding:.7rem .85rem;
+  font:inherit;font-size:.94rem;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:var(--surface);border:1px solid var(--line-hard);border-radius:var(--r-sm);
+}
+.f-review-form textarea:focus{outline:3px solid var(--indigo);outline-offset:1px;border-color:var(--indigo)}
+.f-review-form .f-row{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+.f-review-form .f-count{font-size:.78rem;color:var(--ink-faint);font-weight:600}
+.f-review-form button{
+  font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;
+  padding:.62rem 1.2rem;border-radius:999px;border:1px solid var(--indigo-deep);
+  color:#fff;background:linear-gradient(160deg,#5650f0,var(--indigo));
+  box-shadow:0 6px 18px -6px #3b35e0aa,0 1px 0 #ffffff33 inset;
+}
+.f-review-form button:hover{transform:translateY(-1px)}
+.f-review-form button[disabled]{opacity:.55;cursor:wait;transform:none;box-shadow:none}
+.f-review-out{
+  margin-top:.9rem;padding:0;border-radius:var(--r-sm);
+  background:var(--surface-2);min-height:0;
+}
+.f-review-out:not(:empty){padding:.9rem 1rem;border:1px solid var(--line)}
+.f-review-out p{margin:0 0 .55rem;color:var(--ink);font-size:.95rem;line-height:1.55;text-align:justify}
+.f-review-out p:last-child{margin-bottom:0}
+.f-review-out .is-error{color:var(--rose)}
+
+/* ---- reflection prompts ---- */
+.f-reflect{
+  margin-top:1.6rem;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);box-shadow:var(--shadow-1);padding:1.2rem 1.3rem;
+  border-left:4px solid var(--emerald);
+}
+.f-reflect h2{margin:0 0 .35rem;font-size:1.1rem;color:var(--emerald-deep)}
+.f-reflect .f-reflect-note{
+  margin:0 0 .9rem;font-size:.86rem;color:var(--ink-soft);text-align:justify;
+}
+.f-reflect-ol{margin:0;padding-left:1.25rem;display:flex;flex-direction:column;gap:.55rem}
+.f-reflect-ol li{color:var(--ink);font-size:.96rem;line-height:1.55;padding-left:.25rem}
+.f-reflect-ol li::marker{color:var(--emerald-deep);font-weight:800}
 `;
 
 /* ------------------------------------------------------------------ */
@@ -381,12 +457,27 @@ export function foundationsHomeView(foundations) {
 
 /**
  * Render a single Foundations week page.
+ *
+ * The optional `opts` argument carries data pre-fetched by the route handler
+ * for the three new ZS-backed surfaces that only render on coach-on weeks:
+ *   - `explainerHtml`     server-rendered "Why this resource? 60 second
+ *                         framing" HTML, injected inside a <details> block
+ *                         directly below the primary resource card.
+ *   - `reflectionPrompts` an array of plain prompt strings rendered as an
+ *                         ordered list at the very bottom of the page.
+ * Both default to empty / empty-array so the signature stays backward
+ * compatible with the Phase 1+2 callers. On coach-off weeks
+ * (`coach-off-micro-checkpoint`, `final-gate`) the explainer, the artifact
+ * review form, and the reflection prompts are ALL omitted, the same way the
+ * coach widget itself is omitted on those weeks.
+ *
  * @param {FoundationsWeek} week
  * @param {Foundations} foundations
  * @param {string} nonce
+ * @param {{explainerHtml?: string, reflectionPrompts?: string[]}} [opts]
  * @returns {string} bodyHtml
  */
-export function foundationsWeekView(week, foundations, nonce) {
+export function foundationsWeekView(week, foundations, nonce, opts = {}) {
   const weeks = (foundations && Array.isArray(foundations.weeks)) ? foundations.weeks : [];
   const total = weeks.length || 12;
   const w = Number(week && week.week) || 1;
@@ -398,6 +489,9 @@ export function foundationsWeekView(week, foundations, nonce) {
   const rUrl = r.url;
   const rCredit = r.author;
   const shippedArtifact = (week && week.shippedArtifact) || '';
+  const explainerHtml = (opts && typeof opts.explainerHtml === 'string') ? opts.explainerHtml : '';
+  const reflectionPrompts = (opts && Array.isArray(opts.reflectionPrompts)) ? opts.reflectionPrompts : [];
+  const coachOn = kind !== 'coach-off-micro-checkpoint' && kind !== 'final-gate';
 
   const prevW = w > 1 ? w - 1 : null;
   const nextW = w < total ? w + 1 : null;
@@ -424,6 +518,17 @@ export function foundationsWeekView(week, foundations, nonce) {
   </div>
 </section>`;
 
+  // Why-this-resource expandable framing, coach-on weeks only.
+  // The route pre-fetches the explainer HTML (already escaped and wrapped in
+  // <p> tags by the loader; see foundationsResourceExplainerHtml). On coach-off
+  // weeks we omit the disclosure entirely; the page stays minimal and honest.
+  const explainerBlock = (coachOn && explainerHtml)
+    ? `<details class="f-explainer">
+  <summary class="f-explainer-summary">Why this resource? 60 second framing</summary>
+  <div class="f-explainer-body">${explainerHtml}</div>
+</details>`
+    : '';
+
   let checkpointBlock = '';
   let coachBlock = '';
   if (kind === 'coach-off-micro-checkpoint') {
@@ -444,6 +549,101 @@ export function foundationsWeekView(week, foundations, nonce) {
     coachBlock = foundationsCoachWidgetHtml(week, nonce);
   }
 
+  // Artifact review form, coach-on weeks only. Pure HTML form posting to
+  // /foundations/review. The inline nonced script reads the form, posts JSON,
+  // and renders the response into #f-review-out via textContent only. No
+  // innerHTML on untrusted data, no external assets, no inline handlers.
+  const reviewBlock = coachOn
+    ? `<section class="f-review" aria-labelledby="f-review-h">
+  <h2 id="f-review-h">Ask for a Socratic review of your artifact</h2>
+  <p class="f-review-note">Paste your README (or a draft of it). The coach will read it like an honest senior would, ask one question that surfaces the weakest link, and point at one thing to tighten. It will not rewrite it for you. Maximum 8000 characters.</p>
+  <form id="f-review-form" class="f-review-form" action="/foundations/review" method="post" aria-label="Ask for a Socratic artifact review">
+    <input type="hidden" name="week" value="${esc(w)}">
+    <label class="visually-hidden" for="f-review-input">Paste your README text</label>
+    <textarea id="f-review-input" name="readme" maxlength="8000" placeholder="# my-week-${esc(w)}-artifact&#10;&#10;Paste the README of the repo you shipped this week. The coach will ask, not rewrite."></textarea>
+    <div class="f-row">
+      <span class="f-count" id="f-review-count">0 / 8000</span>
+      <button type="submit" id="f-review-send">Ask for a Socratic review</button>
+    </div>
+  </form>
+  <div id="f-review-out" class="f-review-out" role="status" aria-live="polite"></div>
+  <script nonce="${esc(nonce || '')}">
+  (function(){
+    var WEEK = ${Number(w)};
+    var MAX = 8000;
+    var form = document.getElementById('f-review-form');
+    var input = document.getElementById('f-review-input');
+    var send = document.getElementById('f-review-send');
+    var out = document.getElementById('f-review-out');
+    var count = document.getElementById('f-review-count');
+    if (!form || !input || !send || !out || !count) return;
+
+    function clearOut(){ while (out.firstChild) out.removeChild(out.firstChild); }
+    function emit(text, isError){
+      var p = document.createElement('p');
+      if (isError) p.className = 'is-error';
+      p.textContent = text;
+      out.appendChild(p);
+    }
+    function renderReply(text){
+      clearOut();
+      var parts = String(text).split(/\\n\\n+/);
+      var i;
+      for (i = 0; i < parts.length; i++) {
+        var trimmed = parts[i].replace(/^\\s+|\\s+$/g, '');
+        if (trimmed) emit(trimmed, false);
+      }
+    }
+    function setBusy(b){
+      send.disabled = b;
+      input.readOnly = b;
+      send.textContent = b ? 'Reading ...' : 'Ask for a Socratic review';
+    }
+
+    input.addEventListener('input', function(){
+      if (input.value.length > MAX) input.value = input.value.slice(0, MAX);
+      count.textContent = input.value.length + ' / ' + MAX;
+    });
+
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var text = (input.value || '').replace(/^\\s+|\\s+$/g, '');
+      if (!text) { clearOut(); emit('Paste your README first, even a draft.', true); return; }
+      clearOut();
+      setBusy(true);
+      fetch('/foundations/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ week: WEEK, readme: text }),
+        credentials: 'same-origin'
+      }).then(function(res){
+        return res.json().then(function(data){ return { ok: res.ok, status: res.status, data: data }; })
+          .catch(function(){ return { ok: res.ok, status: res.status, data: null }; });
+      }).then(function(r){
+        if (!r.ok) {
+          var msg = (r.data && (r.data.error || r.data.message)) || ('Review unavailable (HTTP ' + r.status + ').');
+          emit(String(msg), true);
+          return;
+        }
+        var reply = r.data && (r.data.reply || r.data.message || r.data.content);
+        if (!reply) { emit('The coach returned no review. Try again, or trim your README first.', true); return; }
+        renderReply(String(reply));
+      }).catch(function(){
+        emit('Network error. Check your connection and try again.', true);
+      }).then(function(){ setBusy(false); });
+    });
+  })();
+  </script>
+</section>`
+    : '';
+
+  // Reflection prompts, coach-on weeks only. Rendered as an <ol> at the very
+  // bottom of the page. The route pre-fetches the prompts; we never call the
+  // model from this view.
+  const reflectionBlock = (coachOn && reflectionPrompts.length)
+    ? foundationsReflectionPromptsHtml(reflectionPrompts)
+    : '';
+
   return `<p class="crumbs"><a href="/">Home</a> &rsaquo; <a href="/foundations">Foundations</a> &rsaquo; <span>Week ${esc(w)}</span></p>
 <section class="f-week-hero" aria-labelledby="f-week-h">
   ${kicker(`Week ${esc(w)} of ${esc(total)}`, 'indigo')}
@@ -452,6 +652,8 @@ export function foundationsWeekView(week, foundations, nonce) {
 </section>
 
 ${resourceBlock}
+
+${explainerBlock}
 
 ${artifactBlock}
 
@@ -466,7 +668,11 @@ ${artifactBlock}
 
 ${checkpointBlock}
 
-${coachBlock}`;
+${coachBlock}
+
+${reviewBlock}
+
+${reflectionBlock}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -577,5 +783,70 @@ export function foundationsCoachWidgetHtml(week, nonce) {
     });
   })();
   </script>
+</section>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* foundationsResourceExplainerHtml, server-rendered "why this resource" */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Wrap a pre-fetched explainer payload into safe paragraph HTML for the
+ * "Why this resource? 60 second framing" disclosure inside the week page.
+ *
+ * The route owns the model call and the GCS cache (one entry per
+ * (week, contentHash), since the framing is identical for every student on
+ * that week). The view never calls the model. This helper accepts either:
+ *   - a plain string (paragraphs split on blank lines, every paragraph
+ *     HTML-escaped, then wrapped in <p>...</p>), or
+ *   - an array of strings (each entry escaped and wrapped in its own <p>).
+ * It NEVER trusts pre-escaped HTML; the output is always the result of
+ * passing the raw text through `esc()`.
+ *
+ * On empty/invalid input it returns an empty string, which makes the view
+ * omit the entire <details> block.
+ *
+ * @param {(string|string[])} input
+ * @returns {string} HTML fragment to inject inside `.f-explainer-body`
+ */
+export function foundationsResourceExplainerHtml(input) {
+  let paragraphs;
+  if (Array.isArray(input)) {
+    paragraphs = input.map((p) => String(p || '').trim()).filter(Boolean);
+  } else if (typeof input === 'string') {
+    paragraphs = input.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
+  } else {
+    paragraphs = [];
+  }
+  if (!paragraphs.length) return '';
+  return paragraphs.map((p) => `<p>${esc(p)}</p>`).join('');
+}
+
+/* ------------------------------------------------------------------ */
+/* foundationsReflectionPromptsHtml, end-of-week reflection prompts    */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Render an ordered list of reflection prompts for the bottom of a week page.
+ * Each prompt is HTML-escaped before insertion. The header copy is fixed and
+ * non-AI-generated; only the three prompt strings come from the route.
+ *
+ * The signature is permissive: empty / non-array input returns "" so the
+ * caller (the week view) can drop it in unconditionally and the section
+ * disappears when there is nothing to render.
+ *
+ * @param {string[]} prompts
+ * @returns {string} HTML fragment (a full `<section>`)
+ */
+export function foundationsReflectionPromptsHtml(prompts) {
+  const list = Array.isArray(prompts)
+    ? prompts.map((p) => String(p || '').trim()).filter(Boolean)
+    : [];
+  if (!list.length) return '';
+  const items = list.map((p) => `<li>${esc(p)}</li>`).join('');
+  return `<section class="f-reflect" aria-labelledby="f-reflect-h">
+  <h2 id="f-reflect-h">Before you close the tab</h2>
+  <p class="f-reflect-note">Three short questions to answer in your own words, even just in your head. The point is to notice what you actually learned this week, not to perform learning back at the coach.</p>
+  <ol class="f-reflect-ol">${items}</ol>
 </section>`;
 }

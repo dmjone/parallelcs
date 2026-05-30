@@ -184,5 +184,71 @@ for (let n = 1; n <= 12; n += 1) {
   }));
 }
 
+// ---- Phase 2.5: ZS-backed surfaces gated by week.checkpointKind. The three
+// new opts (`explainerHtml`, `reflectionPrompts`) plus the in-view artifact
+// review form must all appear on a coach-on week (1) and must all be absent on
+// the coach-off micro-checkpoint (4) and the final-gate week (12), EVEN WHEN
+// opts are populated identically across all three weeks. The assertion is
+// about the view's gate, not about whether opts happen to be empty.
+//
+// We deliberately do not invoke `getResourceExplainer` / `getReflectionPrompts`
+// here. This test file is network-free by design (line 1) and Owner B's
+// helpers cannot be cleanly stubbed without a custom ESM loader, which the
+// fixed verify command (`node test/update-resilience.mjs`) cannot install.
+// Instead we import the exported `_internal` fallback constants from
+// `foundations-ai.mjs` and feed them through the view. That keeps this test
+// tied to the same fallback bytes the helpers return when ZS_API_KEY is empty,
+// so a drift in Owner B's fallback strings would surface here too.
+console.log('\n=== FOUNDATIONS PHASE 2.5 (gated surfaces) ===');
+let phase25Fails = 0;
+const Fai = await import('../src/lib/foundations-ai.mjs');
+const explainerHtml = Fai._internal.EXPLAINER_FALLBACK_HTML;
+const reflectionPrompts = Fai._internal.REFLECT_FALLBACK.slice();
+const opts = { explainerHtml, reflectionPrompts };
+
+// Stable substrings from Owner A's view. These three exist together only on
+// coach-on weeks; the week page omits the explainer <details>, the review
+// <section>, and the reflection <ol> on weeks 4, 8 and 12.
+const EXPLAINER_NEEDLE = 'Why this resource? 60 second framing';
+const REFLECT_NEEDLE = 'f-reflect-ol';
+const REVIEW_NEEDLE = 'action="/foundations/review"';
+
+const expect = (label, cond) => {
+  if (cond) {
+    console.log(`  ok   ${label}`);
+  } else {
+    phase25Fails += 1;
+    console.log(`  FAIL ${label}`);
+  }
+};
+
+const renderWeekWithOpts = (n) => {
+  const week = Fl.getWeek(n);
+  return Fv.foundationsWeekView(week, foundations, nonce, opts);
+};
+
+// Week 1: coach is on, all three surfaces must be present.
+const w1Html = renderWeekWithOpts(1);
+expect('week 1 contains explainer disclosure', w1Html.includes(EXPLAINER_NEEDLE));
+expect('week 1 contains reflection ol', w1Html.includes(REFLECT_NEEDLE));
+expect('week 1 contains review form', w1Html.includes(REVIEW_NEEDLE));
+expect('week 1 explainer fallback HTML rendered as-is', w1Html.includes(explainerHtml));
+expect('week 1 first reflection prompt rendered', w1Html.includes(reflectionPrompts[0]));
+
+// Week 4: coach-off micro-checkpoint, every Phase 2.5 surface must be absent
+// even though opts are populated identically to week 1.
+const w4Html = renderWeekWithOpts(4);
+expect('week 4 omits explainer disclosure', !w4Html.includes(EXPLAINER_NEEDLE));
+expect('week 4 omits reflection ol', !w4Html.includes(REFLECT_NEEDLE));
+expect('week 4 omits review form', !w4Html.includes(REVIEW_NEEDLE));
+
+// Week 12: final ship gate, same expectation.
+const w12Html = renderWeekWithOpts(12);
+expect('week 12 omits explainer disclosure', !w12Html.includes(EXPLAINER_NEEDLE));
+expect('week 12 omits reflection ol', !w12Html.includes(REFLECT_NEEDLE));
+expect('week 12 omits review form', !w12Html.includes(REVIEW_NEEDLE));
+
+renderFails += phase25Fails;
+
 console.log(`\n=== RESULT: ${renderFails === 0 ? 'ALL VIEWS RENDERED, layout intact' : renderFails + ' RENDER FAILURES'} ===`);
 process.exit(renderFails === 0 ? 0 : 1);

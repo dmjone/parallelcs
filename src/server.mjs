@@ -29,6 +29,11 @@ import { getDeepDive } from './lib/deepdive.mjs';
 import { foundationsHomeView, foundationsWeekView, FOUNDATIONS_CSS } from './views/foundations.mjs';
 import { getFoundations, getWeek } from './lib/foundations.mjs';
 import { coachReply } from './lib/coach.mjs';
+import {
+  getResourceExplainer,
+  getReflectionPrompts,
+  reviewArtifact,
+} from './lib/foundations-ai.mjs';
 
 const app = Fastify({
   logger: loggerOptions,
@@ -66,15 +71,21 @@ app.addHook('onRequest', async (req, reply) => {
 
 // --- Self-update gate (page routes only) ----------------------------------
 const HTML_ROUTES = new Set(['/', '/start', '/tracks', '/graph', '/projects', '/challenge', '/status', '/ready', '/foundations']);
+// Bare Foundations week page only. The Phase 2.5 sub-paths
+// (/foundations/week/N/explain, /foundations/week/N/reflect) are JSON endpoints
+// and must NOT pay the self-update gate cost.
+const FOUNDATIONS_WEEK_PAGE_RE = /^\/foundations\/week\/\d+$/;
 function isPageRoute(url) {
   const path = url.split('?')[0];
-  // /foundations/coach is a JSON POST endpoint, not a page; never self-update gate it.
+  // /foundations/coach and /foundations/review are JSON POST endpoints, not
+  // pages; never self-update gate them.
   if (path === '/foundations/coach') return false;
+  if (path === '/foundations/review') return false;
   return (
     HTML_ROUTES.has(path) ||
     path.startsWith('/track/') ||
     path.startsWith('/learn/') ||
-    path.startsWith('/foundations/week/')
+    FOUNDATIONS_WEEK_PAGE_RE.test(path)
   );
 }
 
@@ -122,6 +133,31 @@ function coachAllowed(ip) {
   b.tokens -= 1;
   coachBuckets.set(ip, b);
   if (coachBuckets.size > 5000) coachBuckets.clear();
+  return true;
+}
+
+// --- Per-IP token bucket guarding the Foundations AI surfaces ------------
+// Shared across the explainer, reflection prompts and artifact review JSON
+// endpoints. Explainer and reflection both hit a per-week GCS cache so most
+// traffic never touches the model, but the bucket still bounds the burst that
+// could trigger live generation or abuse the artifact review (which is never
+// cached). Same shape as learnAllowed / coachAllowed.
+const AI_BURST = 20;
+const AI_WINDOW_MS = 60_000;
+const aiBuckets = new Map();
+function aiAllowed(ip) {
+  const now = Date.now();
+  const b = aiBuckets.get(ip) || { tokens: AI_BURST, at: now };
+  const refill = ((now - b.at) / AI_WINDOW_MS) * AI_BURST;
+  b.tokens = Math.min(AI_BURST, b.tokens + refill);
+  b.at = now;
+  if (b.tokens < 1) {
+    aiBuckets.set(ip, b);
+    return false;
+  }
+  b.tokens -= 1;
+  aiBuckets.set(ip, b);
+  if (aiBuckets.size > 5000) aiBuckets.clear();
   return true;
 }
 
@@ -392,17 +428,205 @@ app.get('/foundations/week/:n', async (req, reply) => {
     );
   }
   const foundations = getFoundations();
+
+  // Pre-fetch the AI explainer + reflection prompts on coach-on weeks only.
+  // Gate weeks (coach-off-micro-checkpoint, final-gate) skip the fetch
+  // entirely; the helpers throw on those weeks by design. CRITICAL: this
+  // pre-fetch passes { cacheOnly: true } so a cold cache returns the static
+  // fallback synchronously without calling ZS. The dedicated /explain and
+  // /reflect JSON routes are the ONLY surfaces that may trigger live ZS
+  // generation, and they are rate-limited via aiAllowed. Without cacheOnly,
+  // a flood of cold-cache page renders bypasses every rate limit.
+  let opts = { explainerHtml: '', reflectionPrompts: [] };
+  const kind = week.checkpointKind;
+  if (kind !== 'coach-off-micro-checkpoint' && kind !== 'final-gate') {
+    try {
+      const [exp, refl] = await Promise.all([
+        getResourceExplainer(week, { cacheOnly: true }),
+        getReflectionPrompts(week, { cacheOnly: true }),
+      ]);
+      opts = {
+        explainerHtml: (exp && typeof exp.html === 'string') ? exp.html : '',
+        reflectionPrompts: (refl && Array.isArray(refl.prompts)) ? refl.prompts : [],
+      };
+    } catch (err) {
+      req.log.warn({ err, week: week.week }, 'foundations week page ai pre-fetch failed');
+      opts = { explainerHtml: '', reflectionPrompts: [] };
+    }
+  }
+
   html(
     reply,
     page({
       title: `Week ${week.week}, ${week.theme}, Foundations, ParallelCS`,
       description: week.objective,
       path: `/foundations/week/${week.week}`,
-      bodyHtml: foundationsWeekView(week, foundations, req.cspNonce),
+      bodyHtml: foundationsWeekView(week, foundations, req.cspNonce, opts),
       nonce: req.cspNonce,
       extraStyles: FOUNDATIONS_CSS,
     }),
   );
+});
+
+// --- Foundations AI: per-week resource explainer (JSON) -------------------
+// Cached per (week, primary resource URL) in GCS. Cache hits are public/SWR;
+// misses (and degraded fallbacks) are no-store. Gate weeks 4, 8, 12 return
+// 404 because the surface must not exist on coach-off weeks.
+app.get('/foundations/week/:n/explain', async (req, reply) => {
+  const n = Number.parseInt(req.params.n, 10);
+  const valid = Number.isInteger(n) && n >= 1 && n <= 12 && String(n) === String(req.params.n).trim();
+  const week = valid ? getWeek(n) : null;
+  if (!week) {
+    reply.code(404);
+    return html(
+      reply,
+      page({
+        title: 'Not found, ParallelCS',
+        description: 'The page you requested does not exist.',
+        path: req.url,
+        bodyHtml: notFoundView(),
+        nonce: req.cspNonce,
+      }),
+    );
+  }
+  if (week.checkpointKind === 'coach-off-micro-checkpoint' || week.checkpointKind === 'final-gate') {
+    reply.code(404);
+    return html(
+      reply,
+      page({
+        title: 'Not found, ParallelCS',
+        description: 'The page you requested does not exist.',
+        path: req.url,
+        bodyHtml: notFoundView(),
+        nonce: req.cspNonce,
+      }),
+    );
+  }
+  if (!aiAllowed(req.ip)) {
+    reply.code(429).header('Retry-After', '30').header('Cache-Control', 'no-store');
+    return { error: 'rate_limited' };
+  }
+  try {
+    const result = await getResourceExplainer(week);
+    const cacheControl = result.cached
+      ? 'public, max-age=600, stale-while-revalidate=600'
+      : 'no-store';
+    reply.header('Cache-Control', cacheControl);
+    return {
+      html: result.html,
+      cached: result.cached,
+      degraded: result.degraded,
+      week: n,
+    };
+  } catch (err) {
+    req.log.error({ err, week: n }, 'foundations explainer failed');
+    reply.code(500).header('Cache-Control', 'no-store');
+    return { error: 'explain_unavailable' };
+  }
+});
+
+// --- Foundations AI: per-week retrieval-style reflection prompts (JSON) ---
+// Same cache + gate + rate-limit shape as the explainer. Cache-Control mirrors
+// the explainer for consistency since both are per-week cacheable.
+app.get('/foundations/week/:n/reflect', async (req, reply) => {
+  const n = Number.parseInt(req.params.n, 10);
+  const valid = Number.isInteger(n) && n >= 1 && n <= 12 && String(n) === String(req.params.n).trim();
+  const week = valid ? getWeek(n) : null;
+  if (!week) {
+    reply.code(404);
+    return html(
+      reply,
+      page({
+        title: 'Not found, ParallelCS',
+        description: 'The page you requested does not exist.',
+        path: req.url,
+        bodyHtml: notFoundView(),
+        nonce: req.cspNonce,
+      }),
+    );
+  }
+  if (week.checkpointKind === 'coach-off-micro-checkpoint' || week.checkpointKind === 'final-gate') {
+    reply.code(404);
+    return html(
+      reply,
+      page({
+        title: 'Not found, ParallelCS',
+        description: 'The page you requested does not exist.',
+        path: req.url,
+        bodyHtml: notFoundView(),
+        nonce: req.cspNonce,
+      }),
+    );
+  }
+  if (!aiAllowed(req.ip)) {
+    reply.code(429).header('Retry-After', '30').header('Cache-Control', 'no-store');
+    return { error: 'rate_limited' };
+  }
+  try {
+    const result = await getReflectionPrompts(week);
+    const cacheControl = result.cached
+      ? 'public, max-age=600, stale-while-revalidate=600'
+      : 'no-store';
+    reply.header('Cache-Control', cacheControl);
+    return {
+      prompts: result.prompts,
+      cached: result.cached,
+      degraded: result.degraded,
+      week: n,
+    };
+  } catch (err) {
+    req.log.error({ err, week: n }, 'foundations reflect failed');
+    reply.code(500).header('Cache-Control', 'no-store');
+    return { error: 'reflect_unavailable' };
+  }
+});
+
+// --- Foundations AI: Socratic artifact review (JSON) ----------------------
+// Per-student input, never cached. Hard 8000-char cap on readmeText. Gate
+// check runs BEFORE the rate-limit so a request on a coach-off week is a
+// clean 403, not a 429. NEVER throws to the client; unexpected failure is a
+// 500 with a generic body.
+app.post('/foundations/review', async (req, reply) => {
+  reply.header('Cache-Control', 'no-store');
+  const body = req.body && typeof req.body === 'object' ? req.body : {};
+  const weekNum = Number.parseInt(body.week, 10);
+  if (!Number.isInteger(weekNum) || weekNum < 1 || weekNum > 12) {
+    reply.code(400);
+    return { error: 'invalid week' };
+  }
+  // Form posts {week, readme}; the helper accepts {readmeText}. The route is
+  // the only translation layer so the view contract and the lib contract stay
+  // independently maintainable.
+  const readmeText = body.readme;
+  if (typeof readmeText !== 'string' || readmeText.length > 8000) {
+    reply.code(400);
+    return { error: 'readme too large or missing' };
+  }
+  const weekObj = getWeek(weekNum);
+  if (!weekObj) {
+    reply.code(400);
+    return { error: 'invalid week' };
+  }
+  if (weekObj.checkpointKind === 'coach-off-micro-checkpoint' || weekObj.checkpointKind === 'final-gate') {
+    reply.code(403);
+    return { error: 'coach locked on this week' };
+  }
+  if (!aiAllowed(req.ip)) {
+    reply.code(429).header('Retry-After', '30');
+    return { error: 'rate_limited' };
+  }
+  try {
+    const result = await reviewArtifact({ week: weekObj, readmeText });
+    return {
+      feedback: result.feedback,
+      degraded: result.degraded,
+      week: weekNum,
+    };
+  } catch (err) {
+    req.log.error({ err, week: weekNum }, 'foundations review failed');
+    reply.code(500);
+    return { error: 'review_unavailable' };
+  }
 });
 
 // Socratic coach endpoint. JSON in, JSON out. Never throws; never proxies
