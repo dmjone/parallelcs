@@ -20,10 +20,19 @@ this project uses [Semantic Versioning](https://semver.org/).
 - **Cloudflare-only ingress check on learner routes** (`src/server.mjs` preHandler).
   When the `CF_EDGE_SECRET` env is set, requests without a matching `cf-edge-secret`
   header are rejected with `403 forbidden` in constant time
-  (`crypto.timingSafeEqual`). Closes the `*.run.app` bypass of the Cloudflare proxy.
-  Default empty for safe rollout; the gate flips on the moment the env is set.
-  `/__internal/refresh`, `/health`, `/health/ready`, `/favicon.ico`, `/api/curriculum`
-  are intentionally skipped.
+  (`crypto.timingSafeEqual`). Default empty (dormant) per ops decision to avoid
+  adding a Cloudflare Transform Rule; activation is a single Cloud Run
+  `--update-env-vars` if the team ever opts in. `/__internal/refresh`, `/health`,
+  `/health/ready`, `/favicon.ico`, `/api/curriculum` are skipped.
+- **DR safety baked into the deploy pipeline.** `deploy.yml` runs
+  `node scripts/sync-seed.mjs` before the Cloud Build, so every deployed image
+  carries the freshest `/api/curriculum` baked into `seed-curriculum.json`. The
+  GCS bucket `dmjone-parallelcs-ae1` remains the source of truth for the live
+  curriculum; the in-image seed is only used on a cold-start / DR. This
+  guarantees a deploy can never regress the AI-evolved curriculum, even if the
+  repo's committed seed is lagging between the daily auto-sync runs. Transient
+  unreachability of `/api/curriculum` at deploy time is tolerated and falls back
+  to the repo seed (last known good).
 
 ### Added
 

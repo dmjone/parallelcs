@@ -10,6 +10,14 @@ name: Deploy to Cloud Run
 # successfully on main (typecheck, lint, resilience smoke test, audit, SBOM).
 # workflow_dispatch is preserved so the seed-sync job and humans can still
 # trigger an out-of-band deploy.
+#
+# DR safety: before the build, the deploy fetches the freshest curriculum from
+# the live /api/curriculum and writes it into the bundled seed. The GCS bucket
+# is and remains the source of truth; getCurriculum() reads from GCS on a warm
+# bucket and only falls back to the bundled seed on a cold start / DR. By
+# baking the freshest seed into every deployed image, a cold-start DR can
+# never regress production to a curriculum the AI has already evolved past,
+# even if the repo's committed seed is lagging between daily sync-seed runs.
 
 on:
   workflow_run:
@@ -33,6 +41,20 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        # Needed for the dependency-free scripts/sync-seed.mjs step below.
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Bake the freshest live curriculum into the bundled seed
+        # Pulls the live /api/curriculum into src/content/seed-curriculum.json so
+        # the image carries the AI's latest evolution. sync-seed refuses to
+        # downgrade and no-ops when versions match. A transient failure (live
+        # unreachable, schema check) is tolerated: the deploy continues with the
+        # repo seed, which is the last known good baked by the daily sync.
+        run: node scripts/sync-seed.mjs || echo "sync-seed unavailable; falling back to repo seed (last known good)"
 
       - name: Authenticate to GCP (keyless, Workload Identity Federation)
         uses: google-github-actions/auth@v2
