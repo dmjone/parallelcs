@@ -1177,12 +1177,14 @@ export function homeView(curriculum) {
     </aside>
   </div>
   <div class="stat-band rise d5" role="list" aria-label="Your journey at a glance">
-    <div class="stat" role="listitem"><span class="stat-num">30</span><span class="stat-label">days to your first ship</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">${esc(
+    <div class="stat" role="listitem" aria-label="30 days to your first ship"><span class="stat-num" aria-hidden="true">30</span><span class="stat-label" aria-hidden="true">days to your first ship</span></div>
+    <div class="stat" role="listitem" aria-label="${esc(
       curriculum.tracks.length,
-    )}</span><span class="stat-label">paths, you pick one</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">1</span><span class="stat-label">public product, yours</span></div>
-    <div class="stat" role="listitem"><span class="stat-num">100%</span><span class="stat-label">free, forever</span></div>
+    )} paths, you pick one"><span class="stat-num" aria-hidden="true">${esc(
+      curriculum.tracks.length,
+    )}</span><span class="stat-label" aria-hidden="true">paths, you pick one</span></div>
+    <div class="stat" role="listitem" aria-label="1 public product, yours"><span class="stat-num" aria-hidden="true">1</span><span class="stat-label" aria-hidden="true">public product, yours</span></div>
+    <div class="stat" role="listitem" aria-label="100% free, forever"><span class="stat-num" aria-hidden="true">100%</span><span class="stat-label" aria-hidden="true">free, forever</span></div>
   </div>
 </section>
 
