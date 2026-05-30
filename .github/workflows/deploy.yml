@@ -5,18 +5,17 @@ name: Deploy to Cloud Run
 # Identity Federation, no service-account keys. The deploy inherits the existing
 # service's env, the zs-api-key secret binding and the parallelcs-run runtime SA;
 # it only swaps in the new source.
+#
+# Gating: this workflow runs only after the "Verify" workflow finishes
+# successfully on main (typecheck, lint, resilience smoke test, audit, SBOM).
+# workflow_dispatch is preserved so the seed-sync job and humans can still
+# trigger an out-of-band deploy.
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Verify"]
+    types: [completed]
     branches: [main]
-    # Only rebuild when something that ships in the image changes (skips
-    # docs-only commits, saving Cloud Build minutes).
-    paths:
-      - "src/**"
-      - "Dockerfile"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - ".dockerignore"
   workflow_dispatch: {} # manual + triggered by the seed-sync job after a seed bump
 
 permissions:
@@ -30,6 +29,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4

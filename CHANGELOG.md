@@ -6,8 +6,51 @@ this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Security
+
+- **`REFRESH_KEY` migrated from a plain Cloud Run env var to Secret Manager**
+  (`refresh-key:latest`). The runtime SA holds `secretmanager.secretAccessor` only
+  on this secret. Zero downtime; verified `/__internal/refresh` is 403 without the
+  header and `{"status":"fresh"}` with it. Same hardening applied earlier to
+  `zs-api-key`; the service now has zero plain-text secret material in env.
+- **Branch protection enabled on `main`** (`required_status_checks=["Verify"]`,
+  `required_linear_history=true`, `allow_force_pushes=false`, `allow_deletions=false`).
+  Admins can bypass to preserve the solo-push workflow; non-admin PRs must pass
+  the Verify CI before merging.
+- **Cloudflare-only ingress check on learner routes** (`src/server.mjs` preHandler).
+  When the `CF_EDGE_SECRET` env is set, requests without a matching `cf-edge-secret`
+  header are rejected with `403 forbidden` in constant time
+  (`crypto.timingSafeEqual`). Closes the `*.run.app` bypass of the Cloudflare proxy.
+  Default empty for safe rollout; the gate flips on the moment the env is set.
+  `/__internal/refresh`, `/health`, `/health/ready`, `/favicon.ico`, `/api/curriculum`
+  are intentionally skipped.
+
 ### Added
 
+- **CI Verify workflow gating the deploy** (`.github/workflows/verify.yml`). On
+  every push, PR, and on demand: `pnpm install --frozen-lockfile`, typecheck
+  (`node --check` across `src`, `test`, `scripts`), ESLint v9 flat config
+  (no-console, no-eval, no-implied-eval, no-new-func), the resilience smoke test,
+  `pnpm audit --prod --audit-level=high`, and a **CycloneDX SBOM** uploaded as a
+  build artifact. `deploy.yml` now runs only on `workflow_run` of `Verify`
+  succeeding (or `workflow_dispatch`), so a failing Verify blocks the rollout.
+- **CodeQL static analysis** (`.github/workflows/codeql.yml`), JavaScript +
+  TypeScript, on push, PR, and weekly schedule. Findings flow into GitHub Code
+  Scanning.
+- **Dependabot** (`.github/dependabot.yml`) for npm (daily, grouped prod/dev,
+  minor + patch), GitHub Actions (weekly), and Docker base image (weekly).
+- **Dependency-free Sentry-style error reporter** (`src/lib/errors.mjs`). Pino
+  remains the primary log path; when `SENTRY_DSN` is set, `captureError` posts a
+  minimal envelope to the Sentry store endpoint with `crypto.timingSafeEqual`-style
+  safe defaults, a 4s `AbortController` timeout, and swallowed failures. Wired into
+  `setErrorHandler` so every unhandled error is captured. No new runtime
+  dependencies.
+- **ESLint v9 flat config** (`eslint.config.mjs`). Locks down `no-console`,
+  `no-eval`, `no-implied-eval`, `no-new-func` across `src/` and `scripts/`;
+  `test/**` keeps `console.log` for test output.
+- **`CF_EDGE_SECRET` provisioned in Secret Manager** (`cf-edge-secret`, runtime SA
+  scoped). Activation is one Cloud Run env update once Cloudflare is configured to
+  inject the header.
 - **Daily seed auto-sync** (`.github/workflows/sync-seed.yml`). A scheduled GitHub Action runs
   `sync-seed` once a day, nudges the live weekly self-update, and commits the refreshed
   `seed-curriculum.json` to `main` only when the live version has advanced. Keeps the repo in

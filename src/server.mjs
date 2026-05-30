@@ -1,13 +1,14 @@
 // ParallelCS, single self-updating Cloud Run service.
 // Fastify 5, ESM, no API keys. Scales to zero; a page request lazily triggers
 // a decoupled weekly self-update without blocking page serving.
-import { randomBytes } from 'node:crypto';
+import { randomBytes, timingSafeEqual } from 'node:crypto';
 import Fastify from 'fastify';
 import { env } from './lib/env.mjs';
 import { loggerOptions } from './lib/logger.mjs';
 import { getCurriculum, getState } from './lib/curriculum.mjs';
 import { bucketReachable } from './lib/gcs.mjs';
 import { maybeTriggerUpdate, runUpdateNow } from './lib/update.mjs';
+import { captureError } from './lib/errors.mjs';
 import {
   page,
   homeView,
@@ -90,6 +91,53 @@ function learnAllowed(ip) {
   if (learnBuckets.size > 5000) learnBuckets.clear();
   return true;
 }
+
+// --- Cloudflare edge gate -------------------------------------------------
+// Cloud Run exposes a direct *.run.app URL that bypasses Cloudflare. When
+// CF_EDGE_SECRET is set, Cloudflare injects the same value via the
+// `cf-edge-secret` header on every proxied request, and we reject anything
+// arriving without it. The compare is constant time. Empty secret disables the
+// gate entirely, which is the safe rollout default. Probes, the internal
+// refresh route (own REFRESH_KEY guard) and the curriculum JSON skip the gate
+// so health checks and cache warmers keep working.
+const CF_GATE_SKIP = new Set([
+  '/__internal/refresh',
+  '/health',
+  '/health/ready',
+  '/favicon.ico',
+  '/api/curriculum',
+]);
+
+function cfGateSkip(url) {
+  const path = url.split('?')[0];
+  return CF_GATE_SKIP.has(path);
+}
+
+function cfSecretMatches(headerVal, expected) {
+  if (typeof headerVal !== 'string' || headerVal.length === 0) return false;
+  const a = Buffer.from(headerVal);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  try {
+    return timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
+app.addHook('preHandler', async (req, reply) => {
+  if (!env.CF_EDGE_SECRET) return;
+  if (cfGateSkip(req.url)) return;
+  const supplied = req.headers['cf-edge-secret'];
+  if (!cfSecretMatches(supplied, env.CF_EDGE_SECRET)) {
+    reply
+      .code(403)
+      .header('Cache-Control', 'no-store')
+      .type('text/plain; charset=utf-8')
+      .send('forbidden');
+    return reply;
+  }
+});
 
 app.addHook('preHandler', async (req) => {
   // Health probes, the JSON/pitch endpoints and the internal refresh route
@@ -379,7 +427,14 @@ app.setNotFoundHandler(async (req, reply) => {
 app.setErrorHandler(async (err, req, reply) => {
   // Log full detail server-side; never leak stack traces to the client.
   req.log.error({ err }, 'request failed');
-  reply.code(err.statusCode && err.statusCode < 500 ? err.statusCode : 500);
+  const statusCode = err.statusCode && err.statusCode < 500 ? err.statusCode : 500;
+  // Fire and forget: best-effort Sentry report, never blocks the response and
+  // never throws. No-op when SENTRY_DSN is empty.
+  void captureError(err, {
+    tags: { url: req.url, method: req.method },
+    extra: { statusCode },
+  });
+  reply.code(statusCode);
   html(
     reply,
     page({

@@ -12,7 +12,9 @@
     "dev": "node --watch src/server.mjs",
     "test:resilience": "node test/update-resilience.mjs",
     "sync-seed": "node scripts/sync-seed.mjs",
-    "check:seed": "node scripts/check-seed-freshness.mjs"
+    "check:seed": "node scripts/check-seed-freshness.mjs",
+    "lint": "eslint .",
+    "typecheck": "find src test scripts -name \"*.mjs\" -print0 | xargs -0 -n1 node --check"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.16.0",

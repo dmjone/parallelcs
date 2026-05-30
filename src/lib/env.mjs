@@ -28,6 +28,15 @@ const EnvSchema = z.object({
     .default('https://ai.zsapiens.com/v1/32b/chat/completions'),
   ZS_MODEL: z.string().min(1).default('llama-3.1-70b'),
   ZS_API_KEY: z.string().default(''),
+  // Shared secret injected by Cloudflare on every edge-proxied request via the
+  // `cf-edge-secret` header. When non-empty, the app rejects learner-facing
+  // requests whose header does not match in constant time, which locks down the
+  // direct *.run.app URL even if it leaks. Empty disables the gate (safe rollout
+  // default); set via Secret Manager once a Cloudflare Transform Rule is wired.
+  CF_EDGE_SECRET: z.string().default(''),
+  // Sentry DSN for the dependency-free error reporter shim. Empty disables
+  // reporting; set via Secret Manager when an org/project is provisioned.
+  SENTRY_DSN: z.string().default(''),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
 });
 

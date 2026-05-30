@@ -1,0 +1,72 @@
+name: Verify
+
+# Gates every push and PR before deploy can run. Typecheck (node --check on
+# every .mjs), flat-config ESLint (no-console, no-eval, no-new-func), the real
+# applyOps weekly-update resilience smoke test, a high-or-worse dependency
+# audit, and a CycloneDX SBOM uploaded as an artifact. Deploy waits on this
+# workflow's "success" conclusion (see deploy.yml).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies (frozen)
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (node --check every .mjs)
+        run: find src test scripts -name "*.mjs" -print0 | xargs -0 -n1 node --check
+
+      - name: Install lint toolchain without touching the lockfile
+        run: pnpm add -D --silent eslint@^9 @eslint/js@^9 || true
+
+      - name: Lint (flat config)
+        run: pnpm exec eslint .
+
+      - name: Weekly-update resilience smoke test
+        env:
+          CONTENT_BUCKET: ci
+          GCP_PROJECT: ci
+          NODE_ENV: test
+        run: node test/update-resilience.mjs
+
+      - name: Dependency audit (fail on high or worse)
+        run: pnpm audit --prod --audit-level=high
+
+      - name: Generate CycloneDX SBOM
+        run: npx --yes @cyclonedx/cdxgen@latest -t pnpm -o sbom.cdx.json
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom.cdx.json
+          path: sbom.cdx.json
+          if-no-files-found: error
