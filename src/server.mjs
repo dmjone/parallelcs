@@ -26,6 +26,9 @@ import {
 import { pitchPage } from './views/pitch.mjs';
 import { pitchCloPage } from './views/pitch-clo.mjs';
 import { getDeepDive } from './lib/deepdive.mjs';
+import { foundationsHomeView, foundationsWeekView, FOUNDATIONS_CSS } from './views/foundations.mjs';
+import { getFoundations, getWeek } from './lib/foundations.mjs';
+import { coachReply } from './lib/coach.mjs';
 
 const app = Fastify({
   logger: loggerOptions,
@@ -62,10 +65,17 @@ app.addHook('onRequest', async (req, reply) => {
 });
 
 // --- Self-update gate (page routes only) ----------------------------------
-const HTML_ROUTES = new Set(['/', '/start', '/tracks', '/graph', '/projects', '/challenge', '/status', '/ready']);
+const HTML_ROUTES = new Set(['/', '/start', '/tracks', '/graph', '/projects', '/challenge', '/status', '/ready', '/foundations']);
 function isPageRoute(url) {
   const path = url.split('?')[0];
-  return HTML_ROUTES.has(path) || path.startsWith('/track/') || path.startsWith('/learn/');
+  // /foundations/coach is a JSON POST endpoint, not a page; never self-update gate it.
+  if (path === '/foundations/coach') return false;
+  return (
+    HTML_ROUTES.has(path) ||
+    path.startsWith('/track/') ||
+    path.startsWith('/learn/') ||
+    path.startsWith('/foundations/week/')
+  );
 }
 
 // --- Per-IP token bucket guarding the model-backed /learn route ----------
@@ -89,6 +99,29 @@ function learnAllowed(ip) {
   learnBuckets.set(ip, b);
   // Bound memory: drop the map if it grows unreasonably (single instance).
   if (learnBuckets.size > 5000) learnBuckets.clear();
+  return true;
+}
+
+// --- Per-IP token bucket guarding the Foundations Socratic coach ---------
+// Same shape as learnAllowed but a separate Map: a learner working through a
+// week can exchange more turns with the coach than they would hit /learn pages,
+// and the burst/window are tuned for short back-and-forth chat.
+const COACH_BURST = 30;
+const COACH_WINDOW_MS = 60_000;
+const coachBuckets = new Map();
+function coachAllowed(ip) {
+  const now = Date.now();
+  const b = coachBuckets.get(ip) || { tokens: COACH_BURST, at: now };
+  const refill = ((now - b.at) / COACH_WINDOW_MS) * COACH_BURST;
+  b.tokens = Math.min(COACH_BURST, b.tokens + refill);
+  b.at = now;
+  if (b.tokens < 1) {
+    coachBuckets.set(ip, b);
+    return false;
+  }
+  b.tokens -= 1;
+  coachBuckets.set(ip, b);
+  if (coachBuckets.size > 5000) coachBuckets.clear();
   return true;
 }
 
@@ -317,6 +350,109 @@ app.get('/challenge', async (req, reply) => {
       nonce: req.cspNonce,
     }),
   );
+});
+
+// --- Foundations on-ramp -------------------------------------------------
+// A separate concept from the eight tracks: a linear 12-week path that takes a
+// third-semester student to "AI builder" through curated free material and one
+// shipped artifact per week. The coach is a Socratic guardrail, never an
+// explainer, and degrades to a static "go read the resource" message when the
+// in-house LLM is unreachable.
+app.get('/foundations', async (req, reply) => {
+  const foundations = getFoundations();
+  html(
+    reply,
+    page({
+      title: 'Foundations, ParallelCS',
+      description:
+        'From third semester to AI builder. A free 12 week path of curated free world-class material with one shipped artifact per week.',
+      path: '/foundations',
+      bodyHtml: foundationsHomeView(foundations),
+      nonce: req.cspNonce,
+      extraStyles: FOUNDATIONS_CSS,
+    }),
+  );
+});
+
+app.get('/foundations/week/:n', async (req, reply) => {
+  const n = Number.parseInt(req.params.n, 10);
+  const valid = Number.isInteger(n) && n >= 1 && n <= 12 && String(n) === String(req.params.n).trim();
+  const week = valid ? getWeek(n) : null;
+  if (!week) {
+    reply.code(404);
+    return html(
+      reply,
+      page({
+        title: 'Not found, ParallelCS',
+        description: 'The page you requested does not exist.',
+        path: req.url,
+        bodyHtml: notFoundView(),
+        nonce: req.cspNonce,
+      }),
+    );
+  }
+  const foundations = getFoundations();
+  html(
+    reply,
+    page({
+      title: `Week ${week.week}, ${week.theme}, Foundations, ParallelCS`,
+      description: week.objective,
+      path: `/foundations/week/${week.week}`,
+      bodyHtml: foundationsWeekView(week, foundations, req.cspNonce),
+      nonce: req.cspNonce,
+      extraStyles: FOUNDATIONS_CSS,
+    }),
+  );
+});
+
+// Socratic coach endpoint. JSON in, JSON out. Never throws; never proxies
+// arbitrary text to the model without validation and rate limiting. When the
+// in-house LLM is unreachable (no ZS_API_KEY locally), coachReply returns a
+// degraded static reply, so this endpoint stays a 200.
+app.post('/foundations/coach', async (req, reply) => {
+  reply.header('Cache-Control', 'no-store');
+  if (!coachAllowed(req.ip)) {
+    reply.code(429).header('Retry-After', '30');
+    return { error: 'rate_limited' };
+  }
+  const body = req.body && typeof req.body === 'object' ? req.body : {};
+  const week = Number.parseInt(body.week, 10);
+  if (!Number.isInteger(week) || week < 1 || week > 12) {
+    reply.code(400);
+    return { error: 'invalid week' };
+  }
+  const messages = Array.isArray(body.messages) ? body.messages : null;
+  if (!messages) {
+    reply.code(400);
+    return { error: 'invalid messages' };
+  }
+  for (const m of messages) {
+    if (!m || typeof m !== 'object') {
+      reply.code(400);
+      return { error: 'invalid messages' };
+    }
+    if (typeof m.role !== 'string' || typeof m.content !== 'string') {
+      reply.code(400);
+      return { error: 'invalid messages' };
+    }
+    if (m.content.length > 2000) {
+      reply.code(400);
+      return { error: 'message too long' };
+    }
+  }
+  try {
+    const result = await coachReply({ weekNumber: week, messages, foundations: getFoundations() });
+    return {
+      reply: result.reply,
+      degraded: result.degraded,
+      week,
+      model: result.model,
+    };
+  } catch (err) {
+    req.log.error({ err }, 'foundations coach failed');
+    reply.code(500);
+    return { error: 'coach_unavailable' };
+  }
 });
 
 app.get('/status', async (req, reply) => {

@@ -6,6 +6,28 @@ this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- **ParallelCS Foundations on-ramp (`/foundations`).** A 12-week single-path
+  curriculum from a 3rd-semester CSE student to Agentic Systems Track readiness.
+  Curate-not-author: every concept routes to ONE chosen free world-class
+  resource (3Blue1Brown, Karpathy, MIT Missing Semester, fast.ai, Anthropic
+  Building Effective Agents, Google ML Crash Course). Every week ends in a
+  public GitHub repo + live URL shipped artifact. Weeks 4 and 8 are coach-off
+  micro-checkpoints (catch cognitive-debt drift before Week 12). Week 12 is the
+  final AI-off readiness gate that auto-funnels graduates into the Agentic
+  Systems Engineering Track.
+- **Foundations Coach chat (`POST /foundations/coach`).** A Socratic LLM coach
+  backed by the in-house `llama-3.1-70b` endpoint already in Secret Manager.
+  System prompt enforces: never reveal full solutions, force student attempt
+  first, one hint per turn, partial credit first, no in-model arithmetic,
+  Hinglish welcomed and English never policed, scope locked to the current
+  week. Auto-degrade detector flips into strict Socratic mode on
+  homework-outsourcing patterns. Per-IP token bucket rate limit. Hard caps
+  1200 in / 400 out tokens per turn. Static fallback when the endpoint is
+  unavailable. Coach is locked on the Week 12 final gate page and the
+  Weeks 4 and 8 micro-checkpoint pages.
+
 ### Security
 
 - **`REFRESH_KEY` migrated from a plain Cloud Run env var to Secret Manager**

@@ -139,5 +139,50 @@ tryRender('statusView', () => V.page({ title: 't', description: 'd', path: '/sta
 tryRender('pitchPage', () => pitchPage(nonce, next));
 tryRender('pitchCloPage', () => pitchCloPage(nonce, next));
 
+// ---- Foundations on-ramp: render every Foundations view against the real
+// data, then mutate the data slightly and re-render to prove the layout
+// survives small content shifts. The lib loads, validates and freezes the
+// payload at import time, so we deep-clone before mutating.
+console.log('\n=== FOUNDATIONS VIEWS ===');
+const Fv = await import('../src/views/foundations.mjs');
+const Fl = await import('../src/lib/foundations.mjs');
+const foundations = Fl.getFoundations();
+
+tryRender('foundationsHomeView', () => V.page({
+  title: 'Foundations', description: 'On-ramp', path: '/foundations',
+  bodyHtml: Fv.foundationsHomeView(foundations), nonce,
+}));
+for (let n = 1; n <= 12; n += 1) {
+  const week = Fl.getWeek(n);
+  tryRender(`foundationsWeekView:${n}`, () => V.page({
+    title: `Week ${n}`, description: 'Foundations week', path: `/foundations/week/${n}`,
+    bodyHtml: Fv.foundationsWeekView(week, foundations, nonce), nonce,
+  }));
+}
+
+// Mutate the foundations payload (deep clone first; the loaded object is
+// frozen). Truncate one resource title to '' and re-render. The schema
+// rejects an empty resource title, so re-validation against the schema is a
+// good failure; what the layout test actually needs to prove is that the
+// render functions do not throw on slightly shifted data.
+const mutated = JSON.parse(JSON.stringify(foundations));
+if (mutated.weeks && mutated.weeks[5] && Array.isArray(mutated.weeks[5].resources) && mutated.weeks[5].resources[0]) {
+  mutated.weeks[5].resources[0].title = '';
+}
+const reparsed = Fl.FoundationsSchema.safeParse(mutated);
+console.log('mutated foundations valid against schema:', reparsed.success, '(empty title is a good failure)');
+
+tryRender('foundationsHomeView (mutated)', () => V.page({
+  title: 'Foundations', description: 'On-ramp', path: '/foundations',
+  bodyHtml: Fv.foundationsHomeView(mutated), nonce,
+}));
+for (let n = 1; n <= 12; n += 1) {
+  const week = mutated.weeks[n - 1];
+  tryRender(`foundationsWeekView:${n} (mutated)`, () => V.page({
+    title: `Week ${n}`, description: 'Foundations week', path: `/foundations/week/${n}`,
+    bodyHtml: Fv.foundationsWeekView(week, mutated, nonce), nonce,
+  }));
+}
+
 console.log(`\n=== RESULT: ${renderFails === 0 ? 'ALL VIEWS RENDERED, layout intact' : renderFails + ' RENDER FAILURES'} ===`);
 process.exit(renderFails === 0 ? 0 : 1);

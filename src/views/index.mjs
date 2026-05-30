@@ -157,10 +157,10 @@ function weekBridge() {
 
 /**
  * Wrap body HTML in the full document shell.
- * @param {{title:string,description:string,path:string,bodyHtml:string,nonce:string}} opts
+ * @param {{title:string,description:string,path:string,bodyHtml:string,nonce:string,extraStyles?:string}} opts
  * @returns {string}
  */
-export function page({ title, description, path, bodyHtml, nonce }) {
+export function page({ title, description, path, bodyHtml, nonce, extraStyles }) {
   const n = esc(nonce ?? '');
   const fullTitle = title ? `${esc(title)} · ParallelCS` : 'ParallelCS';
   return `<!doctype html>
@@ -173,7 +173,7 @@ export function page({ title, description, path, bodyHtml, nonce }) {
 <meta name="theme-color" content="#fbfaf7">
 <title>${fullTitle}</title>
 <link rel="icon" href="data:image/svg+xml,${encodeURIComponent(faviconSvg())}">
-<style nonce="${n}">${styles()}</style>
+<style nonce="${n}">${styles()}${extraStyles ?? ''}</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>

@@ -48,6 +48,10 @@ pnpm start        # serves on http://localhost:8080
 
 Configuration is environment-driven and validated at startup, see `.env.example`. The service seeds itself from `src/content/seed-curriculum.json` on first run.
 
+## Foundations
+
+`/foundations` is the public on-ramp for a third-semester Tier-2/3 CSE student who wants to build AI systems. It is a single 12-week linear path, not a buffet. Each week routes to one curated free resource from people like 3Blue1Brown, Karpathy, MIT, fast.ai, and Anthropic, and ends with a public GitHub repo plus a live URL. Weeks 4 and 8 are coach-off micro-checkpoints; Week 12 is the final AI-off readiness gate into the Agentic Systems Track. A Socratic coach is available on the other weeks: one hint per turn, no full solutions, Hinglish welcome. See [/foundations](/foundations).
+
 ## Keeping the seed fresh
 
 The live service evolves its curriculum weekly and stores it in GCS. The bundled `src/content/seed-curriculum.json` is only used to seed a **cold** bucket (first run or disaster recovery), so it must never fall behind the live version, or a cold start would regress production to stale content.

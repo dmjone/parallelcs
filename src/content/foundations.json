@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-30T00:00:00.000Z",
+  "weeks": [
+    {
+      "week": 1,
+      "theme": "Ship something on the internet today",
+      "objective": "Stand up a public identity (GitHub account, git basics), open Google Cloud Shell in the browser, and deploy a one-page personal site to a live Cloud Run URL inside session 1.",
+      "shippedArtifact": "Public GitHub repo hello-parallelcs containing an index.html with the student name, college, and one line 'I am building AI systems', plus a four-line Dockerfile (FROM nginx:alpine; COPY index.html /usr/share/nginx/html/), deployed via gcloud run deploy --source . --region us-central1 --allow-unauthenticated from Cloud Shell. README has the live .run.app URL and a screenshot. Honest note that goes in the README and the week page: a Google Cloud billing account must be linked even within the free tier (debit card works). No-billing fallback: ship only the public GitHub repo this week and add billing before Week 7.",
+      "summary": "Week 1 is about the lived experience of shipping a public URL on the first day, not about polish. The learner creates a GitHub account, learns just enough git (clone, add, commit, push), opens Google Cloud Shell in a browser tab, and uses gcloud run deploy --source to push a one-page site to a real us-central1 Cloud Run URL. The point is to feel the loop end to end: edit, push, deploy, share. The week is honest that linking a billing account is required even for free-tier Cloud Run, and offers a no-billing fallback of shipping the public GitHub repo this week and adding billing before Week 7.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Git and GitHub for Beginners",
+          "url": "https://www.freecodecamp.org/news/git-and-github-for-beginners/",
+          "author": "freeCodeCamp",
+          "kind": "course"
+        },
+        {
+          "title": "Launching Cloud Shell",
+          "url": "https://cloud.google.com/shell/docs/launching-cloud-shell",
+          "author": "Google Cloud",
+          "kind": "docs"
+        },
+        {
+          "title": "Deploy a container to Cloud Run from source",
+          "url": "https://cloud.google.com/run/docs/quickstarts/deploy-container",
+          "author": "Google Cloud",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "theme": "Linux, the command line, and Python that actually runs",
+      "objective": "Be comfortable in a terminal, manage Python with uv or venv, install packages, run a script on Colab and locally.",
+      "shippedArtifact": "Public repo python-toolbelt containing wordcount.py CLI that takes a file path and prints word/line/char counts, README with exact commands on Linux/macOS/WSL, plus a Colab notebook running the same script.",
+      "summary": "Week 2 closes the terminal gap that ambushes most third-semester students later. The learner works through the Missing Semester lectures on shell, scripting, and the editor, installs Python via uv (or a plain venv), and writes a small wordcount CLI that runs both locally and inside a Colab notebook. The shipped artifact is a public repo whose README spells out the exact commands that work on Linux, macOS, and WSL, so the same student can come back six months later and rerun it without thinking.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "The Missing Semester of Your CS Education",
+          "url": "https://missing.csail.mit.edu/",
+          "author": "MIT",
+          "kind": "course"
+        },
+        {
+          "title": "uv: An extremely fast Python package and project manager",
+          "url": "https://docs.astral.sh/uv/",
+          "author": "Astral",
+          "kind": "docs"
+        },
+        {
+          "title": "Welcome to Colaboratory",
+          "url": "https://colab.research.google.com/notebooks/intro.ipynb",
+          "author": "Google",
+          "kind": "interactive"
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "theme": "Python you will actually use to build AI systems",
+      "objective": "Move from toy Python to idiomatic Python (dataclasses, comprehensions, JSON, venv, reading library docs).",
+      "shippedArtifact": "Public repo notes-cli, a CLI note-tool with JSON store, add/list/search by tag, plus 3+ pytest tests.",
+      "summary": "Week 3 moves the learner from for-loop-heavy Python to the Python that real teams write. The focus is dataclasses, comprehensions, reading JSON, virtualenv hygiene, and learning to read library documentation instead of guessing. The shipped artifact is a small notes CLI backed by a JSON file, with add, list, and search-by-tag commands and at least three pytest tests. By the end of the week, the learner has felt what it is like to have green tests and a tidy repo, which becomes the floor for everything that follows.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Learn Python: Free Python Courses for Beginners",
+          "url": "https://www.freecodecamp.org/news/learn-python-free-python-courses-for-beginners/",
+          "author": "freeCodeCamp",
+          "kind": "course"
+        },
+        {
+          "title": "Working With JSON Data in Python",
+          "url": "https://realpython.com/python-json/",
+          "author": "Real Python",
+          "kind": "course"
+        },
+        {
+          "title": "pytest: Get started",
+          "url": "https://docs.pytest.org/en/stable/getting-started.html",
+          "author": "pytest",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "theme": "Numbers that move: NumPy and vectorized thinking",
+      "objective": "Internalize broadcasting, indexing, matrix ops at CS231n day-one bar.",
+      "shippedArtifact": "Public Colab notebook numpy-from-zero.ipynb with 20 vectorized exercises (no for-loops), reproducing a small MNIST load and a forward matmul, committed to GitHub with rendered output.",
+      "summary": "Week 4 is the first coach-off micro-checkpoint. The learner works through the CS231n NumPy tutorial and the Google ML Crash Course NumPy primer, then writes a notebook with twenty exercises that must be solved without a single Python for-loop. The notebook ends with a small MNIST load and a forward matmul to anchor the broadcasting intuition in something that smells like a real model. Because this is a micro-checkpoint, the AI coach is locked: the learner has to feel the cost of writing vectorized code without a chatbot at their elbow.",
+      "checkpointKind": "coach-off-micro-checkpoint",
+      "resources": [
+        {
+          "title": "Python NumPy Tutorial",
+          "url": "https://cs231n.github.io/python-numpy-tutorial/",
+          "author": "Stanford CS231n",
+          "kind": "course"
+        },
+        {
+          "title": "NumPy Ultraquick Tutorial",
+          "url": "https://developers.google.com/machine-learning/crash-course/numpy",
+          "author": "Google",
+          "kind": "interactive"
+        },
+        {
+          "title": "NumPy quickstart",
+          "url": "https://numpy.org/doc/stable/user/quickstart.html",
+          "author": "NumPy",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "theme": "Just enough math to not bounce off Karpathy",
+      "objective": "Visual intuition for derivatives, chain rule, vectors, matrices, the Gaussian.",
+      "shippedArtifact": "Notebook math-intuition.ipynb with numerical-vs-analytic derivative for f(x)=x^3+2x, a 2D linear transformation viz that matches the 3B1B eigenvector intuition, and a 10000-sample np.random.randn histogram with empirical mean/variance.",
+      "summary": "Week 5 buys the learner the math intuition they need to survive Karpathy in Week 6, without pretending to be a math degree. The learner watches the 3Blue1Brown calculus and linear algebra series, skims the relevant chapters of the Mathematics for Machine Learning book, and then ships a notebook that compares a numerical derivative against an analytic one, visualizes a 2D linear transformation that matches the eigenvector picture, and plots a histogram of ten thousand Gaussian samples with empirical mean and variance. Visual first, formulas second.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Essence of Calculus",
+          "url": "https://www.3blue1brown.com/topics/calculus",
+          "author": "3Blue1Brown",
+          "kind": "video"
+        },
+        {
+          "title": "Essence of Linear Algebra",
+          "url": "https://www.3blue1brown.com/topics/linear-algebra",
+          "author": "3Blue1Brown",
+          "kind": "video"
+        },
+        {
+          "title": "Mathematics for Machine Learning",
+          "url": "https://mml-book.github.io/",
+          "author": "Deisenroth, Faisal, Ong",
+          "kind": "book"
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "theme": "A neural net from scratch, no framework magic",
+      "objective": "Follow Karpathy micrograd, rebuild autograd from first principles, train a tiny MLP, explain backprop in your own words.",
+      "shippedArtifact": "Public repo micrograd-rebuilt with the student own from-blank reimplementation plus a notebook training a 2-layer MLP on sklearn make_moons with a printed loss curve. README has a 6-line backprop explanation in the student own words (Hinglish allowed).",
+      "summary": "Week 6 is the spine of the whole path. The learner watches Karpathy build micrograd, closes the tab, and reimplements the Value class and the backward pass from a blank file. They then train a two-layer MLP on the sklearn make_moons dataset and print a loss curve that goes down. The README contains a six-line explanation of backprop in the learner own words, Hinglish welcome, because the test of understanding is being able to teach it back in plain language to a friend who has not seen the lecture.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Neural Networks: Zero to Hero",
+          "url": "https://karpathy.ai/zero-to-hero.html",
+          "author": "Andrej Karpathy",
+          "kind": "video"
+        },
+        {
+          "title": "karpathy/micrograd",
+          "url": "https://github.com/karpathy/micrograd",
+          "author": "Andrej Karpathy",
+          "kind": "reference"
+        },
+        {
+          "title": "sklearn.datasets.make_moons",
+          "url": "https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html",
+          "author": "scikit-learn",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "theme": "A real model, deployed for real",
+      "objective": "Train an image classifier with fast.ai on Colab and deploy it as a live public Gradio app on us-central1 Cloud Run (NOT HuggingFace Spaces).",
+      "shippedArtifact": "Public Cloud Run service hosting a Gradio image classifier the student trained (e.g., samosa vs kachori), packaged with a Dockerfile (python:3.11-slim base) that copies the exported fast.ai model file and runs a Gradio server on port 8080; deployed via gcloud run deploy --source . --region us-central1 --memory 1Gi --allow-unauthenticated --min-instances 0 from Cloud Shell. Linked from a public GitHub repo with the training notebook, Dockerfile, requirements.txt, and deploy commands. README has the live .run.app URL, one screenshot of a real prediction, and a paragraph on the cold-start tradeoff (min-instances 0 means the first request after idle takes 5 to 15 seconds to wake the container; this is the price of zero cost).",
+      "summary": "Week 7 forces the learner to deploy a real model the public can hit. They train a small image classifier with fast.ai Lesson 1 on Colab (samosa vs kachori is a good Indian-flavoured dataset to scrape), export the model, wrap it in a Gradio interface, write a python:3.11-slim Dockerfile that runs Gradio on port 8080, and ship it to us-central1 Cloud Run with --min-instances 0 so it costs nothing at idle. The README documents the cold-start tradeoff honestly, because pretending free deployments behave like always-warm ones is how learners get burned in interviews.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Practical Deep Learning, Lesson 1",
+          "url": "https://course.fast.ai/Lessons/lesson1.html",
+          "author": "fast.ai",
+          "kind": "course"
+        },
+        {
+          "title": "Gradio Quickstart",
+          "url": "https://www.gradio.app/guides/quickstart",
+          "author": "Gradio",
+          "kind": "docs"
+        },
+        {
+          "title": "Deploy a Python service to Cloud Run",
+          "url": "https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service",
+          "author": "Google Cloud",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "theme": "HTTP, JSON, and reading other peoples APIs",
+      "objective": "Internalize how the web actually talks; consume a real public REST API from Python without breaking on errors.",
+      "shippedArtifact": "Public repo weather-now, a Python CLI taking a city name, hitting Open-Meteo, parsing JSON, handling 4xx/5xx, printing a formatted forecast, with a unit test using a mocked response.",
+      "summary": "Week 8 is the second coach-off micro-checkpoint. The learner reads the MDN HTTP overview and the Real Python REST APIs walkthrough, then writes a Python CLI that takes a city name, calls Open-Meteo, parses the JSON response, and prints a readable forecast. The crucial part is handling 4xx and 5xx responses without crashing, and writing a unit test that mocks the network call. The coach is locked here so the learner feels the cost of reading docs and error messages on their own, the same way they will at work.",
+      "checkpointKind": "coach-off-micro-checkpoint",
+      "resources": [
+        {
+          "title": "An overview of HTTP",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+          "author": "MDN Web Docs",
+          "kind": "docs"
+        },
+        {
+          "title": "Python and REST APIs: Interacting With Web Services",
+          "url": "https://realpython.com/api-integration-in-python/",
+          "author": "Real Python",
+          "kind": "course"
+        },
+        {
+          "title": "Open-Meteo API documentation",
+          "url": "https://open-meteo.com/en/docs",
+          "author": "Open-Meteo",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "theme": "Calling an LLM like an engineer, not a tourist",
+      "objective": "Call a real LLM API from Python, manage prompts and responses as structured data, secrets via env, log every call.",
+      "shippedArtifact": "Public repo summarize-it, a script taking a URL or text file, calling a real LLM API, returning a 5-bullet summary with source preserved, logging prompt+response+tokens to JSONL. .env never committed, .env.example committed.",
+      "summary": "Week 9 moves the learner from chatting with an LLM in a browser to calling one from code like an engineer. They read the Anthropic quickstart, set up python-dotenv with a .env that stays out of git, and write a small summarize-it script that takes a URL or text file, sends it to the model, and returns a five-bullet summary that preserves the source. Every prompt, response, and token count gets logged to a JSONL file. The discipline of logging every call and never committing secrets is the actual lesson; the summary is just the excuse.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Initial setup: Get started with Claude",
+          "url": "https://docs.anthropic.com/en/docs/get-started",
+          "author": "Anthropic",
+          "kind": "docs"
+        },
+        {
+          "title": "The Twelve-Factor App: Config",
+          "url": "https://12factor.net/config",
+          "author": "Adam Wiggins",
+          "kind": "reference"
+        },
+        {
+          "title": "python-dotenv",
+          "url": "https://pypi.org/project/python-dotenv/",
+          "author": "Saurabh Kumar",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "theme": "Tools, schemas, and the discipline behind tool use",
+      "objective": "Read Anthropic Building Effective Agents end to end, then implement a single tool-using LLM call where the tool is a typed function selected via JSON schema.",
+      "shippedArtifact": "Public repo one-tool-agent where the LLM is given exactly ONE typed tool backed by the Week 8 wrapper and the program answers user weather questions through that tool, refusing out-of-scope. README has the JSON schema and one transcript.",
+      "summary": "Week 10 introduces tool use as a disciplined engineering pattern, not a magic trick. The learner reads the Anthropic Building Effective Agents essay end to end, then writes a program that gives the LLM exactly one typed tool, the Week 8 weather wrapper, declared via a JSON schema. The agent must answer user questions about weather through the tool, and refuse out-of-scope questions politely instead of hallucinating. The README publishes the JSON schema and one full transcript so a reviewer can see the boundary and the refusal in action.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Building effective AI agents",
+          "url": "https://www.anthropic.com/research/building-effective-agents",
+          "author": "Anthropic",
+          "kind": "reference"
+        },
+        {
+          "title": "Tool use with Claude",
+          "url": "https://docs.anthropic.com/en/docs/build-with-claude/tool-use",
+          "author": "Anthropic",
+          "kind": "docs"
+        },
+        {
+          "title": "JSON Schema: Getting Started Step-By-Step",
+          "url": "https://json-schema.org/learn/getting-started-step-by-step",
+          "author": "JSON Schema",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "theme": "Deploy an agent the world can hit",
+      "objective": "Containerize and deploy the Week 10 tool-using agent as a public HTTPS endpoint on free us-central1 Cloud Run with /health and structured logs.",
+      "shippedArtifact": "Public repo one-tool-agent-deployed with Dockerfile, FastAPI wrapper, /health endpoint, structured JSON logs, deployed live URL. README has the URL, a curl example, and a paragraph on what would break at 100 concurrent requests.",
+      "summary": "Week 11 turns the Week 10 agent into a service the world can hit. The learner wraps the agent in a FastAPI app with a /health endpoint, adds structured JSON logging on every request, writes a Dockerfile, and deploys to us-central1 Cloud Run. The README publishes the live URL, a curl example, and a candid paragraph on what would break under a hundred concurrent requests, because being able to name your own bottleneck is what separates a builder from someone who just got lucky with the happy path. The week is explicit that the free Cloud Run regions are us-central1, us-east1, and us-west1 only.",
+      "checkpointKind": "normal",
+      "resources": [
+        {
+          "title": "Deploy a container image to Cloud Run",
+          "url": "https://cloud.google.com/run/docs/quickstarts/deploy-container",
+          "author": "Google Cloud",
+          "kind": "docs"
+        },
+        {
+          "title": "FastAPI Tutorial: First Steps",
+          "url": "https://fastapi.tiangolo.com/tutorial/first-steps/",
+          "author": "FastAPI",
+          "kind": "docs"
+        },
+        {
+          "title": "Docker Get Started",
+          "url": "https://docs.docker.com/get-started/",
+          "author": "Docker",
+          "kind": "docs"
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "theme": "Readiness Checkpoint",
+      "objective": "Prove transfer: in a single coach-LOCKED 3-hour window, build and deploy a fresh tool-using agent against a real public REST API the student has not used before, push public, write a one-paragraph reflection.",
+      "shippedArtifact": "Public repo foundations-checkpoint deployed to a live URL satisfying the brief: typed tool calling an unseen public REST API, grounded LLM reply with citation, refusal on out-of-scope.",
+      "summary": "Week 12 is the final gate. In a single three-hour window with the coach locked, the learner picks a real public REST API they have never touched from the public-apis list, wires it into a typed tool, has an LLM call it, returns a grounded reply with a citation, and refuses cleanly on out-of-scope questions. The artifact is a public repo deployed to a live URL plus a one-paragraph reflection on what broke and what they would do differently. Passing means the rest of the ParallelCS tracks are open; failing means a specific week to revisit, not a verdict on the learner.",
+      "checkpointKind": "final-gate",
+      "resources": [
+        {
+          "title": "Building effective AI agents",
+          "url": "https://www.anthropic.com/research/building-effective-agents",
+          "author": "Anthropic",
+          "kind": "reference"
+        },
+        {
+          "title": "public-apis: A collective list of free APIs",
+          "url": "https://github.com/public-apis/public-apis",
+          "author": "public-apis",
+          "kind": "reference"
+        },
+        {
+          "title": "Deploy a container image to Cloud Run",
+          "url": "https://cloud.google.com/run/docs/quickstarts/deploy-container",
+          "author": "Google Cloud",
+          "kind": "docs"
+        }
+      ]
+    }
+  ]
+}
