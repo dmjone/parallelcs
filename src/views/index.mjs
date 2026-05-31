@@ -88,7 +88,7 @@ function nav(path) {
     <nav class="site-nav" aria-label="Primary">
       <ul class="nav-list" id="primary-nav-list">${items}</ul>
     </nav>
-    <a class="btn btn-mini" href="/ready">Start free</a>
+    <a class="btn btn-mini" href="/ready">Start here</a>
   </div>
 </header>`;
 }
@@ -1156,7 +1156,7 @@ export function homeView(curriculum) {
       <h1 class="hero-title rise d1" id="hero-h">Become the <span class="grad">obvious hire</span>.</h1>
       <p class="hero-lede rise d2">A free, AI-native CS path. Pick a track, ship your first real product in your first 30 days, then keep building until you are the obvious hire.</p>
       <div class="hero-actions rise d3">
-        <a class="btn btn-primary" href="/ready">Start free <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="/ready">Start here <span class="arrow" aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="/tracks">See the tracks</a>
       </div>
       <p class="hero-proof rise d4">
