@@ -62,7 +62,12 @@ const TYPE_LABEL = {
 
 /** Site navigation. `path` marks the current page for aria-current. */
 function nav(path) {
+  // Order is the learner journey: Foundations is the on-ramp for early-CS
+  // students (the audience the brand is recruiting), Start picks a track for
+  // those ready, Tracks browses all eight, Projects shows the briefs, and
+  // Challenge runs the semester cohort.
   const links = [
+    ['/foundations', 'Foundations'],
     ['/start', 'Start'],
     ['/tracks', 'Tracks'],
     ['/projects', 'Projects'],
@@ -104,6 +109,7 @@ function footer() {
     </div>
     <nav class="foot-nav" aria-label="Footer">
       <p class="foot-col-title">Explore</p>
+      <a href="/foundations">Foundations (third semester on-ramp)</a>
       <a href="/start">Start</a>
       <a href="/tracks">Tracks</a>
       <a href="/projects">Projects</a>
