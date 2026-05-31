@@ -88,7 +88,7 @@ function nav(path) {
     <nav class="site-nav" aria-label="Primary">
       <ul class="nav-list" id="primary-nav-list">${items}</ul>
     </nav>
-    <a class="btn btn-mini" href="/start">Start free</a>
+    <a class="btn btn-mini" href="/ready">Start free</a>
   </div>
 </header>`;
 }
@@ -1156,7 +1156,7 @@ export function homeView(curriculum) {
       <h1 class="hero-title rise d1" id="hero-h">Become the <span class="grad">obvious hire</span>.</h1>
       <p class="hero-lede rise d2">A free, AI-native CS path. Pick a track, ship your first real product in your first 30 days, then keep building until you are the obvious hire.</p>
       <div class="hero-actions rise d3">
-        <a class="btn btn-primary" href="/start">Start free <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="/ready">Start free <span class="arrow" aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="/tracks">See the tracks</a>
       </div>
       <p class="hero-proof rise d4">
@@ -1204,7 +1204,7 @@ export function homeView(curriculum) {
     <p class="lead">Start anywhere, each track stands alone and ends in a product you can show.</p>
   </div>
   <div class="grid grid-2">${trackCards}</div>
-  <p class="section-foot"><a class="textlink" href="/start">Not sure where to start? See your roadmap <span class="arrow" aria-hidden="true">→</span></a></p>
+  <p class="section-foot"><a class="textlink" href="/ready">Not sure where to start? Take the readiness check <span class="arrow" aria-hidden="true">→</span></a></p>
 </section>
 
 <section class="section" aria-labelledby="why-h">
@@ -1224,7 +1224,7 @@ export function homeView(curriculum) {
   </div>
   <div class="week-bridge-wrap">${weekBridge()}</div>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="/start">See your roadmap <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="btn btn-primary" href="/ready">Take the readiness check <span class="arrow" aria-hidden="true">→</span></a>
     <a class="btn btn-ghost" href="/challenge">Start the 30-Day Challenge</a>
   </div>
   <div class="callout">
@@ -2310,7 +2310,7 @@ export function readyView() {
       <p><strong>Third-semester CSE student?</strong> There is a structured 12-week on-ramp built exactly for you at <a class="textlink" href="/foundations">/foundations</a>. One curated free resource per week from 3Blue1Brown, Karpathy, MIT Missing Semester, fast.ai and Anthropic. One public GitHub repo plus a live Cloud Run URL shipped each week. A Socratic coach available on most weeks (Hinglish welcome, one hint per turn, never the answer). Week 12 is an AI-off ship gate that lands you in the Agentic Systems Track with a portfolio that proves you can build.</p>
     </div>
     <div class="hero-actions rise d4">
-      <a class="btn btn-primary" href="/graph">I am ready, open the knowledge graph <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn-primary" href="/tracks">I am ready, pick my track <span class="arrow" aria-hidden="true">→</span></a>
       <a class="btn btn-ghost" href="/foundations">Start Foundations instead <span class="arrow" aria-hidden="true">→</span></a>
       <a class="btn btn-ghost" href="/projects">See what you will build</a>
     </div>
