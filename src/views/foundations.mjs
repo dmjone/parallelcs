@@ -352,6 +352,31 @@ export const FOUNDATIONS_CSS = `
 .f-reflect-ol{margin:0;padding-left:1.25rem;display:flex;flex-direction:column;gap:.55rem}
 .f-reflect-ol li{color:var(--ink);font-size:.96rem;line-height:1.55;padding-left:.25rem}
 .f-reflect-ol li::marker{color:var(--emerald-deep);font-weight:800}
+
+/* ---- dark-mode overrides ----
+   .f-hero and .f-week-hero hardcoded a near-white linear-gradient as their
+   bottom background layer. The text-colour tokens (--ink, --ink-soft) flip
+   to light values in dark mode, so the hero headings and ledes vanished
+   against the still-white background. We flip the hardcoded bottom layer
+   to the same dark surface gradient the site hero uses globally, and we
+   soften every pastel border (#bfe9d6, #f6d99a, #f4c2d3) to --line-hard
+   which adapts with the scheme. The dark .f-onramp block is intentional
+   in both modes (it is a dark accent surface, same trick as .offramp). */
+@media (prefers-color-scheme:dark){
+  .f-hero{
+    background:
+      radial-gradient(680px 340px at 8% -10%,var(--amber-soft) 0%,transparent 60%),
+      radial-gradient(620px 320px at 100% 0%,var(--indigo-tint) 0%,transparent 70%),
+      linear-gradient(170deg,#23253c 0%,#1f213a 100%);
+  }
+  .f-week-hero{
+    background:linear-gradient(170deg,#23253c,#1f213a);
+  }
+  .f-disclaimer{border-color:var(--line-hard)}
+  .f-resource-card,.f-callout-ok{border-color:var(--line-hard)}
+  .f-callout-warn{border-color:var(--line-hard)}
+  .f-callout-strict{border-color:var(--line-hard)}
+}
 `;
 
 /* ------------------------------------------------------------------ */
