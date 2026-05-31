@@ -2324,7 +2324,7 @@ export function readyView() {
     </ul>
     <div class="callout">
       <span class="callout-bar" aria-hidden="true"></span>
-      <p><strong>Third-semester CSE student?</strong> There is a structured 12-week on-ramp built exactly for you at <a class="textlink" href="/foundations">/foundations</a>. One curated free resource per week from 3Blue1Brown, Karpathy, MIT Missing Semester, fast.ai and Anthropic. One public GitHub repo plus a live Cloud Run URL shipped each week. A Socratic coach available on most weeks (Hinglish welcome, one hint per turn, never the answer). Week 12 is an AI-off ship gate that lands you in the Agentic Systems Track with a portfolio that proves you can build.</p>
+      <p><strong>Still learning CSE? That is the honest place to be.</strong> There is a structured 12-week on-ramp built exactly for you at <a class="textlink" href="/foundations">/foundations</a>. One curated free resource per week from 3Blue1Brown, Karpathy, MIT Missing Semester, fast.ai and Anthropic. One public GitHub repo plus a live Cloud Run URL shipped each week. A Socratic coach available on most weeks (Hinglish welcome, one hint per turn, never the answer). Week 12 is an AI-off ship gate that lands you in the Agentic Systems Track with a portfolio that proves you can build.</p>
     </div>
     <div class="hero-actions rise d4">
       <a class="btn btn-primary" href="/tracks">I am ready, pick my track <span class="arrow" aria-hidden="true">→</span></a>
