@@ -925,6 +925,23 @@ table{border-collapse:collapse;width:100%}
   content:"";margin-top:.42em;width:8px;height:8px;flex:none;border-radius:2px;
   background:var(--emerald);transform:rotate(45deg);
 }
+/* Callout nested inside the dark offramp. The offramp is hardcoded dark in
+   both color schemes, so the nested callout uses a translucent-dark surface
+   and explicit light text (not theme-token-driven) so it stays visible in
+   light mode where --indigo-tint resolves to a near-white pastel that
+   collided with the offramp's grey text colour. Adds bottom margin so the
+   action row below does not crowd the callout. */
+.offramp .callout{
+  position:relative;margin:1.8rem 0 1.6rem;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.14);
+  padding:1.4rem 1.6rem;
+}
+.offramp .callout p{color:#e7e7f4;max-width:none}
+.offramp .callout strong{color:#ffffff}
+.offramp .callout .textlink,.offramp .callout a{color:var(--amber-deep)}
+.offramp .callout .textlink:hover,.offramp .callout a:hover{color:var(--amber)}
+.offramp .callout .callout-bar{background:var(--amber)}
 
 /* ---- footer ---- */
 .site-foot{
