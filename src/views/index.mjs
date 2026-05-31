@@ -62,12 +62,7 @@ const TYPE_LABEL = {
 
 /** Site navigation. `path` marks the current page for aria-current. */
 function nav(path) {
-  // Order is the learner journey: Foundations is the on-ramp for early-CS
-  // students (the audience the brand is recruiting), Start picks a track for
-  // those ready, Tracks browses all eight, Projects shows the briefs, and
-  // Challenge runs the semester cohort.
   const links = [
-    ['/foundations', 'Foundations'],
     ['/start', 'Start'],
     ['/tracks', 'Tracks'],
     ['/projects', 'Projects'],
@@ -109,7 +104,6 @@ function footer() {
     </div>
     <nav class="foot-nav" aria-label="Footer">
       <p class="foot-col-title">Explore</p>
-      <a href="/foundations">Foundations (third semester on-ramp)</a>
       <a href="/start">Start</a>
       <a href="/tracks">Tracks</a>
       <a href="/projects">Projects</a>
@@ -2311,8 +2305,13 @@ export function readyView() {
       <li>Build two or three small projects of your own to make the fundamentals stick.</li>
       <li>Return to this page. When the self-checks read true, you are ready to begin.</li>
     </ul>
+    <div class="callout">
+      <span class="callout-bar" aria-hidden="true"></span>
+      <p><strong>Third-semester CSE student?</strong> There is a structured 12-week on-ramp built exactly for you at <a class="textlink" href="/foundations">/foundations</a>. One curated free resource per week from 3Blue1Brown, Karpathy, MIT Missing Semester, fast.ai and Anthropic. One public GitHub repo plus a live Cloud Run URL shipped each week. A Socratic coach available on most weeks (Hinglish welcome, one hint per turn, never the answer). Week 12 is an AI-off ship gate that lands you in the Agentic Systems Track with a portfolio that proves you can build.</p>
+    </div>
     <div class="hero-actions rise d4">
       <a class="btn btn-primary" href="/graph">I am ready, open the knowledge graph <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost" href="/foundations">Start Foundations instead <span class="arrow" aria-hidden="true">→</span></a>
       <a class="btn btn-ghost" href="/projects">See what you will build</a>
     </div>
   </div>
